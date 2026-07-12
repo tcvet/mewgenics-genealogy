@@ -42,6 +42,7 @@ const en = {
   oriHetero: 'Straight (default) — mates with opposite-sex straight cats, or “?”',
   oriBi: 'Bi — mates with opposite-sex bi cats, or “?”',
   oriHomo: 'Gay — mates only with cats of sex “?”',
+  oriCycleHint: '(click to change)',
   // rooms
   roomNone: '🚪 no room set',
   rooms: {
@@ -168,6 +169,7 @@ const ru: Dict = {
   oriHetero: 'Гетеро (по умолчанию) — спаривается с гетеро противоположного пола или с полом «?»',
   oriBi: 'Би — спаривается с би противоположного пола или с полом «?»',
   oriHomo: 'Гомо — спаривается только с котами пола «?»',
+  oriCycleHint: '(клик — сменить)',
   roomNone: '🚪 комната не задана',
   rooms: {
     'floor1-left': '1 этаж слева',
@@ -282,6 +284,7 @@ const de: Dict = {
   oriHetero: 'Hetero (Standard) — paart sich mit Hetero-Katzen des anderen Geschlechts oder „?“',
   oriBi: 'Bi — paart sich mit Bi-Katzen des anderen Geschlechts oder „?“',
   oriHomo: 'Homo — paart sich nur mit Katzen des Geschlechts „?“',
+  oriCycleHint: '(Klick — ändern)',
   roomNone: '🚪 kein Zimmer',
   rooms: {
     'floor1-left': 'Etage 1, links',
@@ -397,6 +400,7 @@ const fr: Dict = {
   oriHetero: 'Hétéro (par défaut) — s’accouple avec les hétéros du sexe opposé ou « ? »',
   oriBi: 'Bi — s’accouple avec les bis du sexe opposé ou « ? »',
   oriHomo: 'Homo — s’accouple uniquement avec les chats de sexe « ? »',
+  oriCycleHint: '(clic — changer)',
   roomNone: '🚪 aucune pièce',
   rooms: {
     'floor1-left': 'Étage 1, gauche',
@@ -514,6 +518,7 @@ const es: Dict = {
   oriHetero: 'Hetero (por defecto) — se aparea con heteros del sexo opuesto o «?»',
   oriBi: 'Bi — se aparea con bis del sexo opuesto o «?»',
   oriHomo: 'Homo — se aparea solo con gatos de sexo «?»',
+  oriCycleHint: '(clic — cambiar)',
   roomNone: '🚪 sin habitación',
   rooms: {
     'floor1-left': 'Planta 1, izquierda',
@@ -630,6 +635,7 @@ const pt: Dict = {
   oriHetero: 'Hétero (padrão) — acasala com héteros do sexo oposto ou “?”',
   oriBi: 'Bi — acasala com bis do sexo oposto ou “?”',
   oriHomo: 'Homo — acasala apenas com gatos de sexo “?”',
+  oriCycleHint: '(clique — mudar)',
   roomNone: '🚪 sem cômodo',
   rooms: {
     'floor1-left': 'Andar 1, esquerda',
@@ -744,6 +750,7 @@ const zh: Dict = {
   oriHetero: '异性恋（默认）——只与异性的异性恋猫或性别“?”配对',
   oriBi: '双性恋——只与异性的双性恋猫或性别“?”配对',
   oriHomo: '同性恋——只与性别“?”的猫配对',
+  oriCycleHint: '（点击切换）',
   roomNone: '🚪 未设置房间',
   rooms: {
     'floor1-left': '一楼·左',
@@ -856,6 +863,7 @@ const ja: Dict = {
   oriHetero: '異性愛（デフォルト）——異性の異性愛の猫、または性別「?」と交配します',
   oriBi: '両性愛——異性の両性愛の猫、または性別「?」と交配します',
   oriHomo: '同性愛——性別「?」の猫とのみ交配します',
+  oriCycleHint: '（クリックで切替）',
   roomNone: '🚪 部屋未設定',
   rooms: {
     'floor1-left': '1階・左',
@@ -972,6 +980,7 @@ const ko: Dict = {
   oriHetero: '이성애 (기본값) — 반대 성별의 이성애 고양이 또는 성별 “?”와 교배',
   oriBi: '양성애 — 반대 성별의 양성애 고양이 또는 성별 “?”와 교배',
   oriHomo: '동성애 — 성별 “?” 고양이와만 교배',
+  oriCycleHint: '(클릭하여 변경)',
   roomNone: '🚪 방 미지정',
   rooms: {
     'floor1-left': '1층 왼쪽',

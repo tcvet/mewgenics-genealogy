@@ -59,12 +59,13 @@ function makeCat(
   fatherId: string | null = null,
   room: RoomId | null = null,
   cls: ClassKey | null = null,
+  orientation: Orientation = 'hetero',
 ): Cat {
   return {
     id: crypto.randomUUID(),
     name: name.trim(),
     sex,
-    orientation: 'hetero',
+    orientation,
     motherId,
     fatherId,
     room,
@@ -252,6 +253,29 @@ function OrientationToggle({
   );
 }
 
+/** Compact one-button orientation cycle (– → bi → homo) for tight rows (litter form). */
+function OrientationCycle({
+  value,
+  onChange,
+}: {
+  value: Orientation;
+  onChange: (o: Orientation) => void;
+}) {
+  const { t } = useI18n();
+  const titles: Record<Orientation, string> = { hetero: t.oriHetero, bi: t.oriBi, homo: t.oriHomo };
+  const next = ORIENTATIONS[(ORIENTATIONS.indexOf(value) + 1) % ORIENTATIONS.length];
+  return (
+    <button
+      type="button"
+      className="ori-cycle"
+      title={`${titles[value]} ${t.oriCycleHint}`}
+      onClick={() => onChange(next)}
+    >
+      {value === 'hetero' ? '–' : <span className={`flag-chip flag-${value}`} />}
+    </button>
+  );
+}
+
 /**
  * Distributes two cats into the mother/father slots for a litter.
  * null — the pair cannot mate (sexes/orientations incompatible, see `canMate`).
@@ -273,18 +297,25 @@ function AddCatForm({
   onCancel,
   nameTaken,
 }: {
-  onAdd: (name: string, sex: Sex, room: RoomId | null, cls: ClassKey | null) => void;
+  onAdd: (
+    name: string,
+    sex: Sex,
+    room: RoomId | null,
+    cls: ClassKey | null,
+    orientation: Orientation,
+  ) => void;
   onCancel: () => void;
   nameTaken: (name: string) => boolean;
 }) {
   const { t } = useI18n();
   const [name, setName] = useState('');
   const [sex, setSex] = useState<Sex>('F');
+  const [ori, setOri] = useState<Orientation>('hetero');
   const [room, setRoom] = useState<RoomId | null>(null);
   const [cls, setCls] = useState<ClassKey | null>(null);
   const dup = name.trim() !== '' && nameTaken(name);
   const submit = () => {
-    if (name.trim() && !dup) onAdd(name, sex, room, cls);
+    if (name.trim() && !dup) onAdd(name, sex, room, cls, ori);
   };
   return (
     <div className="panel">
@@ -303,6 +334,7 @@ function AddCatForm({
         />
       </div>
       {dup && <div className="warn">{t.nameExists(name.trim())}</div>}
+      <OrientationToggle value={ori} onChange={setOri} />
       <RoomToggle value={room} onChange={setRoom} />
       <ClassSelect value={cls} onChange={setCls} />
       <div className="row">
@@ -315,6 +347,9 @@ function AddCatForm({
   );
 }
 
+type KittenDraft = { name: string; sex: Sex; orientation: Orientation };
+const emptyKitten = (): KittenDraft => ({ name: '', sex: 'F', orientation: 'hetero' });
+
 function LitterPanel({
   mother,
   father,
@@ -326,11 +361,11 @@ function LitterPanel({
   father: Cat;
   coi: number;
   nameTaken: (name: string) => boolean;
-  onCreate: (kittens: { name: string; sex: Sex }[]) => void;
+  onCreate: (kittens: KittenDraft[]) => void;
 }) {
   const { t } = useI18n();
-  const [rows, setRows] = useState<{ name: string; sex: Sex }[]>([{ name: '', sex: 'F' }]);
-  const setRow = (i: number, patch: Partial<{ name: string; sex: Sex }>) =>
+  const [rows, setRows] = useState<KittenDraft[]>([emptyKitten()]);
+  const setRow = (i: number, patch: Partial<KittenDraft>) =>
     setRows((rs) => rs.map((r, j) => (j === i ? { ...r, ...patch } : r)));
   const filled = rows.filter((r) => r.name.trim());
   // duplicate: matches an existing cat OR another kitten of this same litter
@@ -344,7 +379,7 @@ function LitterPanel({
   const submit = () => {
     if (!filled.length || anyDup) return;
     onCreate(filled);
-    setRows([{ name: '', sex: 'F' }]);
+    setRows([emptyKitten()]);
   };
   const tier = coiTier(coi);
   return (
@@ -362,6 +397,10 @@ function LitterPanel({
       {rows.map((r, i) => (
         <div className="row" key={i}>
           <SexToggle value={r.sex} onChange={(sex) => setRow(i, { sex })} />
+          <OrientationCycle
+            value={r.orientation}
+            onChange={(orientation) => setRow(i, { orientation })}
+          />
           <input
             type="text"
             className={dupRow(i) ? 'dup' : ''}
@@ -371,7 +410,7 @@ function LitterPanel({
             onChange={(e) => setRow(i, { name: e.target.value })}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && r.name.trim() && !anyDup) {
-                setRows((rs) => [...rs, { name: '', sex: 'F' }]);
+                setRows((rs) => [...rs, emptyKitten()]);
               }
             }}
           />
@@ -384,9 +423,7 @@ function LitterPanel({
       ))}
       {anyDup && <div className="warn">{t.litterDupWarn}</div>}
       <div className="row">
-        <button onClick={() => setRows((rs) => [...rs, { name: '', sex: 'F' }])}>
-          {t.addKitten}
-        </button>
+        <button onClick={() => setRows((rs) => [...rs, emptyKitten()])}>{t.addKitten}</button>
         <button className="accent" disabled={!filled.length || anyDup} onClick={submit}>
           {t.create}
         </button>
@@ -924,8 +961,11 @@ function GenealogyApp() {
     if (mateModeFor === id) setMateModeFor(null);
   };
 
-  const createLitter = (mother: Cat, father: Cat, kittens: { name: string; sex: Sex }[]) => {
-    setCats((cs) => [...cs, ...kittens.map((k) => makeCat(k.name, k.sex, mother.id, father.id))]);
+  const createLitter = (mother: Cat, father: Cat, kittens: KittenDraft[]) => {
+    setCats((cs) => [
+      ...cs,
+      ...kittens.map((k) => makeCat(k.name, k.sex, mother.id, father.id, null, null, k.orientation)),
+    ]);
   };
 
   const exportJson = () => {
@@ -1139,8 +1179,8 @@ function GenealogyApp() {
           ) : addingFounder ? (
             <AddCatForm
               nameTaken={(n) => nameTakenBy(n)}
-              onAdd={(name, sex, room, cls) => {
-                setCats((cs) => [...cs, makeCat(name, sex, null, null, room, cls)]);
+              onAdd={(name, sex, room, cls, orientation) => {
+                setCats((cs) => [...cs, makeCat(name, sex, null, null, room, cls, orientation)]);
                 setAddingFounder(false);
               }}
               onCancel={() => setAddingFounder(false)}

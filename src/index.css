@@ -519,6 +519,20 @@ input[type='text'].dup {
   background: #8563b4;
 }
 
+/* compact one-button orientation cycle for litter rows (– → bi → homo) */
+.ori-cycle {
+  flex-shrink: 0;
+  width: 34px;
+  align-self: stretch;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: transparent;
+}
+
 /* pride flags are drawn in CSS — Unicode has no bi-flag emoji, and CSS keeps
    both flags crisp and identically sized at chip scale */
 .flag-chip {

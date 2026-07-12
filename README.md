@@ -26,7 +26,9 @@ Node.js works too: `npm install && npm run dev`.
 - **Click two compatible cats** to open the new-litter form; pressing Enter
   in the name field adds the next kitten.
 - **Orientation** (as in the game): straight by default, bi or gay via the
-  flag toggle in the cat panel. It affects breeding: same-sex pairs can never
+  flag toggle in the cat panel — or right at creation: the founder form has
+  the same toggle, and each kitten row in the litter form has a compact
+  flag button that cycles – → bi → gay. It affects breeding: same-sex pairs can never
   have a litter, straight cats breed only with opposite-sex straight cats,
   bi cats only with opposite-sex bi cats, and gay cats only with a “?”-sex
   cat (“?” mates with anyone). Non-straight cats carry a small pride-flag
