@@ -38,6 +38,10 @@ const en = {
   sexF: 'Female',
   sexM: 'Male',
   sexAny: 'Any sex — can mate with anyone',
+  // orientation (straight cats carry no flag, as in the game)
+  oriHetero: 'Straight (default) — mates with opposite-sex straight cats, or “?”',
+  oriBi: 'Bi — mates with opposite-sex bi cats, or “?”',
+  oriHomo: 'Gay — mates only with cats of sex “?”',
   // rooms
   roomNone: '🚪 no room set',
   rooms: {
@@ -134,11 +138,11 @@ const en = {
   resetConfirm: 'Delete ALL data and start with an empty tree?',
   // hints
   samePairHint:
-    'Two cats of the same sex are selected (♀+♀ or ♂+♂) — no litter is possible. Sex “?” can mate with anyone.',
+    'This pair cannot have a litter: same-sex pairs cannot breed; straight and bi cats need an opposite-sex partner of the same orientation; gay cats — a “?” cat (“?” mates with anyone).',
   helpTitle: 'How to use',
   helpLines: [
     'Click a cat to select and edit it.',
-    'Click two cats of different sexes to create a litter.',
+    'Click two compatible cats (sex + orientation) to create a litter.',
     '“＋ Cat” adds a founder without parents.',
     '“Set parents” in the cat panel links existing cats as mother/father.',
     'Search (top) finds a cat and jumps to it; picking from search works like a click, so a litter pair can be selected entirely via search.',
@@ -161,6 +165,9 @@ const ru: Dict = {
   sexF: 'Самка',
   sexM: 'Самец',
   sexAny: 'Любой пол — спаривается с кем угодно',
+  oriHetero: 'Гетеро (по умолчанию) — спаривается с гетеро противоположного пола или с полом «?»',
+  oriBi: 'Би — спаривается с би противоположного пола или с полом «?»',
+  oriHomo: 'Гомо — спаривается только с котами пола «?»',
   roomNone: '🚪 комната не задана',
   rooms: {
     'floor1-left': '1 этаж слева',
@@ -247,11 +254,11 @@ const ru: Dict = {
   importError: 'Не удалось прочитать файл — ожидается JSON, экспортированный из этого приложения.',
   resetConfirm: 'Удалить ВСЕ данные и начать с пустого дерева?',
   samePairHint:
-    'Выбраны два кота одного пола (♀+♀ или ♂+♂) — помёт невозможен. Пол «?» спаривается с любым.',
+    'У этой пары не может быть помёта: однополые пары не размножаются; гетеро и би нужен партнёр своей ориентации противоположного пола; гомо — кот пола «?» (пол «?» спаривается с любым).',
   helpTitle: 'Как пользоваться',
   helpLines: [
     'Клик по коту — выбрать и редактировать.',
-    'Клик по двум котам разного пола — новый помёт.',
+    'Клик по двум совместимым котам (пол + ориентация) — новый помёт.',
     '«＋ Кот» — добавить основателя без родителей.',
     '«Указать родителей» в панели кота — привязать уже существующих котов как мать/отца.',
     'Поиск сверху — найти кота и перейти к нему; выбор из поиска работает как клик, так что пару для помёта можно набрать целиком поиском.',
@@ -272,6 +279,9 @@ const de: Dict = {
   sexF: 'Weibchen',
   sexM: 'Männchen',
   sexAny: 'Beliebiges Geschlecht — paart sich mit jedem',
+  oriHetero: 'Hetero (Standard) — paart sich mit Hetero-Katzen des anderen Geschlechts oder „?“',
+  oriBi: 'Bi — paart sich mit Bi-Katzen des anderen Geschlechts oder „?“',
+  oriHomo: 'Homo — paart sich nur mit Katzen des Geschlechts „?“',
   roomNone: '🚪 kein Zimmer',
   rooms: {
     'floor1-left': 'Etage 1, links',
@@ -359,11 +369,11 @@ const de: Dict = {
     'Datei konnte nicht gelesen werden — erwartet wird JSON, das aus dieser App exportiert wurde.',
   resetConfirm: 'ALLE Daten löschen und mit einem leeren Baum beginnen?',
   samePairHint:
-    'Zwei Katzen gleichen Geschlechts ausgewählt (♀+♀ oder ♂+♂) — kein Wurf möglich. Geschlecht „?“ paart sich mit jedem.',
+    'Dieses Paar kann keinen Wurf haben: gleichgeschlechtliche Paare nie; Hetero und Bi brauchen einen Partner gleicher Orientierung und anderen Geschlechts, Homo — eine „?“-Katze („?“ paart sich mit jedem).',
   helpTitle: 'Bedienung',
   helpLines: [
     'Katze anklicken — auswählen und bearbeiten.',
-    'Zwei Katzen unterschiedlichen Geschlechts anklicken — neuer Wurf.',
+    'Zwei kompatible Katzen (Geschlecht + Orientierung) anklicken — neuer Wurf.',
     '„＋ Katze“ — Gründerkatze ohne Eltern hinzufügen.',
     '„Eltern festlegen“ im Katzen-Panel — vorhandene Katzen als Mutter/Vater verknüpfen.',
     'Suche oben — Katze finden und hinspringen; Auswahl aus der Suche wirkt wie ein Klick, so lässt sich ein Wurf-Paar komplett per Suche zusammenstellen.',
@@ -384,6 +394,9 @@ const fr: Dict = {
   sexF: 'Femelle',
   sexM: 'Mâle',
   sexAny: 'Sexe indifférent — s’accouple avec n’importe qui',
+  oriHetero: 'Hétéro (par défaut) — s’accouple avec les hétéros du sexe opposé ou « ? »',
+  oriBi: 'Bi — s’accouple avec les bis du sexe opposé ou « ? »',
+  oriHomo: 'Homo — s’accouple uniquement avec les chats de sexe « ? »',
   roomNone: '🚪 aucune pièce',
   rooms: {
     'floor1-left': 'Étage 1, gauche',
@@ -473,11 +486,11 @@ const fr: Dict = {
     'Impossible de lire le fichier — un JSON exporté depuis cette application est attendu.',
   resetConfirm: 'Supprimer TOUTES les données et repartir d’un arbre vide ?',
   samePairHint:
-    'Deux chats du même sexe sont sélectionnés (♀+♀ ou ♂+♂) — portée impossible. Le sexe « ? » s’accouple avec n’importe qui.',
+    'Ce couple ne peut pas avoir de portée : jamais entre chats de même sexe ; hétéro et bi exigent un partenaire de même orientation et de sexe opposé, homo — un chat « ? » (« ? » s’accouple avec n’importe qui).',
   helpTitle: 'Mode d’emploi',
   helpLines: [
     'Cliquer sur un chat — le sélectionner et l’éditer.',
-    'Cliquer sur deux chats de sexes différents — nouvelle portée.',
+    'Cliquer sur deux chats compatibles (sexe + orientation) — nouvelle portée.',
     '« ＋ Chat » — ajouter un fondateur sans parents.',
     '« Définir les parents » dans le panneau du chat — lier des chats existants comme mère/père.',
     'La recherche en haut trouve un chat et s’y rend ; choisir via la recherche agit comme un clic, on peut donc composer une paire entièrement par la recherche.',
@@ -498,6 +511,9 @@ const es: Dict = {
   sexF: 'Hembra',
   sexM: 'Macho',
   sexAny: 'Cualquier sexo — se aparea con cualquiera',
+  oriHetero: 'Hetero (por defecto) — se aparea con heteros del sexo opuesto o «?»',
+  oriBi: 'Bi — se aparea con bis del sexo opuesto o «?»',
+  oriHomo: 'Homo — se aparea solo con gatos de sexo «?»',
   roomNone: '🚪 sin habitación',
   rooms: {
     'floor1-left': 'Planta 1, izquierda',
@@ -586,11 +602,11 @@ const es: Dict = {
   importError: 'No se pudo leer el archivo — se espera un JSON exportado desde esta aplicación.',
   resetConfirm: '¿Eliminar TODOS los datos y empezar con un árbol vacío?',
   samePairHint:
-    'Hay dos gatos del mismo sexo seleccionados (♀+♀ o ♂+♂) — la camada es imposible. El sexo «?» se aparea con cualquiera.',
+    'Esta pareja no puede tener camada: nunca entre gatos del mismo sexo; hetero y bi necesitan pareja de su misma orientación y sexo opuesto, homo — un gato «?» («?» se aparea con cualquiera).',
   helpTitle: 'Cómo se usa',
   helpLines: [
     'Clic en un gato — seleccionarlo y editarlo.',
-    'Clic en dos gatos de distinto sexo — nueva camada.',
+    'Clic en dos gatos compatibles (sexo + orientación) — nueva camada.',
     '«＋ Gato» — añadir un fundador sin padres.',
     '«Asignar padres» en el panel del gato — vincular gatos existentes como madre/padre.',
     'La búsqueda de arriba encuentra un gato y salta a él; elegir desde la búsqueda funciona como un clic, así que una pareja puede seleccionarse entera con la búsqueda.',
@@ -611,6 +627,9 @@ const pt: Dict = {
   sexF: 'Fêmea',
   sexM: 'Macho',
   sexAny: 'Qualquer sexo — acasala com qualquer um',
+  oriHetero: 'Hétero (padrão) — acasala com héteros do sexo oposto ou “?”',
+  oriBi: 'Bi — acasala com bis do sexo oposto ou “?”',
+  oriHomo: 'Homo — acasala apenas com gatos de sexo “?”',
   roomNone: '🚪 sem cômodo',
   rooms: {
     'floor1-left': 'Andar 1, esquerda',
@@ -697,11 +716,11 @@ const pt: Dict = {
   importError: 'Não foi possível ler o arquivo — esperado um JSON exportado deste aplicativo.',
   resetConfirm: 'Excluir TODOS os dados e começar com uma árvore vazia?',
   samePairHint:
-    'Dois gatos do mesmo sexo selecionados (♀+♀ ou ♂+♂) — ninhada impossível. O sexo “?” acasala com qualquer um.',
+    'Este par não pode ter ninhada: nunca entre gatos do mesmo sexo; hétero e bi precisam de par da mesma orientação e sexo oposto, homo — um gato “?” (“?” acasala com qualquer um).',
   helpTitle: 'Como usar',
   helpLines: [
     'Clique em um gato — selecionar e editar.',
-    'Clique em dois gatos de sexos diferentes — nova ninhada.',
+    'Clique em dois gatos compatíveis (sexo + orientação) — nova ninhada.',
     '“＋ Gato” — adicionar um fundador sem pais.',
     '“Definir pais” no painel do gato — vincular gatos existentes como mãe/pai.',
     'A busca no topo encontra um gato e vai até ele; escolher pela busca age como um clique, então dá para montar o casal inteiro pela busca.',
@@ -722,6 +741,9 @@ const zh: Dict = {
   sexF: '母猫',
   sexM: '公猫',
   sexAny: '任意性别——可与任何猫配对',
+  oriHetero: '异性恋（默认）——只与异性的异性恋猫或性别“?”配对',
+  oriBi: '双性恋——只与异性的双性恋猫或性别“?”配对',
+  oriHomo: '同性恋——只与性别“?”的猫配对',
   roomNone: '🚪 未设置房间',
   rooms: {
     'floor1-left': '一楼·左',
@@ -806,11 +828,11 @@ const zh: Dict = {
   importConfirm: (cur, next) => `用文件（${next} 只）替换当前数据（${cur} 只猫）？`,
   importError: '无法读取文件——需要从本应用导出的 JSON。',
   resetConfirm: '删除全部数据并从空族谱开始？',
-  samePairHint: '选中了两只同性别的猫（♀+♀ 或 ♂+♂）——无法产生一窝。性别“?”可与任何猫配对。',
+  samePairHint: '这两只猫无法产生一窝：同性别不能繁殖；异性恋和双性恋需要取向相同、性别相反的伴侣，同性恋只能与性别“?”的猫配对（“?”可与任何猫配对）。',
   helpTitle: '使用说明',
   helpLines: [
     '点击猫——选中并编辑。',
-    '点击两只不同性别的猫——新建一窝。',
+    '点击两只可配对的猫（性别＋性取向）——新建一窝。',
     '“＋ 猫”——添加没有父母的初始猫。',
     '猫面板中的“指定父母”——把已有的猫设为母亲/父亲。',
     '顶部搜索可找到猫并跳转；从搜索中选择等同于点击，因此可以完全通过搜索选好一对。',
@@ -831,6 +853,9 @@ const ja: Dict = {
   sexF: 'メス',
   sexM: 'オス',
   sexAny: '性別不問——どの猫とも交配できます',
+  oriHetero: '異性愛（デフォルト）——異性の異性愛の猫、または性別「?」と交配します',
+  oriBi: '両性愛——異性の両性愛の猫、または性別「?」と交配します',
+  oriHomo: '同性愛——性別「?」の猫とのみ交配します',
   roomNone: '🚪 部屋未設定',
   rooms: {
     'floor1-left': '1階・左',
@@ -919,11 +944,11 @@ const ja: Dict = {
     'ファイルを読み込めませんでした——このアプリからエクスポートした JSON が必要です。',
   resetConfirm: 'すべてのデータを削除して空の系図から始めますか？',
   samePairHint:
-    '同じ性別の猫が2匹選ばれています（♀+♀ または ♂+♂）——子猫は作れません。性別「?」はどの猫とも交配できます。',
+    'このペアは子猫を作れません：同性同士は繁殖できません。異性愛と両性愛は同じ指向で異性の相手が必要、同性愛は性別「?」の猫のみ（「?」はどの猫とも交配できます）。',
   helpTitle: '使い方',
   helpLines: [
     '猫をクリック——選択して編集。',
-    '性別の異なる2匹をクリック——新しい子猫たち。',
+    '相性の合う2匹（性別＋性的指向）をクリック——新しい子猫たち。',
     '「＋ 猫」——親のいない始祖猫を追加。',
     '猫パネルの「両親を設定」——既存の猫を母/父として結び付け。',
     '上部の検索で猫を見つけてジャンプ。検索からの選択はクリックと同じ扱いなので、ペアを検索だけで揃えられます。',
@@ -944,6 +969,9 @@ const ko: Dict = {
   sexF: '암컷',
   sexM: '수컷',
   sexAny: '아무 성별 — 어떤 고양이와도 교배 가능',
+  oriHetero: '이성애 (기본값) — 반대 성별의 이성애 고양이 또는 성별 “?”와 교배',
+  oriBi: '양성애 — 반대 성별의 양성애 고양이 또는 성별 “?”와 교배',
+  oriHomo: '동성애 — 성별 “?” 고양이와만 교배',
   roomNone: '🚪 방 미지정',
   rooms: {
     'floor1-left': '1층 왼쪽',
@@ -1030,11 +1058,11 @@ const ko: Dict = {
   importError: '파일을 읽을 수 없습니다 — 이 앱에서 내보낸 JSON이 필요합니다.',
   resetConfirm: '모든 데이터를 삭제하고 빈 계보에서 시작할까요?',
   samePairHint:
-    '같은 성별의 고양이 두 마리가 선택되었습니다(♀+♀ 또는 ♂+♂) — 새끼를 만들 수 없습니다. 성별 “?”는 누구와도 교배할 수 있습니다.',
+    '이 한 쌍은 새끼를 가질 수 없습니다: 같은 성별끼리는 번식할 수 없습니다. 이성애와 양성애는 같은 지향의 반대 성별 상대가 필요하고, 동성애는 성별 “?” 고양이만 가능합니다(“?”는 누구와도 교배).',
   helpTitle: '사용법',
   helpLines: [
     '고양이 클릭 — 선택하고 편집.',
-    '성별이 다른 두 마리 클릭 — 새 한배 새끼.',
+    '짝이 맞는 두 마리(성별 + 성적 지향) 클릭 — 새 한배 새끼.',
     '“＋ 고양이” — 부모 없는 시조 고양이 추가.',
     '고양이 패널의 “부모 지정” — 기존 고양이를 어머니/아버지로 연결.',
     '상단 검색으로 고양이를 찾아 이동. 검색 선택은 클릭과 같아서 짝을 검색만으로 고를 수 있습니다.',

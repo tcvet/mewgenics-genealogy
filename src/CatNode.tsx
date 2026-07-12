@@ -50,6 +50,13 @@ export function CatNode({ data }: NodeProps) {
     <div className={cls.join(' ')} style={style}>
       <Handle type="target" position={Position.Top} className="handle" isConnectable={false} />
       <span className={`sex-chip ${SEX_CLASS[cat.sex]}`}>{SEX_GLYPH[cat.sex]}</span>
+      {/* pride flag on the card edge; straight cats carry no flag (as in the game) */}
+      {cat.orientation !== 'hetero' && (
+        <span
+          className={`flag-chip ori-chip flag-${cat.orientation}`}
+          title={cat.orientation === 'bi' ? t.oriBi : t.oriHomo}
+        />
+      )}
       <span className="name" title={cat.name}>
         {cat.name}
       </span>

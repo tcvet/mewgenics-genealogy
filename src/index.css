@@ -508,6 +508,44 @@ input[type='text'].dup {
   background: #8563b4;
 }
 
+/* --- orientation --- */
+
+/* the toggle reuses .sex-toggle; don't stretch across the panel column */
+.ori-toggle {
+  align-self: flex-start;
+}
+
+.ori-toggle button.on {
+  background: #8563b4;
+}
+
+/* pride flags are drawn in CSS — Unicode has no bi-flag emoji, and CSS keeps
+   both flags crisp and identically sized at chip scale */
+.flag-chip {
+  display: inline-block;
+  width: 20px;
+  height: 13px;
+  border-radius: 3px;
+  vertical-align: -2px;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.flag-bi {
+  background: linear-gradient(to bottom, #d60270 0 40%, #9b4f96 40% 60%, #0038a8 60% 100%);
+}
+
+.flag-homo {
+  background: linear-gradient(
+    to bottom,
+    #e40303 0 16.7%,
+    #ff8c00 16.7% 33.3%,
+    #ffed00 33.3% 50%,
+    #008026 50% 66.7%,
+    #24408e 66.7% 83.3%,
+    #732982 83.3% 100%
+  );
+}
+
 /* --- tree nodes --- */
 
 .react-flow__node-cat {
@@ -606,6 +644,14 @@ input[type='text'].dup {
 .cat-node.assign-parent {
   box-shadow: 0 0 0 3px rgba(70, 200, 120, 0.8), 0 0 16px rgba(70, 200, 120, 0.5),
     var(--card-lift);
+}
+
+/* orientation flag floats on the card's top-left edge (mirrors the room chip) */
+.ori-chip {
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .room-chip {

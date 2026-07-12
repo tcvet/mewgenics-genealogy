@@ -22,9 +22,15 @@ Node.js works too: `npm install && npm run dev`.
 ## How to use
 
 - **Click a cat** to select it: an edit panel appears on the right (name, sex,
-  room, class, base stats, notes).
-- **Click two cats of different sexes** to open the new-litter form; pressing Enter
+  orientation, room, class, base stats, notes).
+- **Click two compatible cats** to open the new-litter form; pressing Enter
   in the name field adds the next kitten.
+- **Orientation** (as in the game): straight by default, bi or gay via the
+  flag toggle in the cat panel. It affects breeding: same-sex pairs can never
+  have a litter, straight cats breed only with opposite-sex straight cats,
+  bi cats only with opposite-sex bi cats, and gay cats only with a “?”-sex
+  cat (“?” mates with anyone). Non-straight cats carry a small pride-flag
+  chip on their card; straight cats carry no flag, like in the game.
 - **“＋ Cat”** adds a founder cat without parents.
 - **“Set parents”** (in the cat panel) links existing cats as mother/father:
   click them on the map (female → mother, male → father, “?” → a free slot).
@@ -56,9 +62,9 @@ Node.js works too: `npm install && npm run dev`.
   counts as an ancestor in inbreeding calculations.
 - **“Pedigree”** shows only the ancestors and descendants of the selected cat
   (the toolbar button returns to the full tree).
-- **“Show mate COI”** displays, on every cat of the opposite sex, the
-  inbreeding coefficient (COI) of their potential offspring: green — 0,
-  yellow — ≤6.25% (first-cousin level), red — above.
+- **“Show mate COI”** displays, on every compatible cat (by sex and
+  orientation), the inbreeding coefficient (COI) of their potential offspring:
+  green — 0, yellow — ≤6.25% (first-cousin level), red — above.
 - The cat panel shows the cat's own **F** (inbreeding coefficient), and when a
   pair is selected — the predicted COI of a future litter.
 - Data is autosaved to the browser's localStorage; **Export/Import** (in the ⚙️

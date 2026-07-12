@@ -3,9 +3,29 @@ export type Sex = 'F' | 'M' | '?';
 
 export const SEX_GLYPH: Record<Sex, string> = { F: '♀', M: '♂', '?': '?' };
 
-/** Can two sexes produce a litter: only strictly identical sexes (F+F, M+M) cannot. '?' mates with any. */
-export function canMate(a: Sex, b: Sex): boolean {
-  return !(a === b && a !== '?');
+/** Who the cat is willing to mate with (the game's default is straight). */
+export type Orientation = 'hetero' | 'bi' | 'homo';
+
+export const ORIENTATIONS: Orientation[] = ['hetero', 'bi', 'homo'];
+
+/** The inputs to the mating rules (a `Cat` is structurally assignable). */
+export interface MateTraits {
+  sex: Sex;
+  orientation: Orientation;
+}
+
+/**
+ * Can two cats produce a litter (the game's rules):
+ * - the universal sex '?' mates with anyone;
+ * - a same-sex pair never has a litter;
+ * - a homo cat otherwise cannot breed at all ('?' partners only);
+ * - the rest breed only within their orientation: hetero×hetero, bi×bi.
+ */
+export function canMate(a: MateTraits, b: MateTraits): boolean {
+  if (a.sex === '?' || b.sex === '?') return true;
+  if (a.sex === b.sex) return false;
+  if (a.orientation === 'homo' || b.orientation === 'homo') return false;
+  return a.orientation === b.orientation;
 }
 
 export type RoomId =
@@ -90,6 +110,8 @@ export interface Cat {
   id: string;
   name: string;
   sex: Sex;
+  /** affects mating rules only (like sex, never the tree structure) */
+  orientation: Orientation;
   /** null — a founder (parents unknown / cat from outside) */
   motherId: string | null;
   fatherId: string | null;

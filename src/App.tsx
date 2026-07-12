@@ -15,6 +15,7 @@ import {
   canMate,
   CLASS_COLOR,
   CLASSES,
+  ORIENTATIONS,
   ROOMS,
   SEX_GLYPH,
   STAT_GROUPS,
@@ -22,6 +23,7 @@ import {
   STAT_VALUES,
   type Cat,
   type ClassKey,
+  type Orientation,
   type RoomId,
   type Sex,
 } from './types';
@@ -47,6 +49,9 @@ const nodeTypes = { cat: CatNode, union: UnionNode };
 /** Name normalization for duplicate checks: trimmed, case-insensitive. */
 const normName = (s: string) => s.trim().toLowerCase();
 
+/** Normalize a possibly-missing/invalid orientation (older saves/imports). */
+const normOrientation = (o: unknown): Orientation => (o === 'bi' || o === 'homo' ? o : 'hetero');
+
 function makeCat(
   name: string,
   sex: Sex,
@@ -59,6 +64,7 @@ function makeCat(
     id: crypto.randomUUID(),
     name: name.trim(),
     sex,
+    orientation: 'hetero',
     motherId,
     fatherId,
     room,
@@ -146,6 +152,7 @@ function seedCats(): Cat[] {
       id: `seed-${cats.length}`,
       name,
       sex,
+      orientation: 'hetero',
       motherId,
       fatherId,
       room: null,
@@ -176,6 +183,7 @@ function loadCats(): Cat[] {
         id: c.id!,
         name: c.name!,
         sex: c.sex!,
+        orientation: normOrientation(c.orientation),
         motherId: c.motherId ?? null,
         fatherId: c.fatherId ?? null,
         room: c.room ?? null,
@@ -217,14 +225,41 @@ function SexToggle({ value, onChange }: { value: Sex; onChange: (sex: Sex) => vo
   );
 }
 
+function OrientationToggle({
+  value,
+  onChange,
+}: {
+  value: Orientation;
+  onChange: (o: Orientation) => void;
+}) {
+  const { t } = useI18n();
+  const titles: Record<Orientation, string> = { hetero: t.oriHetero, bi: t.oriBi, homo: t.oriHomo };
+  return (
+    <div className="sex-toggle ori-toggle">
+      {ORIENTATIONS.map((o) => (
+        <button
+          key={o}
+          type="button"
+          title={titles[o]}
+          className={value === o ? 'on' : ''}
+          onClick={() => onChange(o)}
+        >
+          {/* straight = no flag (as in the game); bi/homo = CSS-drawn pride flags */}
+          {o === 'hetero' ? '–' : <span className={`flag-chip flag-${o}`} />}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 /**
  * Distributes two cats into the mother/father slots for a litter.
- * null — the pair is impossible (strictly same sex: F+F or M+M).
+ * null — the pair cannot mate (sexes/orientations incompatible, see `canMate`).
  * Female → mother, male → father, '?' takes a free slot.
  * The slot does not matter for the DAG (kinship is symmetric), display only.
  */
 function assignParents(a: Cat, b: Cat): { mother: Cat; father: Cat } | null {
-  if (!canMate(a.sex, b.sex)) return null;
+  if (!canMate(a, b)) return null;
   const female = a.sex === 'F' ? a : b.sex === 'F' ? b : null;
   const male = a.sex === 'M' ? a : b.sex === 'M' ? b : null;
   if (female && male) return { mother: female, father: male };
@@ -391,6 +426,10 @@ function CatPanel(props: {
         />
       </div>
       {dupName && <div className="warn">{t.nameTakenWarn}</div>}
+      <OrientationToggle
+        value={cat.orientation}
+        onChange={(orientation) => props.onUpdate({ orientation })}
+      />
       <RoomToggle value={cat.room} onChange={(room) => props.onUpdate({ room })} />
       <ClassSelect value={cat.class} onChange={(cls) => props.onUpdate({ class: cls })} />
       <div className="meta">
@@ -790,10 +829,24 @@ function GenealogyApp() {
   /** In assignment mode a click on a cat makes it the child's parent. */
   const pickParent = (child: Cat, candidate: Cat) => {
     if (candidate.id === child.id || (assignBlockedIds?.has(candidate.id) ?? false)) return;
-    // female → mother, male → father, '?' → a free slot (otherwise replace the mother)
+    // female → mother, male → father, '?' → a free slot (otherwise replace the mother).
+    // When the sex-preferred slot already holds a compatible mate (a '?' cat) and
+    // the other slot is free, overflow there instead of replacing — so assigning
+    // e.g. '?' then F keeps both parents (slots are cosmetic anyway).
+    // An incompatible occupant keeps the old meaning: replace the parent.
     let patch: Partial<Cat>;
-    if (candidate.sex === 'M') patch = { fatherId: candidate.id };
-    else if (candidate.sex === 'F') patch = { motherId: candidate.id };
+    const overflow = (takenId: string | null, otherFree: boolean) => {
+      const taken = takenId ? byId.get(takenId) : undefined;
+      return otherFree && taken && taken.id !== candidate.id && canMate(taken, candidate);
+    };
+    if (candidate.sex === 'M')
+      patch = overflow(child.fatherId, !child.motherId)
+        ? { motherId: candidate.id }
+        : { fatherId: candidate.id };
+    else if (candidate.sex === 'F')
+      patch = overflow(child.motherId, !child.fatherId)
+        ? { fatherId: candidate.id }
+        : { motherId: candidate.id };
     else if (!child.motherId) patch = { motherId: candidate.id };
     else if (!child.fatherId) patch = { fatherId: candidate.id };
     else patch = { motherId: candidate.id };
@@ -911,6 +964,7 @@ function GenealogyApp() {
             id: c.id!,
             name: c.name!,
             sex: c.sex!,
+            orientation: normOrientation(c.orientation),
             motherId: c.motherId ?? null,
             fatherId: c.fatherId ?? null,
             room: c.room ?? null,
