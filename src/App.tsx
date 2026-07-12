@@ -1,0 +1,1155 @@
+import { Fragment, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import {
+  Background,
+  Controls,
+  MiniMap,
+  ReactFlow,
+  ReactFlowProvider,
+  useReactFlow,
+  type Edge,
+  type Node,
+  type NodeMouseHandler,
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import {
+  canMate,
+  CLASS_COLOR,
+  CLASSES,
+  ROOMS,
+  SEX_GLYPH,
+  STAT_GROUPS,
+  STAT_KEYS,
+  STAT_VALUES,
+  type Cat,
+  type ClassKey,
+  type RoomId,
+  type Sex,
+} from './types';
+import {
+  childrenIndex,
+  coiTier,
+  descendantIds,
+  formatCOI,
+  inbreedingCoefficient,
+  indexCats,
+  mateCOIs,
+  pairCOI,
+  pedigreeIds,
+} from './genealogy';
+import { CAT_H, CAT_W, layoutCats, type LaidOutNode } from './layout';
+import { CatNode, UnionNode } from './CatNode';
+import { I18nProvider, LANGS, useI18n, type Lang } from './i18n';
+
+const STORAGE_KEY = 'mewgenics-genealogy';
+const HELP_KEY = 'mewgenics-help';
+const nodeTypes = { cat: CatNode, union: UnionNode };
+
+/** Name normalization for duplicate checks: trimmed, case-insensitive. */
+const normName = (s: string) => s.trim().toLowerCase();
+
+function makeCat(
+  name: string,
+  sex: Sex,
+  motherId: string | null = null,
+  fatherId: string | null = null,
+  room: RoomId | null = null,
+  cls: ClassKey | null = null,
+): Cat {
+  return {
+    id: crypto.randomUUID(),
+    name: name.trim(),
+    sex,
+    motherId,
+    fatherId,
+    room,
+    class: cls,
+    gone: false,
+    notes: '',
+    stats: {},
+  };
+}
+
+function ClassSelect({
+  value,
+  onChange,
+}: {
+  value: ClassKey | null;
+  onChange: (cls: ClassKey | null) => void;
+}) {
+  const { t } = useI18n();
+  return (
+    <div className="row">
+      <span
+        className={`class-dot ${value ? '' : 'none'}`}
+        style={value ? { background: CLASS_COLOR[value] } : undefined}
+      />
+      <select
+        className="class-select"
+        value={value ?? ''}
+        onChange={(e) => onChange(e.target.value === '' ? null : (e.target.value as ClassKey))}
+      >
+        <option value="">{t.classNone}</option>
+        {CLASSES.map((c) => (
+          <option key={c.id} value={c.id}>
+            {t.classes[c.id]}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function RoomToggle({
+  value,
+  onChange,
+}: {
+  value: RoomId | null;
+  onChange: (room: RoomId | null) => void;
+}) {
+  const { t } = useI18n();
+  return (
+    <div className="room-toggle">
+      <button
+        type="button"
+        title={t.roomNone}
+        className={`stat-cell ${value === null ? 'on' : ''}`}
+        onClick={() => onChange(null)}
+      >
+        –
+      </button>
+      {ROOMS.map((r) => (
+        <button
+          key={r.id}
+          type="button"
+          title={t.rooms[r.id]}
+          className={`stat-cell ${value === r.id ? 'on' : ''}`}
+          onClick={() => onChange(r.id)}
+        >
+          {r.short}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** A small first-run example so the tree's look is immediately visible. */
+function seedCats(): Cat[] {
+  const cats: Cat[] = [];
+  const add = (
+    name: string,
+    sex: Sex,
+    motherId: string | null = null,
+    fatherId: string | null = null,
+    cls: ClassKey | null = null,
+  ) => {
+    const cat: Cat = {
+      id: `seed-${cats.length}`,
+      name,
+      sex,
+      motherId,
+      fatherId,
+      room: null,
+      class: cls,
+      gone: false,
+      notes: '',
+      stats: {},
+    };
+    cats.push(cat);
+    return cat.id;
+  };
+  const misty = add('Misty', 'F', null, null, 'monk');
+  const shadow = add('Shadow', 'M', null, null, 'necromancer');
+  const tom = add('Tom', 'M', null, null, 'tank');
+  const luna = add('Luna', 'F', misty, shadow, 'mage');
+  add('Ginger', 'M', misty, shadow, 'fighter');
+  add('Toffee', 'F', luna, tom, 'thief');
+  add('Cosmo', 'M', luna, tom, 'tinkerer');
+  return cats;
+}
+
+function loadCats(): Cat[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw !== null) {
+      // normalize data from older versions (e.g. missing the room field)
+      return (JSON.parse(raw) as Partial<Cat>[]).map((c) => ({
+        id: c.id!,
+        name: c.name!,
+        sex: c.sex!,
+        motherId: c.motherId ?? null,
+        fatherId: c.fatherId ?? null,
+        room: c.room ?? null,
+        class: c.class ?? null,
+        gone: c.gone ?? false,
+        notes: c.notes ?? '',
+        stats: c.stats ?? {},
+      }));
+    }
+  } catch {
+    // corrupted data — start with the example
+  }
+  return seedCats();
+}
+
+const SEX_OPTIONS: { sex: Sex; cls: string }[] = [
+  { sex: 'F', cls: 'female' },
+  { sex: 'M', cls: 'male' },
+  { sex: '?', cls: 'any' },
+];
+
+function SexToggle({ value, onChange }: { value: Sex; onChange: (sex: Sex) => void }) {
+  const { t } = useI18n();
+  const titles: Record<Sex, string> = { F: t.sexF, M: t.sexM, '?': t.sexAny };
+  return (
+    <div className="sex-toggle">
+      {SEX_OPTIONS.map((o) => (
+        <button
+          key={o.sex}
+          type="button"
+          title={titles[o.sex]}
+          className={value === o.sex ? `on ${o.cls}` : ''}
+          onClick={() => onChange(o.sex)}
+        >
+          {SEX_GLYPH[o.sex]}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Distributes two cats into the mother/father slots for a litter.
+ * null — the pair is impossible (strictly same sex: F+F or M+M).
+ * Female → mother, male → father, '?' takes a free slot.
+ * The slot does not matter for the DAG (kinship is symmetric), display only.
+ */
+function assignParents(a: Cat, b: Cat): { mother: Cat; father: Cat } | null {
+  if (!canMate(a.sex, b.sex)) return null;
+  const female = a.sex === 'F' ? a : b.sex === 'F' ? b : null;
+  const male = a.sex === 'M' ? a : b.sex === 'M' ? b : null;
+  if (female && male) return { mother: female, father: male };
+  if (female) return { mother: female, father: female === a ? b : a };
+  if (male) return { mother: male === a ? b : a, father: male };
+  return { mother: a, father: b }; // both are '?'
+}
+
+function AddCatForm({
+  onAdd,
+  onCancel,
+  nameTaken,
+}: {
+  onAdd: (name: string, sex: Sex, room: RoomId | null, cls: ClassKey | null) => void;
+  onCancel: () => void;
+  nameTaken: (name: string) => boolean;
+}) {
+  const { t } = useI18n();
+  const [name, setName] = useState('');
+  const [sex, setSex] = useState<Sex>('F');
+  const [room, setRoom] = useState<RoomId | null>(null);
+  const [cls, setCls] = useState<ClassKey | null>(null);
+  const dup = name.trim() !== '' && nameTaken(name);
+  const submit = () => {
+    if (name.trim() && !dup) onAdd(name, sex, room, cls);
+  };
+  return (
+    <div className="panel">
+      <h3>{t.founderTitle}</h3>
+      <div className="meta">{t.founderDesc}</div>
+      <div className="row">
+        <SexToggle value={sex} onChange={setSex} />
+        <input
+          type="text"
+          className={dup ? 'dup' : ''}
+          placeholder={t.namePlaceholder}
+          value={name}
+          autoFocus
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && submit()}
+        />
+      </div>
+      {dup && <div className="warn">{t.nameExists(name.trim())}</div>}
+      <RoomToggle value={room} onChange={setRoom} />
+      <ClassSelect value={cls} onChange={setCls} />
+      <div className="row">
+        <button className="accent" disabled={!name.trim() || dup} onClick={submit}>
+          {t.add}
+        </button>
+        <button onClick={onCancel}>{t.cancel}</button>
+      </div>
+    </div>
+  );
+}
+
+function LitterPanel({
+  mother,
+  father,
+  coi,
+  nameTaken,
+  onCreate,
+}: {
+  mother: Cat;
+  father: Cat;
+  coi: number;
+  nameTaken: (name: string) => boolean;
+  onCreate: (kittens: { name: string; sex: Sex }[]) => void;
+}) {
+  const { t } = useI18n();
+  const [rows, setRows] = useState<{ name: string; sex: Sex }[]>([{ name: '', sex: 'F' }]);
+  const setRow = (i: number, patch: Partial<{ name: string; sex: Sex }>) =>
+    setRows((rs) => rs.map((r, j) => (j === i ? { ...r, ...patch } : r)));
+  const filled = rows.filter((r) => r.name.trim());
+  // duplicate: matches an existing cat OR another kitten of this same litter
+  const dupRow = (i: number) => {
+    const key = normName(rows[i].name);
+    if (!key) return false;
+    if (nameTaken(rows[i].name)) return true;
+    return rows.some((r, j) => j !== i && normName(r.name) === key);
+  };
+  const anyDup = rows.some((_, i) => dupRow(i));
+  const submit = () => {
+    if (!filled.length || anyDup) return;
+    onCreate(filled);
+    setRows([{ name: '', sex: 'F' }]);
+  };
+  const tier = coiTier(coi);
+  return (
+    <div className="panel">
+      <h3>{t.litterTitle}</h3>
+      <div className="meta">
+        {SEX_GLYPH[mother.sex]} {mother.name} × {SEX_GLYPH[father.sex]} {father.name}
+      </div>
+      <div className={`coi-line ${tier}`}>
+        {t.offspringInbreeding} <b>{formatCOI(coi)}</b>
+        {tier === 'safe' && t.coiSafeNote}
+        {tier === 'caution' && t.coiCautionNote}
+        {tier === 'danger' && t.coiDangerNote}
+      </div>
+      {rows.map((r, i) => (
+        <div className="row" key={i}>
+          <SexToggle value={r.sex} onChange={(sex) => setRow(i, { sex })} />
+          <input
+            type="text"
+            className={dupRow(i) ? 'dup' : ''}
+            placeholder={t.kittenPlaceholder}
+            value={r.name}
+            autoFocus={i === rows.length - 1}
+            onChange={(e) => setRow(i, { name: e.target.value })}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && r.name.trim() && !anyDup) {
+                setRows((rs) => [...rs, { name: '', sex: 'F' }]);
+              }
+            }}
+          />
+          {rows.length > 1 && (
+            <button className="small" onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}>
+              ✕
+            </button>
+          )}
+        </div>
+      ))}
+      {anyDup && <div className="warn">{t.litterDupWarn}</div>}
+      <div className="row">
+        <button onClick={() => setRows((rs) => [...rs, { name: '', sex: 'F' }])}>
+          {t.addKitten}
+        </button>
+        <button className="accent" disabled={!filled.length || anyDup} onClick={submit}>
+          {t.create}
+        </button>
+      </div>
+      <div className="meta">{t.litterEnterHint}</div>
+    </div>
+  );
+}
+
+function CatPanel(props: {
+  cat: Cat;
+  motherName: string | null;
+  fatherName: string | null;
+  childrenCount: number;
+  inbreeding: number;
+  pedigreeActive: boolean;
+  mateActive: boolean;
+  nameTaken: (name: string) => boolean;
+  onUpdate: (patch: Partial<Cat>) => void;
+  onDelete: () => void;
+  onPedigree: () => void;
+  onMates: () => void;
+  onAssignParents: () => void;
+}) {
+  const { t } = useI18n();
+  const { cat } = props;
+  const dupName = cat.name.trim() !== '' && props.nameTaken(cat.name);
+  return (
+    <div className="panel">
+      <div className="row">
+        <SexToggle value={cat.sex} onChange={(sex) => props.onUpdate({ sex })} />
+        <input
+          type="text"
+          className={dupName ? 'dup' : ''}
+          value={cat.name}
+          onChange={(e) => props.onUpdate({ name: e.target.value })}
+        />
+      </div>
+      {dupName && <div className="warn">{t.nameTakenWarn}</div>}
+      <RoomToggle value={cat.room} onChange={(room) => props.onUpdate({ room })} />
+      <ClassSelect value={cat.class} onChange={(cls) => props.onUpdate({ class: cls })} />
+      <div className="meta">
+        {t.parents}: {props.motherName ?? '—'} × {props.fatherName ?? '—'}
+        <br />
+        {t.childrenCount}: {props.childrenCount}
+        <br />
+        {t.inbreedingF}:{' '}
+        <span className={`coi-inline ${coiTier(props.inbreeding)}`}>
+          {formatCOI(props.inbreeding)}
+        </span>
+        {cat.gone && (
+          <>
+            <br />
+            <span className="gone-tag">{t.goneTag}</span>
+          </>
+        )}
+      </div>
+      <div className="stats-matrix">
+        {/* clickable header: a digit fills every stat with that value, "–" clears all */}
+        <span />
+        <button
+          type="button"
+          className="stat-cell head"
+          title={t.statClearAll}
+          onClick={() => props.onUpdate({ stats: {} })}
+        >
+          –
+        </button>
+        {STAT_VALUES.map((v) => (
+          <button
+            key={v}
+            type="button"
+            className="stat-cell head"
+            title={t.statSetAll(v)}
+            onClick={() =>
+              props.onUpdate({
+                stats: Object.fromEntries(STAT_KEYS.map((k) => [k, v])) as Cat['stats'],
+              })
+            }
+          >
+            {v}
+          </button>
+        ))}
+        {STAT_GROUPS.map((group, gi) => (
+          <Fragment key={gi}>
+            {gi > 0 && <span className="stats-divider" />}
+            {group.map((k) => (
+              <Fragment key={k}>
+                <span className="stat-name" title={t.statNames[k]}>
+                  {k.toUpperCase()}
+                </span>
+                <button
+                  type="button"
+                  className={`stat-cell ${cat.stats[k] == null ? 'on' : ''}`}
+                  onClick={() => {
+                    const stats = { ...cat.stats };
+                    delete stats[k];
+                    props.onUpdate({ stats });
+                  }}
+                >
+                  –
+                </button>
+                {STAT_VALUES.map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    className={`stat-cell ${cat.stats[k] === v ? 'on' : ''}`}
+                    onClick={() => props.onUpdate({ stats: { ...cat.stats, [k]: v } })}
+                  >
+                    {v}
+                  </button>
+                ))}
+              </Fragment>
+            ))}
+          </Fragment>
+        ))}
+      </div>
+      <textarea
+        placeholder={t.notesPlaceholder}
+        value={cat.notes ?? ''}
+        onChange={(e) => props.onUpdate({ notes: e.target.value })}
+      />
+      <button onClick={props.onAssignParents}>{t.assignParentsBtn}</button>
+      <button onClick={props.onPedigree}>
+        {props.pedigreeActive ? t.fullTreeBtn : t.pedigreeBtn}
+      </button>
+      <button onClick={props.onMates}>{props.mateActive ? t.hideMates : t.showMates}</button>
+      <button onClick={() => props.onUpdate({ gone: !cat.gone })}>
+        {cat.gone ? t.returnHomeBtn : t.leftHomeBtn}
+      </button>
+      <button className="danger" onClick={props.onDelete}>
+        {t.deleteBtn}
+      </button>
+    </div>
+  );
+}
+
+function AssignParentsPanel(props: {
+  child: Cat;
+  motherName: string | null;
+  fatherName: string | null;
+  onClearMother: () => void;
+  onClearFather: () => void;
+  onDone: () => void;
+}) {
+  const { t } = useI18n();
+  return (
+    <div className="panel">
+      <h3>{t.assignTitle(props.child.name)}</h3>
+      <div className="meta">{t.assignDesc}</div>
+      <div className="parent-slot">
+        <span>
+          {t.motherSlot} <b>{props.motherName ?? '—'}</b>
+        </span>
+        {props.motherName && (
+          <button className="small" onClick={props.onClearMother}>
+            ✕
+          </button>
+        )}
+      </div>
+      <div className="parent-slot">
+        <span>
+          {t.fatherSlot} <b>{props.fatherName ?? '—'}</b>
+        </span>
+        {props.fatherName && (
+          <button className="small" onClick={props.onClearFather}>
+            ✕
+          </button>
+        )}
+      </div>
+      <button className="accent" onClick={props.onDone}>
+        {t.done}
+      </button>
+    </div>
+  );
+}
+
+function SearchBox({ cats, onPick }: { cats: Cat[]; onPick: (id: string) => void }) {
+  const { t } = useI18n();
+  const [q, setQ] = useState('');
+  const query = q.trim().toLowerCase();
+  const matches = query
+    ? cats.filter((c) => c.name.toLowerCase().includes(query)).slice(0, 8)
+    : [];
+  const pick = (id: string) => {
+    onPick(id);
+    setQ('');
+  };
+  return (
+    <div className="search">
+      <input
+        type="text"
+        placeholder={t.searchPlaceholder}
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && matches[0]) pick(matches[0].id);
+          else if (e.key === 'Escape') setQ('');
+        }}
+      />
+      {matches.length > 0 && (
+        <div className="search-results">
+          {matches.map((c) => (
+            <button key={c.id} onClick={() => pick(c.id)}>
+              {SEX_GLYPH[c.sex]} {c.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GenealogyApp() {
+  const { t, lang, setLang } = useI18n();
+  const [cats, setCats] = useState<Cat[]>(loadCats);
+  const [selection, setSelection] = useState<string[]>([]);
+  const [viewRootId, setViewRootId] = useState<string | null>(null);
+  const [mateModeFor, setMateModeFor] = useState<string | null>(null);
+  const [assigningFor, setAssigningFor] = useState<string | null>(null);
+  const [addingFounder, setAddingFounder] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(() => localStorage.getItem(HELP_KEY) !== 'closed');
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [pendingFocus, setPendingFocus] = useState<string | null>(null);
+  const [graph, setGraph] = useState<{ nodes: LaidOutNode[]; edges: Edge[] }>({
+    nodes: [],
+    edges: [],
+  });
+  const fileRef = useRef<HTMLInputElement>(null);
+  const settingsRef = useRef<HTMLDivElement>(null);
+  const { fitView, setCenter, getViewport } = useReactFlow();
+
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (!settingsRef.current?.contains(e.target as globalThis.Node)) setSettingsOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSettingsOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [settingsOpen]);
+
+  useEffect(() => {
+    localStorage.setItem(HELP_KEY, helpOpen ? 'open' : 'closed');
+  }, [helpOpen]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cats));
+  }, [cats]);
+
+  const byId = useMemo(() => indexCats(cats), [cats]);
+  const children = useMemo(() => childrenIndex(cats), [cats]);
+
+  const visibleCats = useMemo(() => {
+    if (!viewRootId || !byId.has(viewRootId)) return cats;
+    const ids = pedigreeIds(viewRootId, cats);
+    return cats.filter((c) => ids.has(c.id));
+  }, [cats, viewRootId, byId]);
+
+  // Re-run the layout only when the structure changes (set of cats and links),
+  // not on every keystroke while renaming — otherwise the tree jitters.
+  const structureKey = useMemo(
+    () =>
+      visibleCats
+        .map((c) => `${c.id}:${c.motherId ?? ''}:${c.fatherId ?? ''}`)
+        .sort()
+        .join(';'),
+    [visibleCats],
+  );
+  const visibleRef = useRef(visibleCats);
+  visibleRef.current = visibleCats;
+  useEffect(() => {
+    let cancelled = false;
+    layoutCats(visibleRef.current).then((result) => {
+      if (!cancelled) setGraph(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [structureKey]);
+
+  // Auto-fit the view only when the STRUCTURE changes (set of visible cats),
+  // and not while navigating to a cat found via search (that takes priority).
+  const lastFitKey = useRef('');
+  const focusPendingRef = useRef(false);
+  useEffect(() => {
+    if (graph.nodes.length === 0) return;
+    if (lastFitKey.current === structureKey) return;
+    lastFitKey.current = structureKey;
+    if (focusPendingRef.current) {
+      focusPendingRef.current = false;
+      return;
+    }
+    const t = setTimeout(() => fitView({ padding: 0.15, duration: 300 }), 60);
+    return () => clearTimeout(t);
+  }, [graph, structureKey, fitView]);
+
+  // Center on the found cat once its node shows up in the layout.
+  useEffect(() => {
+    if (!pendingFocus) return;
+    const node = graph.nodes.find((n) => n.id === pendingFocus);
+    if (node) {
+      setCenter(node.x + CAT_W / 2, node.y + CAT_H / 2, { zoom: 1.1, duration: 400 });
+      setPendingFocus(null);
+      focusPendingRef.current = false;
+    }
+  }, [pendingFocus, graph.nodes, setCenter]);
+
+  const mateCOIMap = useMemo(
+    () => (mateModeFor && byId.has(mateModeFor) ? mateCOIs(mateModeFor, cats) : null),
+    [mateModeFor, cats, byId],
+  );
+
+  const assignChild = assigningFor && byId.has(assigningFor) ? byId.get(assigningFor)! : null;
+  // cats that cannot be assigned as a parent: the child itself and all its descendants (cycle otherwise)
+  const assignBlockedIds = useMemo(() => {
+    if (!assignChild) return null;
+    const blocked = descendantIds(assignChild.id, cats);
+    blocked.add(assignChild.id);
+    return blocked;
+  }, [assignChild, cats]);
+
+  const rfNodes = useMemo<Node[]>(
+    () =>
+      graph.nodes.flatMap((n): Node[] => {
+        if (n.type === 'union') {
+          return [
+            {
+              id: n.id,
+              type: 'union',
+              position: { x: n.x, y: n.y },
+              data: {},
+              selectable: false,
+            },
+          ];
+        }
+        const cat = byId.get(n.id);
+        if (!cat) return []; // the layout lags for a moment after a deletion
+        return [
+          {
+            id: n.id,
+            type: 'cat',
+            position: { x: n.x, y: n.y },
+            data: {
+              cat,
+              picked: selection.includes(n.id),
+              isViewRoot: n.id === viewRootId,
+              mateMode: mateCOIMap != null,
+              mateSource: n.id === mateModeFor,
+              coi: mateCOIMap?.get(n.id) ?? null,
+              assignMode: assignChild != null,
+              isAssignChild: n.id === assignChild?.id,
+              isAssignParent:
+                assignChild != null &&
+                (assignChild.motherId === n.id || assignChild.fatherId === n.id),
+              assignInvalid:
+                assignChild != null &&
+                n.id !== assignChild.id &&
+                (assignBlockedIds?.has(n.id) ?? false),
+            },
+          },
+        ];
+      }),
+    [
+      graph.nodes,
+      byId,
+      selection,
+      mateCOIMap,
+      mateModeFor,
+      viewRootId,
+      assignChild,
+      assignBlockedIds,
+    ],
+  );
+
+  // Edges of the selected cats going up (to parents) and down (to children).
+  // Via union nodes: up — parent→union→cat, down — cat→union→child.
+  const { parentEdges, childEdges } = useMemo(() => {
+    const parents = new Set<string>();
+    const children = new Set<string>();
+    if (selection.length === 0) return { parentEdges: parents, childEdges: children };
+    const sel = new Set(selection);
+    const parentUnions = new Set<string>();
+    const childUnions = new Set<string>();
+    for (const e of graph.edges) {
+      if (sel.has(e.target)) {
+        parents.add(e.id); // edge enters the selected cat → leads to its parent
+        if (e.source.startsWith('u|')) parentUnions.add(e.source);
+      }
+      if (sel.has(e.source)) {
+        children.add(e.id); // edge leaves the selected cat → leads to its child
+        if (e.target.startsWith('u|')) childUnions.add(e.target);
+      }
+    }
+    for (const e of graph.edges) {
+      if (parentUnions.has(e.target)) parents.add(e.id); // parent → union
+      if (childUnions.has(e.source)) children.add(e.id); // union → child
+    }
+    return { parentEdges: parents, childEdges: children };
+  }, [selection, graph.edges]);
+
+  const rfEdges = useMemo<Edge[]>(
+    () =>
+      graph.edges.map((e) => {
+        // parent edges win on overlap (a cat and its own child both selected)
+        if (parentEdges.has(e.id)) {
+          return { ...e, animated: true, zIndex: 10, style: { stroke: '#f5c451', strokeWidth: 2.5 } };
+        }
+        if (childEdges.has(e.id)) {
+          return { ...e, animated: true, zIndex: 10, style: { stroke: '#59c0e8', strokeWidth: 2.5 } };
+        }
+        // regular edges — lighter and thicker than the default so the structure stays readable
+        return { ...e, style: { stroke: '#665b74', strokeWidth: 2 } };
+      }),
+    [graph.edges, parentEdges, childEdges],
+  );
+
+  const updateCat = (id: string, patch: Partial<Cat>) => {
+    setCats((cs) => cs.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+  };
+
+  /** Is the name taken by another cat (case/whitespace-insensitive; the exceptId cat is ignored). */
+  const nameTakenBy = (name: string, exceptId?: string) => {
+    const key = normName(name);
+    if (!key) return false;
+    return cats.some((c) => c.id !== exceptId && normName(c.name) === key);
+  };
+
+  /** In assignment mode a click on a cat makes it the child's parent. */
+  const pickParent = (child: Cat, candidate: Cat) => {
+    if (candidate.id === child.id || (assignBlockedIds?.has(candidate.id) ?? false)) return;
+    // female → mother, male → father, '?' → a free slot (otherwise replace the mother)
+    let patch: Partial<Cat>;
+    if (candidate.sex === 'M') patch = { fatherId: candidate.id };
+    else if (candidate.sex === 'F') patch = { motherId: candidate.id };
+    else if (!child.motherId) patch = { motherId: candidate.id };
+    else if (!child.fatherId) patch = { fatherId: candidate.id };
+    else patch = { motherId: candidate.id };
+    const nextMother = patch.motherId !== undefined ? patch.motherId : child.motherId;
+    const nextFather = patch.fatherId !== undefined ? patch.fatherId : child.fatherId;
+    if (nextMother && nextMother === nextFather) return; // one cat cannot be both parents
+    updateCat(child.id, patch);
+  };
+
+  /**
+   * Picking a cat in search: works like clicking it on the map (adds to the
+   * selection up to two cats — so a litter pair can be assembled entirely via
+   * search; in parent-assignment mode assigns the parent), plus centers the
+   * camera. Unlike a click, it does not deselect an already selected cat.
+   */
+  const focusCat = (id: string) => {
+    const cat = byId.get(id);
+    if (!cat) return;
+    setAddingFounder(false);
+    setViewRootId(null); // full tree — the cat is guaranteed to be visible
+    if (assignChild) {
+      pickParent(assignChild, cat);
+    } else {
+      setSelection((sel) => (sel.includes(id) ? sel : [...sel, id].slice(-2)));
+    }
+    focusPendingRef.current = true;
+    setPendingFocus(id);
+  };
+
+  const onNodeClick: NodeMouseHandler = (_, node) => {
+    if (node.type !== 'cat') return;
+    const cat = byId.get(node.id);
+    if (!cat) return;
+    if (assignChild) {
+      pickParent(assignChild, cat);
+      return;
+    }
+    setAddingFounder(false);
+    setSelection((sel) =>
+      sel.includes(node.id) ? sel.filter((id) => id !== node.id) : [...sel, node.id].slice(-2),
+    );
+  };
+
+  const onPaneClick = () => {
+    if (assigningFor) return; // assignment mode is only exited via the "Done" button
+    setSelection([]);
+    setMateModeFor(null);
+    setAddingFounder(false);
+  };
+
+  const startAssignParents = (childId: string) => {
+    setAssigningFor(childId);
+    setSelection([]);
+    setMateModeFor(null);
+    setViewRootId(null); // full tree — so all candidates are visible, including new ones
+    setAddingFounder(false);
+  };
+
+  const finishAssignParents = () => {
+    const id = assigningFor;
+    setAssigningFor(null);
+    if (id && byId.has(id)) setSelection([id]);
+  };
+
+  const deleteCat = (id: string) => {
+    if ((children.get(id)?.length ?? 0) > 0) {
+      alert(t.deleteHasChildren);
+      return;
+    }
+    const cat = byId.get(id);
+    if (!cat || !confirm(t.deleteConfirm(cat.name))) return;
+    setCats((cs) => cs.filter((c) => c.id !== id));
+    setSelection((sel) => sel.filter((s) => s !== id));
+    if (viewRootId === id) setViewRootId(null);
+    if (mateModeFor === id) setMateModeFor(null);
+  };
+
+  const createLitter = (mother: Cat, father: Cat, kittens: { name: string; sex: Sex }[]) => {
+    setCats((cs) => [...cs, ...kittens.map((k) => makeCat(k.name, k.sex, mother.id, father.id))]);
+  };
+
+  const exportJson = () => {
+    const blob = new Blob([JSON.stringify(cats, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'mewgenics-genealogy.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const importJson = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    file.text().then((text) => {
+      try {
+        const data: unknown = JSON.parse(text);
+        if (
+          !Array.isArray(data) ||
+          !data.every(
+            (c) =>
+              c &&
+              typeof c.id === 'string' &&
+              typeof c.name === 'string' &&
+              (c.sex === 'F' || c.sex === 'M' || c.sex === '?'),
+          )
+        ) {
+          throw new Error('bad format');
+        }
+        if (!confirm(t.importConfirm(cats.length, data.length))) {
+          return;
+        }
+        setCats(
+          (data as Partial<Cat>[]).map((c) => ({
+            id: c.id!,
+            name: c.name!,
+            sex: c.sex!,
+            motherId: c.motherId ?? null,
+            fatherId: c.fatherId ?? null,
+            room: c.room ?? null,
+            class: c.class ?? null,
+            gone: c.gone ?? false,
+            notes: c.notes ?? '',
+            stats: c.stats ?? {},
+          })),
+        );
+        setSelection([]);
+        setViewRootId(null);
+        setMateModeFor(null);
+        setAssigningFor(null);
+      } catch {
+        alert(t.importError);
+      }
+    });
+  };
+
+  const resetAll = () => {
+    if (!confirm(t.resetConfirm)) return;
+    setCats([]);
+    setSelection([]);
+    setViewRootId(null);
+    setMateModeFor(null);
+    setAssigningFor(null);
+  };
+
+  const selectedCats = selection
+    .map((id) => byId.get(id))
+    .filter((c): c is Cat => c !== undefined);
+  const single = selectedCats.length === 1 ? selectedCats[0] : null;
+  const pair =
+    selectedCats.length === 2 ? assignParents(selectedCats[0], selectedCats[1]) : null;
+
+  return (
+    <div className="app">
+      <ReactFlow
+        nodes={rfNodes}
+        edges={rfEdges}
+        nodeTypes={nodeTypes}
+        onNodeClick={onNodeClick}
+        onPaneClick={onPaneClick}
+        nodesDraggable={false}
+        nodesConnectable={false}
+        elementsSelectable={false}
+        zoomOnDoubleClick={false}
+        minZoom={0.05}
+        colorMode="dark"
+        fitView
+      >
+        <Background gap={26} bgColor="#1e1822" color="#352b41" />
+        <Controls showInteractive={false} />
+        <MiniMap
+          pannable
+          zoomable
+          onClick={(_, position) =>
+            // jump to the clicked spot keeping the current zoom (setCenter
+            // defaults to maxZoom otherwise); d3-zoom suppresses the click
+            // after an actual drag, so this does not misfire on drag-pans
+            setCenter(position.x, position.y, { zoom: getViewport().zoom, duration: 300 })
+          }
+          bgColor="#251e2f"
+          maskColor="rgba(16, 12, 21, 0.65)"
+          nodeColor={(n) => {
+            if (n.type !== 'cat') return '#4d4260';
+            const cls = (n.data as { cat?: Cat }).cat?.class;
+            return cls ? (CLASS_COLOR[cls] ?? '#4d4260') : '#4d4260';
+          }}
+        />
+      </ReactFlow>
+
+      <div className="toolbar">
+        <span className="title">🐱 Mewgenics Genealogy</span>
+        <SearchBox cats={cats} onPick={focusCat} />
+        <button
+          onClick={() => {
+            setAddingFounder(true);
+            setSelection([]);
+          }}
+        >
+          {t.addCat}
+        </button>
+        {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
+        <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
+        <span className="count">{t.catCount(cats.length)}</span>
+        {viewRootId && byId.has(viewRootId) && (
+          <button className="accent" onClick={() => setViewRootId(null)}>
+            {t.backToFullTree(byId.get(viewRootId)!.name)}
+          </button>
+        )}
+        {mateModeFor && byId.has(mateModeFor) && (
+          <span className="badge safe-badge">{t.mateBadge(byId.get(mateModeFor)!.name)}</span>
+        )}
+        {assignChild && (
+          <span className="badge assign-badge">{t.assignBadge(assignChild.name)}</span>
+        )}
+      </div>
+
+      <div className="side">
+        <div className="side-tools">
+          {!assignChild && !addingFounder && selectedCats.length === 0 && !helpOpen && (
+            <button className="help-fab" onClick={() => setHelpOpen(true)}>
+              {t.helpBtn}
+            </button>
+          )}
+          <div className="settings-wrap" ref={settingsRef}>
+            <button
+              className="settings-btn"
+              title={t.settingsTitle}
+              aria-label={t.settingsTitle}
+              aria-expanded={settingsOpen}
+              onClick={() => setSettingsOpen((o) => !o)}
+            >
+              ⚙️
+            </button>
+            {settingsOpen && (
+              <div className="settings-menu">
+                <button
+                  onClick={() => {
+                    setSettingsOpen(false);
+                    exportJson();
+                  }}
+                >
+                  {t.exportBtn}
+                </button>
+                <button
+                  onClick={() => {
+                    setSettingsOpen(false);
+                    fileRef.current?.click();
+                  }}
+                >
+                  {t.importBtn}
+                </button>
+                <button
+                  className="danger"
+                  onClick={() => {
+                    setSettingsOpen(false);
+                    resetAll();
+                  }}
+                >
+                  {t.resetBtn}
+                </button>
+                <label className="settings-lang">
+                  {t.langTitle}
+                  <select
+                    className="lang-select"
+                    value={lang}
+                    onChange={(e) => setLang(e.target.value as Lang)}
+                  >
+                    {LANGS.map((l) => (
+                      <option key={l.code} value={l.code}>
+                        {l.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="side-scroll">
+          {assignChild ? (
+            <AssignParentsPanel
+              child={assignChild}
+              motherName={assignChild.motherId ? (byId.get(assignChild.motherId)?.name ?? null) : null}
+              fatherName={assignChild.fatherId ? (byId.get(assignChild.fatherId)?.name ?? null) : null}
+              onClearMother={() => updateCat(assignChild.id, { motherId: null })}
+              onClearFather={() => updateCat(assignChild.id, { fatherId: null })}
+              onDone={finishAssignParents}
+            />
+          ) : addingFounder ? (
+            <AddCatForm
+              nameTaken={(n) => nameTakenBy(n)}
+              onAdd={(name, sex, room, cls) => {
+                setCats((cs) => [...cs, makeCat(name, sex, null, null, room, cls)]);
+                setAddingFounder(false);
+              }}
+              onCancel={() => setAddingFounder(false)}
+            />
+          ) : pair ? (
+            <LitterPanel
+              key={pair.mother.id + pair.father.id}
+              mother={pair.mother}
+              father={pair.father}
+              coi={pairCOI(pair.mother.id, pair.father.id, cats)}
+              nameTaken={(n) => nameTakenBy(n)}
+              onCreate={(kittens) => createLitter(pair.mother, pair.father, kittens)}
+            />
+          ) : selectedCats.length === 2 ? (
+            <div className="panel hint">{t.samePairHint}</div>
+          ) : single ? (
+            <CatPanel
+              cat={single}
+              motherName={single.motherId ? (byId.get(single.motherId)?.name ?? null) : null}
+              fatherName={single.fatherId ? (byId.get(single.fatherId)?.name ?? null) : null}
+              childrenCount={children.get(single.id)?.length ?? 0}
+              inbreeding={inbreedingCoefficient(single.id, cats)}
+              pedigreeActive={viewRootId === single.id}
+              mateActive={mateModeFor === single.id}
+              nameTaken={(n) => nameTakenBy(n, single.id)}
+              onUpdate={(patch) => updateCat(single.id, patch)}
+              onDelete={() => deleteCat(single.id)}
+              onPedigree={() => setViewRootId(viewRootId === single.id ? null : single.id)}
+              onMates={() => setMateModeFor(mateModeFor === single.id ? null : single.id)}
+              onAssignParents={() => startAssignParents(single.id)}
+            />
+          ) : helpOpen ? (
+            <div className="panel hint">
+              <div className="hint-head">
+                <b>{t.helpTitle}</b>
+                <button className="small" title={t.collapseTitle} onClick={() => setHelpOpen(false)}>
+                  ✕
+                </button>
+              </div>
+              {t.helpLines.map((line, i) => (
+                <span key={i}>
+                  {i > 0 && <br />}
+                  {line}
+                </span>
+              ))}
+              <br />
+              {t.edgesLabel} <span className="edge-key parent">{t.edgeYellow}</span> —{' '}
+              {t.edgeToParents}, <span className="edge-key child">{t.edgeBlue}</span> —{' '}
+              {t.edgeToChildren}.
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <I18nProvider>
+      <ReactFlowProvider>
+        <GenealogyApp />
+      </ReactFlowProvider>
+    </I18nProvider>
+  );
+}
