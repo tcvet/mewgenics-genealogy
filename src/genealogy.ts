@@ -171,13 +171,19 @@ export function mateCOIs(catId: string, cats: Cat[]): Map<string, number> {
   return result;
 }
 
-export type COITier = 'safe' | 'caution' | 'danger';
+export type COITier = 'none' | 'slight' | 'moderate' | 'high' | 'extreme';
 
-/** COI tiers: 0 — safe, ≤6.25% (first cousins) — caution, above — risky. */
+/**
+ * The game's inbreeding tiers: <10% not inbred, 10–25% slightly, 25–50%
+ * moderately, 50–80% highly, 80%+ extremely inbred (lower bounds inclusive,
+ * so e.g. full siblings' 25% counts as moderately).
+ */
 export function coiTier(coi: number): COITier {
-  if (coi <= 0) return 'safe';
-  if (coi <= 0.0625) return 'caution';
-  return 'danger';
+  if (coi < 0.1) return 'none';
+  if (coi < 0.25) return 'slight';
+  if (coi < 0.5) return 'moderate';
+  if (coi < 0.8) return 'high';
+  return 'extreme';
 }
 
 /** COI as a percentage: 0% / 6.25% / 25% with a sensible number of digits. */

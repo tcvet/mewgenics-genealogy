@@ -65,8 +65,10 @@ Node.js works too: `npm install && npm run dev`.
 - **“Pedigree”** shows only the ancestors and descendants of the selected cat
   (the toolbar button returns to the full tree).
 - **“Show mate COI”** displays, on every compatible cat (by sex and
-  orientation), the inbreeding coefficient (COI) of their potential offspring:
-  green — 0, yellow — ≤6.25% (first-cousin level), red — above. A panel on the
+  orientation), the inbreeding coefficient (COI) of their potential offspring,
+  color-coded with the game's five inbreeding tiers: green — below 10% (not
+  inbred), yellow — 10–25% (slightly), orange — 25–50% (moderately), red —
+  50–80% (highly), maroon — above 80% (extremely inbred). A panel on the
   left lists the same candidates sortable by COI (default), name, or stat
   total; clicking a row pairs the cat with the source cat and opens the litter
   panel.

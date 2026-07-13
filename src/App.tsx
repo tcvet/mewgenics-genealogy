@@ -393,9 +393,7 @@ function LitterPanel({
       </div>
       <div className={`coi-line ${tier}`}>
         {t.offspringInbreeding} <b>{formatCOI(coi)}</b>
-        {tier === 'safe' && t.coiSafeNote}
-        {tier === 'caution' && t.coiCautionNote}
-        {tier === 'danger' && t.coiDangerNote}
+        {t.coiNotes[tier]}
       </div>
       {rows.map((r, i) => (
         <div className="row" key={i}>
