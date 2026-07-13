@@ -48,6 +48,20 @@ Node.js works too: `npm install && npm run dev`.
 - **Base stats** (STR/DEX/CON and INT/SPD/CHA/LCK, grouped as in the game) are
   set in a click matrix: pick 3–7 in a stat's row or “–” for unset; clicking a
   value in the header row fills every stat with it at once.
+- **Mutations** — the collapsible 🧬 section in the cat panel holds one
+  mutation per body part (the game's 10 groups: head, eyes, brows, ears,
+  mouth, body, arms, legs, tail, fur — breeding is always symmetric in the
+  game, so left/right pairs count as one slot). Each slot offers the game's
+  full catalog scraped from the
+  [wiki](https://mewgenics.wiki.gg/wiki/Mutations): named mutations and birth
+  defects by name, and the unnamed “common” ones as a +2/−1 stat pair picker.
+  Arms and legs draw from the game's shared “Limbs” pool (only the “No
+  left/right arm/leg” removals are side-specific).
+  Cats with mutations carry a 🧬 count chip on their card (hover it for the
+  list). If the cat's parents have mutations, the matching slots show
+  one-click “inherit from ♀/♂” chips — and the litter form lists the parents'
+  mutations under every kitten row, so you can click what each newborn
+  inherited right as you record the litter.
 - **Search** (top bar) — type a name and pick a cat from the list (or press
   Enter) — the map jumps to it and selects it. Picking from search acts like
   clicking the cat: a second found cat is added to the selection (so a litter
@@ -91,6 +105,8 @@ identical by descent. Full siblings or parent×child → 25%, half siblings →
 - `src/types.ts` — data model: each cat stores references to its mother and
   father; the tree is derived, not stored.
 - `src/genealogy.ts` — ancestors/descendants/kinship (pure functions).
+- `src/mutations.ts` + `src/data/mutations.json` — the game's mutation catalog
+  (764 entries scraped from the wiki; raw scrape and notes in `data/`).
 - `src/layout.ts` — auto-layout via ELK (layered): every parent pair gets a
   “union node” (the heart) from which edges go to the litter's kittens.
 - `src/i18n.tsx` — translations (dictionaries + React context, no dependencies).

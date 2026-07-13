@@ -311,7 +311,8 @@ button.small {
 
 input[type='text'],
 textarea,
-select.class-select {
+select.class-select,
+select.mut-select {
   font: inherit;
   color: var(--text);
   background: var(--control-bg);
@@ -321,7 +322,8 @@ select.class-select {
   width: 100%;
 }
 
-select.class-select {
+select.class-select,
+select.mut-select {
   cursor: pointer;
 }
 
@@ -457,6 +459,87 @@ select.class-select {
   border-top: 1px solid var(--control-border);
   height: 0;
   margin: 2px 0;
+}
+
+/* --- mutation editor (cat panel) --- */
+
+.mut-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* collapsible section header */
+.mut-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mut-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mut-slot .row {
+  gap: 6px;
+}
+
+/* slot label column; the common/inherit rows indent to align with the select */
+.mut-slot-name {
+  width: 58px;
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mut-indent {
+  margin-left: 64px;
+}
+
+select.mut-select {
+  min-width: 0;
+  font-size: 13px;
+  padding: 6px 8px;
+}
+
+.mut-sign {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.mut-inherit-row {
+  flex-wrap: wrap;
+}
+
+/* inherit-from-parent chip; also the per-kitten toggles in the litter form */
+.mut-inherit {
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 3px 8px;
+  border-radius: 7px;
+}
+
+.mut-inherit.on {
+  background: #8563b4;
+  border-color: #a184cf;
+  font-weight: 700;
+}
+
+.kitten-muts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: -4px 0 0 8px;
 }
 
 textarea {
@@ -773,6 +856,20 @@ input[type='text'].dup {
   font-size: 12px;
   line-height: 1;
   padding: 2px 6px;
+  background: #3a3048;
+  border: 1px solid #574a68;
+  border-radius: 6px;
+  color: #ddd5e8;
+}
+
+/* mutation count on the card's bottom-left edge (mirrors the room chip) */
+.mut-chip {
+  position: absolute;
+  bottom: -9px;
+  left: 8px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 5px;
   background: #3a3048;
   border: 1px solid #574a68;
   border-radius: 6px;

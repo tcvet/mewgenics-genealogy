@@ -62,6 +62,38 @@ export const STAT_GROUPS: StatKey[][] = [
 /** The only base-stat values the game rolls; anything else means "not set". */
 export const STAT_VALUES = [3, 4, 5, 6, 7];
 
+/**
+ * The game's 10 body-part groups, each holding at most one mutation (breeding
+ * is always symmetric in the game, so left/right pairs count as one slot).
+ * Arms and legs are separate slots but draw from one shared "limbs" mutation
+ * pool — see the catalog groups in `mutations.ts`. `texture` = fur. Display
+ * names live in the `i18n.tsx` dictionaries.
+ */
+export type MutationSlot =
+  | 'head'
+  | 'eyes'
+  | 'eyebrows'
+  | 'ears'
+  | 'mouth'
+  | 'body'
+  | 'arms'
+  | 'legs'
+  | 'tail'
+  | 'texture';
+
+export const MUTATION_SLOTS: MutationSlot[] = [
+  'head',
+  'eyes',
+  'eyebrows',
+  'ears',
+  'mouth',
+  'body',
+  'arms',
+  'legs',
+  'tail',
+  'texture',
+];
+
 /** Class keys — stable ids for name translations in `i18n.tsx` (cat data stores the key). */
 export type ClassKey =
   | 'fighter'
@@ -124,4 +156,6 @@ export interface Cat {
   notes: string;
   /** base stats; a missing key means "not set" */
   stats: Partial<Record<StatKey, number>>;
+  /** mutation per body-part slot (game ids, see `mutations.ts`); a missing key means "no mutation" */
+  mutations: Partial<Record<MutationSlot, string>>;
 }

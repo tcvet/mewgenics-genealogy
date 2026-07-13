@@ -15,6 +15,7 @@ import {
   canMate,
   CLASS_COLOR,
   CLASSES,
+  MUTATION_SLOTS,
   ORIENTATIONS,
   ROOMS,
   SEX_GLYPH,
@@ -23,10 +24,21 @@ import {
   STAT_VALUES,
   type Cat,
   type ClassKey,
+  type MutationSlot,
   type Orientation,
   type RoomId,
   type Sex,
+  type StatKey,
 } from './types';
+import {
+  commonId,
+  getCommon,
+  getNamed,
+  mutationLabel,
+  NAMED_BY_SLOT,
+  normMutations,
+  otherStat,
+} from './mutations';
 import {
   childrenIndex,
   coiTier,
@@ -63,6 +75,7 @@ function makeCat(
   room: RoomId | null = null,
   cls: ClassKey | null = null,
   orientation: Orientation = 'hetero',
+  mutations: Cat['mutations'] = {},
 ): Cat {
   return {
     id: crypto.randomUUID(),
@@ -76,6 +89,7 @@ function makeCat(
     gone: false,
     notes: '',
     stats: {},
+    mutations,
   };
 }
 
@@ -151,6 +165,7 @@ function seedCats(): Cat[] {
     motherId: string | null = null,
     fatherId: string | null = null,
     cls: ClassKey | null = null,
+    mutations: Cat['mutations'] = {},
   ) => {
     const cat: Cat = {
       id: `seed-${cats.length}`,
@@ -164,14 +179,16 @@ function seedCats(): Cat[] {
       gone: false,
       notes: '',
       stats: {},
+      mutations,
     };
     cats.push(cat);
     return cat.id;
   };
-  const misty = add('Misty', 'F', null, null, 'monk');
-  const shadow = add('Shadow', 'M', null, null, 'necromancer');
+  // example mutations: Luna inherits one from each parent (body.301 Cactus Bod, eyes.301 Demon Eyes)
+  const misty = add('Misty', 'F', null, null, 'monk', { body: 'body.301' });
+  const shadow = add('Shadow', 'M', null, null, 'necromancer', { eyes: 'eyes.301' });
   const tom = add('Tom', 'M', null, null, 'tank');
-  const luna = add('Luna', 'F', misty, shadow, 'mage');
+  const luna = add('Luna', 'F', misty, shadow, 'mage', { body: 'body.301', eyes: 'eyes.301' });
   add('Ginger', 'M', misty, shadow, 'fighter');
   add('Toffee', 'F', luna, tom, 'thief');
   add('Cosmo', 'M', luna, tom, 'tinkerer');
@@ -195,6 +212,7 @@ function loadCats(): Cat[] {
         gone: c.gone ?? false,
         notes: c.notes ?? '',
         stats: c.stats ?? {},
+        mutations: normMutations(c.mutations),
       }));
     }
   } catch {
@@ -350,8 +368,169 @@ function AddCatForm({
   );
 }
 
-type KittenDraft = { name: string; sex: Sex; orientation: Orientation };
-const emptyKitten = (): KittenDraft => ({ name: '', sex: 'F', orientation: 'hetero' });
+/** Sentinel select value for "a common +2/−1 mutation" (the exact id comes from the stat pickers). */
+const COMMON_OPT = '__common';
+
+/** One body-part slot: a select over the slot's named mutations + the common
+ * "+2/−1" option (expanded into two stat pickers) + inherit-from-parent chips. */
+function MutationSlotRow({
+  slot,
+  value,
+  mother,
+  father,
+  onSet,
+}: {
+  slot: MutationSlot;
+  value: string | null;
+  mother: Cat | null;
+  father: Cat | null;
+  onSet: (id: string | null) => void;
+}) {
+  const { t } = useI18n();
+  const common = value ? getCommon(value) : undefined;
+  const named = NAMED_BY_SLOT[slot];
+  const inherit = [
+    { glyph: '♀', label: t.mutationFromMother, cat: mother },
+    { glyph: '♂', label: t.mutationFromFather, cat: father },
+  ].filter((p) => p.cat?.mutations[slot] && p.cat.mutations[slot] !== value);
+  const setCommonStat = (up: StatKey, down: StatKey) => {
+    // the equal option is disabled in the pickers; the swap is just a safety net
+    if (up === down) down = otherStat(up);
+    onSet(commonId(slot, up, down));
+  };
+  return (
+    <div className="mut-slot">
+      <div className="row">
+        <span className="mut-slot-name" title={t.mutationSlots[slot]}>
+          {t.mutationSlots[slot]}
+        </span>
+        <select
+          className="mut-select"
+          value={common ? COMMON_OPT : (value ?? '')}
+          title={(value && getNamed(value)?.desc) || undefined}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === '') onSet(null);
+            else if (v === COMMON_OPT) onSet(commonId(slot, 'str', 'dex'));
+            else onSet(v);
+          }}
+        >
+          <option value="">{t.mutationNoneOpt}</option>
+          <option value={COMMON_OPT}>{t.mutationCommonOpt}</option>
+          <optgroup label={t.mutationNamedGroup}>
+            {named.filter((m) => !m.defect).map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.title}
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label={t.mutationDefectsGroup}>
+            {named.filter((m) => m.defect).map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.title}
+              </option>
+            ))}
+          </optgroup>
+        </select>
+      </div>
+      {common && (
+        <div className="row mut-indent">
+          <span className="mut-sign">+2</span>
+          <select
+            className="mut-select"
+            value={common.up}
+            onChange={(e) => setCommonStat(e.target.value as StatKey, common.down)}
+          >
+            {STAT_KEYS.map((k) => (
+              <option key={k} value={k} disabled={k === common.down}>
+                {t.statNames[k]}
+              </option>
+            ))}
+          </select>
+          <span className="mut-sign">−1</span>
+          <select
+            className="mut-select"
+            value={common.down}
+            onChange={(e) => setCommonStat(common.up, e.target.value as StatKey)}
+          >
+            {STAT_KEYS.map((k) => (
+              <option key={k} value={k} disabled={k === common.up}>
+                {t.statNames[k]}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+      {inherit.length > 0 && (
+        <div className="row mut-indent mut-inherit-row">
+          {inherit.map((p) => (
+            <button
+              key={p.glyph}
+              type="button"
+              className="mut-inherit"
+              title={`${p.label}: ${p.cat!.name}`}
+              onClick={() => onSet(p.cat!.mutations[slot]!)}
+            >
+              {p.glyph} {mutationLabel(p.cat!.mutations[slot]!)}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Collapsible per-slot mutation editor for the cat panel. */
+function MutationEditor({
+  mutations,
+  mother,
+  father,
+  onChange,
+}: {
+  mutations: Cat['mutations'];
+  mother: Cat | null;
+  father: Cat | null;
+  onChange: (next: Cat['mutations']) => void;
+}) {
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
+  const count = Object.keys(mutations).length;
+  return (
+    <div className="mut-editor">
+      <button type="button" className="mut-head" onClick={() => setOpen((o) => !o)}>
+        <span>
+          🧬 {t.mutationsTitle}
+          {count > 0 && ` (${count})`}
+        </span>
+        <span>{open ? '▾' : '▸'}</span>
+      </button>
+      {open &&
+        MUTATION_SLOTS.map((slot) => (
+          <MutationSlotRow
+            key={slot}
+            slot={slot}
+            value={mutations[slot] ?? null}
+            mother={mother}
+            father={father}
+            onSet={(id) => {
+              const next = { ...mutations };
+              if (id) next[slot] = id;
+              else delete next[slot];
+              onChange(next);
+            }}
+          />
+        ))}
+    </div>
+  );
+}
+
+type KittenDraft = { name: string; sex: Sex; orientation: Orientation; mutations: Cat['mutations'] };
+const emptyKitten = (): KittenDraft => ({
+  name: '',
+  sex: 'F',
+  orientation: 'hetero',
+  mutations: {},
+});
 
 function LitterPanel({
   mother,
@@ -385,6 +564,22 @@ function LitterPanel({
     setRows([emptyKitten()]);
   };
   const tier = coiTier(coi);
+  // parents' mutations a kitten can inherit; one entry per (slot, id),
+  // a mutation both parents share becomes a single ♀♂ chip
+  const heritable = MUTATION_SLOTS.flatMap((slot) => {
+    const m = mother.mutations[slot];
+    const f = father.mutations[slot];
+    const chips: { slot: MutationSlot; id: string; glyphs: string }[] = [];
+    if (m) chips.push({ slot, id: m, glyphs: f === m ? '♀♂' : '♀' });
+    if (f && f !== m) chips.push({ slot, id: f, glyphs: '♂' });
+    return chips;
+  });
+  const toggleMut = (i: number, slot: MutationSlot, id: string) => {
+    const next = { ...rows[i].mutations };
+    if (next[slot] === id) delete next[slot];
+    else next[slot] = id;
+    setRow(i, { mutations: next });
+  };
   return (
     <div className="panel">
       <h3>{t.litterTitle}</h3>
@@ -395,32 +590,53 @@ function LitterPanel({
         {t.offspringInbreeding} <b>{formatCOI(coi)}</b>
         {t.coiNotes[tier]}
       </div>
+      {heritable.length > 0 && <div className="meta">{t.litterMutHint}</div>}
       {rows.map((r, i) => (
-        <div className="row" key={i}>
-          <SexToggle value={r.sex} onChange={(sex) => setRow(i, { sex })} />
-          <OrientationCycle
-            value={r.orientation}
-            onChange={(orientation) => setRow(i, { orientation })}
-          />
-          <input
-            type="text"
-            className={dupRow(i) ? 'dup' : ''}
-            placeholder={t.kittenPlaceholder}
-            value={r.name}
-            autoFocus={i === rows.length - 1}
-            onChange={(e) => setRow(i, { name: e.target.value })}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && r.name.trim() && !anyDup) {
-                setRows((rs) => [...rs, emptyKitten()]);
-              }
-            }}
-          />
-          {rows.length > 1 && (
-            <button className="small" onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}>
-              ✕
-            </button>
+        <Fragment key={i}>
+          <div className="row">
+            <SexToggle value={r.sex} onChange={(sex) => setRow(i, { sex })} />
+            <OrientationCycle
+              value={r.orientation}
+              onChange={(orientation) => setRow(i, { orientation })}
+            />
+            <input
+              type="text"
+              className={dupRow(i) ? 'dup' : ''}
+              placeholder={t.kittenPlaceholder}
+              value={r.name}
+              autoFocus={i === rows.length - 1}
+              onChange={(e) => setRow(i, { name: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && r.name.trim() && !anyDup) {
+                  setRows((rs) => [...rs, emptyKitten()]);
+                }
+              }}
+            />
+            {rows.length > 1 && (
+              <button
+                className="small"
+                onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}
+              >
+                ✕
+              </button>
+            )}
+          </div>
+          {heritable.length > 0 && (
+            <div className="kitten-muts">
+              {heritable.map((h) => (
+                <button
+                  key={`${h.slot}|${h.id}`}
+                  type="button"
+                  className={`mut-inherit${r.mutations[h.slot] === h.id ? ' on' : ''}`}
+                  title={`${t.mutationSlots[h.slot]}: ${mutationLabel(h.id)}`}
+                  onClick={() => toggleMut(i, h.slot, h.id)}
+                >
+                  {h.glyphs} {mutationLabel(h.id)}
+                </button>
+              ))}
+            </div>
           )}
-        </div>
+        </Fragment>
       ))}
       {anyDup && <div className="warn">{t.litterDupWarn}</div>}
       <div className="row">
@@ -436,8 +652,8 @@ function LitterPanel({
 
 function CatPanel(props: {
   cat: Cat;
-  motherName: string | null;
-  fatherName: string | null;
+  mother: Cat | null;
+  father: Cat | null;
   childrenCount: number;
   inbreeding: number;
   pedigreeActive: boolean;
@@ -471,7 +687,7 @@ function CatPanel(props: {
       <RoomToggle value={cat.room} onChange={(room) => props.onUpdate({ room })} />
       <ClassSelect value={cat.class} onChange={(cls) => props.onUpdate({ class: cls })} />
       <div className="meta">
-        {t.parents}: {props.motherName ?? '—'} × {props.fatherName ?? '—'}
+        {t.parents}: {props.mother?.name ?? '—'} × {props.father?.name ?? '—'}
         <br />
         {t.childrenCount}: {props.childrenCount}
         <br />
@@ -546,6 +762,12 @@ function CatPanel(props: {
           </Fragment>
         ))}
       </div>
+      <MutationEditor
+        mutations={cat.mutations}
+        mother={props.mother}
+        father={props.father}
+        onChange={(mutations) => props.onUpdate({ mutations })}
+      />
       <textarea
         placeholder={t.notesPlaceholder}
         value={cat.notes ?? ''}
@@ -1057,7 +1279,9 @@ function GenealogyApp() {
   const createLitter = (mother: Cat, father: Cat, kittens: KittenDraft[]) => {
     setCats((cs) => [
       ...cs,
-      ...kittens.map((k) => makeCat(k.name, k.sex, mother.id, father.id, null, null, k.orientation)),
+      ...kittens.map((k) =>
+        makeCat(k.name, k.sex, mother.id, father.id, null, null, k.orientation, k.mutations),
+      ),
     ]);
   };
 
@@ -1105,6 +1329,7 @@ function GenealogyApp() {
             gone: c.gone ?? false,
             notes: c.notes ?? '',
             stats: c.stats ?? {},
+            mutations: normMutations(c.mutations),
           })),
         );
         setSelection([]);
@@ -1300,8 +1525,8 @@ function GenealogyApp() {
           ) : single ? (
             <CatPanel
               cat={single}
-              motherName={single.motherId ? (byId.get(single.motherId)?.name ?? null) : null}
-              fatherName={single.fatherId ? (byId.get(single.fatherId)?.name ?? null) : null}
+              mother={single.motherId ? (byId.get(single.motherId) ?? null) : null}
+              father={single.fatherId ? (byId.get(single.fatherId) ?? null) : null}
               childrenCount={children.get(single.id)?.length ?? 0}
               inbreeding={inbreedingCoefficient(single.id, cats)}
               pedigreeActive={viewRootId === single.id}

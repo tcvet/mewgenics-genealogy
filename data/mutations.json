@@ -1,0 +1,6119 @@
+{
+ "source": "https://mewgenics.wiki.gg/wiki/Mutations",
+ "fetched": "2026-07-13",
+ "count": 764,
+ "mutations": [
+  {
+   "id": "arm1.-2",
+   "title": "No left arm",
+   "type": "Limb Mutation",
+   "description": "",
+   "effects": "Removes any other mutation on the arm.",
+   "icon": null
+  },
+  {
+   "id": "arm2.-2",
+   "title": "No right arm",
+   "type": "Limb Mutation",
+   "description": "",
+   "effects": "Removes any other mutation on the arm.",
+   "icon": null
+  },
+  {
+   "id": "body.300",
+   "title": "Rock Bod",
+   "type": "Body Mutation",
+   "description": "+1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.300.svg"
+  },
+  {
+   "id": "body.301",
+   "title": "Cactus Bod",
+   "type": "Body Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_body.301.svg"
+  },
+  {
+   "id": "body.302",
+   "title": "Turtle Bod",
+   "type": "Animal Body Mutation",
+   "description": "+5 , -1 Speed",
+   "effects": "",
+   "icon": "Mutation_body.302.svg"
+  },
+  {
+   "id": "body.303",
+   "title": "Snail Bod",
+   "type": "Animal Body Mutation",
+   "description": "+10 , -2 Speed",
+   "effects": "",
+   "icon": "Mutation_body.303.svg"
+  },
+  {
+   "id": "body.304",
+   "title": "Robot Body",
+   "type": "Body Mutation",
+   "description": "+1 Speed, +1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_body.304.svg"
+  },
+  {
+   "id": "body.305",
+   "title": "Conjoined Bod",
+   "type": "Body Mutation",
+   "description": "+1 Luck",
+   "effects": "",
+   "icon": "Mutation_body.305.svg"
+  },
+  {
+   "id": "body.306",
+   "title": "Skin & Bones",
+   "type": "Body Mutation",
+   "description": "+12 , -3 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.306.svg"
+  },
+  {
+   "id": "body.307",
+   "title": "Udders",
+   "type": "Animal Body Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.307.svg"
+  },
+  {
+   "id": "body.308",
+   "title": "Beach Bod",
+   "type": "Body Mutation",
+   "description": "+1 Strength, +1 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_body.308.svg"
+  },
+  {
+   "id": "body.309",
+   "title": "Maggot Bod",
+   "type": "Body Mutation",
+   "description": "Units that contact you get knocked back 2 tiles.",
+   "effects": "When this unit receives contact in melee range, apply 2 knockback",
+   "icon": "Mutation_body.309.svg"
+  },
+  {
+   "id": "body.310",
+   "title": "Puffball Bod",
+   "type": "Body Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.310.svg"
+  },
+  {
+   "id": "body.311",
+   "title": "Square Bod",
+   "type": "Body Mutation",
+   "description": "+1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.311.svg"
+  },
+  {
+   "id": "body.312",
+   "title": "Money Bag Bod",
+   "type": "Body Mutation",
+   "description": "Spawn a coin when you take damage.",
+   "effects": "When this unit takes damage, even if the damage was lethal, spawn 1 Coin",
+   "icon": "Mutation_body.312.svg"
+  },
+  {
+   "id": "body.313",
+   "title": "Spike Bod",
+   "type": "Body Mutation",
+   "description": "+1 Kinetic Spikes.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- When this unit takes damage, emit a Sparkle",
+   "icon": "Mutation_body.313.svg"
+  },
+  {
+   "id": "body.314",
+   "title": "Porcupine",
+   "type": "Body Mutation",
+   "description": "-1 Charisma\n+2 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 Thorns",
+   "icon": "Mutation_body.314.svg"
+  },
+  {
+   "id": "body.315",
+   "title": "Carapace",
+   "type": "Body Mutation",
+   "description": "+1 Brace.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Brace",
+   "icon": "Mutation_body.315.svg"
+  },
+  {
+   "id": "body.316",
+   "title": "Pangolin",
+   "type": "Body Mutation",
+   "description": "+2",
+   "effects": "",
+   "icon": "Mutation_body.316.svg"
+  },
+  {
+   "id": "body.317",
+   "title": "Camel Hump",
+   "type": "Body Mutation",
+   "description": "+1 Constitution\nImmune to Heat Wave weather.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply Heat Wave immunity",
+   "icon": "Mutation_body.317.svg"
+  },
+  {
+   "id": "body.318",
+   "title": "Egg Sack Back",
+   "type": "Body Mutation",
+   "description": "25% chance to spawn a Charmed Fly each turn.",
+   "effects": "On each of this unit's turns, 25% chance (good roll) to spawn 1 Charmed Fly Fly Melee Attacker. Flying.",
+   "icon": "Mutation_body.318.svg"
+  },
+  {
+   "id": "body.319",
+   "title": "Fractured Bod",
+   "type": "Body Mutation",
+   "description": "When you take damage from an attack, gain a random buff.",
+   "effects": "When this unit takes damage from an ability, do the following for this unit:\n- Do a random one of the following:\n- Apply +1 Charge\n- Apply +1 Thorns\n- When this unit takes damage, emit a Sparkle\n- Apply +1 Diminishing Health Regen\n- Apply +1 Random Stat Up (can split across different stats)\n- Apply +1 Shield",
+   "icon": "Mutation_body.319.svg"
+  },
+  {
+   "id": "body.320",
+   "title": "Brick Bod",
+   "type": "Body Mutation",
+   "description": "+1",
+   "effects": "",
+   "icon": "Mutation_body.320.svg"
+  },
+  {
+   "id": "body.321",
+   "title": "Kitten Bod",
+   "type": "Body Mutation",
+   "description": "Spawn a Charmed Kitten familiar when you get downed.",
+   "effects": "When this unit is downed, spawn \"Charmed Kitten Kitten Runs away when damaged.\" at their location (enemy corpses will be exploded immediately, while player corpses will be pushed to a nearby tile)",
+   "icon": "Mutation_body.321.svg"
+  },
+  {
+   "id": "body.322",
+   "title": "Backpack",
+   "type": "Body Mutation",
+   "description": "Gain an extra consumable item at the end of each battle.",
+   "effects": "On battle end, if not dead, do the following for this unit:\n- Add an item to your backpack from the \"consumables\" pool",
+   "icon": "Mutation_body.322.svg"
+  },
+  {
+   "id": "body.323",
+   "title": "Fatty",
+   "type": "Body Mutation",
+   "description": "-3 Speed\nTrample. When damaged, move 1 tile in a random direction.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +3 Trample\nWhen this unit takes non-status damage, automatically cast \"MoveOne\" using the \"chaotic\" decision weights table if not stunned",
+   "icon": "Mutation_body.323.svg"
+  },
+  {
+   "id": "body.324",
+   "title": "Eyeball",
+   "type": "Body Mutation",
+   "description": "Gain +1 range when you get a kill.",
+   "effects": "When this unit kills something, do the following for the attacker:\n- Apply +1 range",
+   "icon": "Mutation_body.324.svg"
+  },
+  {
+   "id": "body.400",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.400.svg"
+  },
+  {
+   "id": "body.401",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_body.401.svg"
+  },
+  {
+   "id": "body.402",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.402.svg"
+  },
+  {
+   "id": "body.403",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_body.403.svg"
+  },
+  {
+   "id": "body.404",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_body.404.svg"
+  },
+  {
+   "id": "body.405",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_body.405.svg"
+  },
+  {
+   "id": "body.406",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_body.406.svg"
+  },
+  {
+   "id": "body.407",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_body.407.svg"
+  },
+  {
+   "id": "body.408",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.408.svg"
+  },
+  {
+   "id": "body.409",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_body.409.svg"
+  },
+  {
+   "id": "body.410",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_body.410.svg"
+  },
+  {
+   "id": "body.411",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_body.411.svg"
+  },
+  {
+   "id": "body.412",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.412.svg"
+  },
+  {
+   "id": "body.413",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_body.413.svg"
+  },
+  {
+   "id": "body.414",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.414.svg"
+  },
+  {
+   "id": "body.415",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_body.415.svg"
+  },
+  {
+   "id": "body.416",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_body.416.svg"
+  },
+  {
+   "id": "body.417",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_body.417.svg"
+  },
+  {
+   "id": "body.418",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.418.svg"
+  },
+  {
+   "id": "body.419",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_body.419.svg"
+  },
+  {
+   "id": "body.420",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.420.svg"
+  },
+  {
+   "id": "body.421",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_body.421.svg"
+  },
+  {
+   "id": "body.422",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_body.422.svg"
+  },
+  {
+   "id": "body.423",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_body.423.svg"
+  },
+  {
+   "id": "body.424",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.424.svg"
+  },
+  {
+   "id": "body.425",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_body.425.svg"
+  },
+  {
+   "id": "body.426",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_body.426.svg"
+  },
+  {
+   "id": "body.427",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_body.427.svg"
+  },
+  {
+   "id": "body.428",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_body.428.svg"
+  },
+  {
+   "id": "body.429",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_body.429.svg"
+  },
+  {
+   "id": "body.430",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.430.svg"
+  },
+  {
+   "id": "body.431",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_body.431.svg"
+  },
+  {
+   "id": "body.432",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.432.svg"
+  },
+  {
+   "id": "body.433",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_body.433.svg"
+  },
+  {
+   "id": "body.434",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_body.434.svg"
+  },
+  {
+   "id": "body.435",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_body.435.svg"
+  },
+  {
+   "id": "body.436",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.436.svg"
+  },
+  {
+   "id": "body.437",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_body.437.svg"
+  },
+  {
+   "id": "body.438",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.438.svg"
+  },
+  {
+   "id": "body.439",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_body.439.svg"
+  },
+  {
+   "id": "body.440",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_body.440.svg"
+  },
+  {
+   "id": "body.441",
+   "title": "",
+   "type": "Common Body Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_body.441.svg"
+  },
+  {
+   "id": "body.442",
+   "title": "",
+   "type": "Melted Body Mutation",
+   "description": "-1 Charisma",
+   "effects": "",
+   "icon": "Mutation_body.442.svg"
+  },
+  {
+   "id": "body.700",
+   "title": "Gastroschisis",
+   "type": "Body Birth Defect",
+   "description": "-2 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.700.svg"
+  },
+  {
+   "id": "body.701",
+   "title": "Deformed Ribcage",
+   "type": "Body Birth Defect",
+   "description": "-2 Speed",
+   "effects": "",
+   "icon": "Mutation_body.701.svg"
+  },
+  {
+   "id": "body.702",
+   "title": "Malnurished",
+   "type": "Body Birth Defect",
+   "description": "-1 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.702.svg"
+  },
+  {
+   "id": "body.703",
+   "title": "Body Welts",
+   "type": "Body Birth Defect",
+   "description": "Start each battle with Bruise 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bruise",
+   "icon": "Mutation_body.703.svg"
+  },
+  {
+   "id": "body.704",
+   "title": "Conjoined Body",
+   "type": "Body Birth Defect",
+   "description": "+2 Constitution, -3 Speed",
+   "effects": "",
+   "icon": "Mutation_body.704.svg"
+  },
+  {
+   "id": "body.750",
+   "title": "Spike Body",
+   "type": "Body Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_body.750.svg"
+  },
+  {
+   "id": "body.753",
+   "title": "Mermaid Body",
+   "type": "Body Mutation",
+   "description": "+5",
+   "effects": "",
+   "icon": "Mutation_body.753.svg"
+  },
+  {
+   "id": "body.758",
+   "title": "Human Head Body",
+   "type": "Body Mutation",
+   "description": "+1 Constitution\nStart with +1 Bonus Attack.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bonus Attack",
+   "icon": "Mutation_body.758.svg"
+  },
+  {
+   "id": "body.900",
+   "title": "Slender",
+   "type": "Body Mutation",
+   "description": "+1 Speed, -2 Constitution",
+   "effects": "",
+   "icon": "Mutation_body.900.svg"
+  },
+  {
+   "id": "ears.-2",
+   "title": "No Ears",
+   "type": "Ear Birth Defect",
+   "description": "-2 Dexterity",
+   "effects": "",
+   "icon": "Mutation_ears.-2.svg"
+  },
+  {
+   "id": "ears.1500",
+   "title": "Rat Ears",
+   "type": "Animal Ear Mutation",
+   "description": "+2% dodge chance",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2% Dodge Chance",
+   "icon": "Mutation_ears.1500.svg"
+  },
+  {
+   "id": "ears.300",
+   "title": "Horn",
+   "type": "Animal Ear Mutation",
+   "description": "+1 Strength",
+   "effects": "",
+   "icon": "Mutation_ears.300.svg"
+  },
+  {
+   "id": "ears.301",
+   "title": "Antenna",
+   "type": "Animal Ear Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.301.svg"
+  },
+  {
+   "id": "ears.302",
+   "title": "Fishy",
+   "type": "Animal Ear Mutation",
+   "description": "+1 Health and Mana Regeneration while wet.",
+   "effects": "While this unit is \"affected\" by Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 Health Regen\n- Apply +1 mana regen",
+   "icon": "Mutation_ears.302.svg"
+  },
+  {
+   "id": "ears.303",
+   "title": "Bullhorn",
+   "type": "Animal Ear Mutation",
+   "description": "+1 Strength\nAdds +1 Knockback to your basic attack if it's melee.",
+   "effects": "This unit's melee basic attacks do the following for the target:\n- Apply +1 Knockback",
+   "icon": "Mutation_ears.303.svg"
+  },
+  {
+   "id": "ears.304",
+   "title": "Pigtails",
+   "type": "Ear Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.304.svg"
+  },
+  {
+   "id": "ears.305",
+   "title": "Boil",
+   "type": "Ear Mutation",
+   "description": "+1",
+   "effects": "",
+   "icon": "Mutation_ears.305.svg"
+  },
+  {
+   "id": "ears.306",
+   "title": "Bunny Ear",
+   "type": "Animal Ear Mutation",
+   "description": "+1 Speed",
+   "effects": "",
+   "icon": "Mutation_ears.306.svg"
+  },
+  {
+   "id": "ears.307",
+   "title": "Brains",
+   "type": "Ear Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.307.svg"
+  },
+  {
+   "id": "ears.308",
+   "title": "Shrek",
+   "type": "Ear Mutation",
+   "description": "+1 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.308.svg"
+  },
+  {
+   "id": "ears.309",
+   "title": "Antlers",
+   "type": "Animal Ear Mutation",
+   "description": "Adds +1 Bleed to your basic attack.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Bleed",
+   "icon": "Mutation_ears.309.svg"
+  },
+  {
+   "id": "ears.310",
+   "title": "Human",
+   "type": "Ear Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.310.svg"
+  },
+  {
+   "id": "ears.313",
+   "title": "Ram Horns",
+   "type": "Animal Ear Mutation",
+   "description": "+1\nAdds +1 Knockback to your basic attack if it's melee.",
+   "effects": "This unit's melee basic attacks do the following for the target:\n- Apply +1 Knockback",
+   "icon": "Mutation_ears.313.svg"
+  },
+  {
+   "id": "ears.314",
+   "title": "Deer Horns",
+   "type": "Animal Ear Mutation",
+   "description": "Thorns 1. Your basic attack inflicts Bleed if it's melee.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns\nThis unit's melee basic attacks do the following for the target:\n- Apply +1 Bleed",
+   "icon": "Mutation_ears.314.svg"
+  },
+  {
+   "id": "ears.315",
+   "title": "Fly Ears",
+   "type": "Animal Ear Mutation",
+   "description": "50% chance to spawn a Charmed Fly each turn. Start with Poison 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Poison\nOn each of this unit's turns, 50% chance (bad roll) to spawn 1 Charmed Fly Fly Melee Attacker. Flying.",
+   "icon": "Mutation_ears.315.svg"
+  },
+  {
+   "id": "ears.316",
+   "title": "Bat Ears",
+   "type": "Animal Ear Mutation",
+   "description": "You can see hidden things. 5% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit can see hidden things\n- Apply +5% Dodge Chance",
+   "icon": "Mutation_ears.316.svg"
+  },
+  {
+   "id": "ears.317",
+   "title": "Bone Ears",
+   "type": "Ear Mutation",
+   "description": "Whenever you down a unit, you have a 10% chance to reanimate that unit with 50% HP.",
+   "effects": "When this unit downs a unit, do the following for the target:\n- 10% chance (good roll) to do the following:\n- Revive with 50% health",
+   "icon": "Mutation_ears.317.svg"
+  },
+  {
+   "id": "ears.318",
+   "title": "Frog Eyes",
+   "type": "Animal Ear Mutation",
+   "description": "You have Brace 1 while wet.",
+   "effects": "While this unit is \"affected\" by Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 Brace",
+   "icon": "Mutation_ears.318.svg"
+  },
+  {
+   "id": "ears.319",
+   "title": "Pierced Ears",
+   "type": "Animal Ear Mutation",
+   "description": "Gain +1 Charge when you take damage.",
+   "effects": "When this unit takes damage, do the following for this unit:\n- Apply +1 Charge",
+   "icon": "Mutation_ears.319.svg"
+  },
+  {
+   "id": "ears.320",
+   "title": "Alien Ears",
+   "type": "Ear Mutation",
+   "description": "+1 Kinetic Spikes.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- When this unit takes damage, emit a Sparkle",
+   "icon": "Mutation_ears.320.svg"
+  },
+  {
+   "id": "ears.321",
+   "title": "Spring Ears",
+   "type": "Ear Mutation",
+   "description": "Units that contact you get knocked back 1 tile.",
+   "effects": "When this unit receives contact in melee range, apply 1 knockback",
+   "icon": "Mutation_ears.321.svg"
+  },
+  {
+   "id": "ears.322",
+   "title": "Lamb Ears",
+   "type": "Animal Ear Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.322.svg"
+  },
+  {
+   "id": "ears.323",
+   "title": "Vamp Ears",
+   "type": "Ear Mutation",
+   "description": "Gain 1 HP when your basic attack deals damage.",
+   "effects": "This unit's basic attacks do the following for the target:\n- This damage will heal the attacker for +1",
+   "icon": "Mutation_ears.323.svg"
+  },
+  {
+   "id": "ears.325",
+   "title": "Tree Branch",
+   "type": "Ear Mutation",
+   "description": "If you're wet, gain +1 Charge and +1 at the end of your turn.",
+   "effects": "While this unit is \"affected\" by Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- At the end of this unit's turn, do the following for this unit:\n- Apply +1 Shield\n- Apply +1 Charge",
+   "icon": "Mutation_ears.325.svg"
+  },
+  {
+   "id": "ears.326",
+   "title": "Worm Ear",
+   "type": "Ear Mutation",
+   "description": "5% chance to spawn a Maggot familiar each turn.",
+   "effects": "On each of this unit's turns, 5% chance (good roll) to spawn 1 Charmed Maggot Maggot Melee attacker.",
+   "icon": "Mutation_ears.326.svg"
+  },
+  {
+   "id": "ears.327",
+   "title": "Ant Antenna",
+   "type": "Animal Ear Mutation",
+   "description": "An extra food pickup will spawn in each battle.",
+   "effects": "On battle start, choose a random empty tile to spawn 1 RandomFoodPickup",
+   "icon": "Mutation_ears.327.svg"
+  },
+  {
+   "id": "ears.328",
+   "title": "Snake Ears",
+   "type": "Animal Ear Mutation",
+   "description": "5% chance to Petrify on damage and when hit.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 5% chance to apply +1 Petrify\nWhen this unit receives contact or is attacked, do the following for the target:\n- 5% chance to apply +1 Petrify",
+   "icon": "Mutation_ears.328.svg"
+  },
+  {
+   "id": "ears.329",
+   "title": "External Gills",
+   "type": "Animal Ear Mutation",
+   "description": "Your basic attack leaves water tiles.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Water element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Change the tile under the target to \"WaterTile\"",
+   "icon": "Mutation_ears.329.svg"
+  },
+  {
+   "id": "ears.330",
+   "title": "Hook Ears",
+   "type": "Ear Mutation",
+   "description": "Thorns 1. 10% chance to inflict Immobile on units that contact you.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns\nWhen this unit receives contact in melee range, 10% chance to apply +1 Immobile",
+   "icon": "Mutation_ears.330.svg"
+  },
+  {
+   "id": "ears.331",
+   "title": "Mace Ears",
+   "type": "Ear Mutation",
+   "description": "Your basic attack has +1 Knockback.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Knockback",
+   "icon": "Mutation_ears.331.svg"
+  },
+  {
+   "id": "ears.332",
+   "title": "Blubber Lobes",
+   "type": "Ear Mutation",
+   "description": "Brace 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Brace",
+   "icon": "Mutation_ears.332.svg"
+  },
+  {
+   "id": "ears.333",
+   "title": "Metal Plate",
+   "type": "Ear Mutation",
+   "description": "+3",
+   "effects": "",
+   "icon": "Mutation_ears.333.svg"
+  },
+  {
+   "id": "ears.334",
+   "title": "Metal Detector",
+   "type": "Ear Mutation",
+   "description": "Spawn 1-3 more coins/scrap around the map on random tiles at the start of each battle.",
+   "effects": "On battle start, choose a random empty tile to spawn 1-3 Coin",
+   "icon": "Mutation_ears.334.svg"
+  },
+  {
+   "id": "ears.335",
+   "title": "Docked Ears",
+   "type": "Ear Mutation",
+   "description": "Start with Bleed 1 and a bonus attack.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bleed\n- Apply +1 free uses of basic attack",
+   "icon": "Mutation_ears.335.svg"
+  },
+  {
+   "id": "ears.336",
+   "title": "Large Leaves",
+   "type": "Ear Mutation",
+   "description": "You gain 3 mana at the end of your turn if you didn't use your movement action.",
+   "effects": "At the end of this unit's turn, if it has unused movement actions, do the following for this unit:\n- Apply +3 Mana",
+   "icon": "Mutation_ears.336.svg"
+  },
+  {
+   "id": "ears.337",
+   "title": "Burning Ears",
+   "type": "Ear Mutation",
+   "description": "Your basic attack inflicts Burn 1.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Burn",
+   "icon": "Mutation_ears.337.svg"
+  },
+  {
+   "id": "ears.338",
+   "title": "Frozen Ears",
+   "type": "Ear Mutation",
+   "description": "Your basic attack has a 15% chance to inflict Freeze.",
+   "effects": "When this unit receives contact in melee range, 15% chance to apply +1 Freeze",
+   "icon": "Mutation_ears.338.svg"
+  },
+  {
+   "id": "ears.339",
+   "title": "Lightning Rods",
+   "type": "Ear Mutation",
+   "description": "You have electric immunity.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add immunity to the Electric element",
+   "icon": "Mutation_ears.339.svg"
+  },
+  {
+   "id": "ears.340",
+   "title": "Aura Ears",
+   "type": "Ear Mutation",
+   "description": "+1",
+   "effects": "",
+   "icon": "Mutation_ears.340.svg"
+  },
+  {
+   "id": "ears.341",
+   "title": "Large Ears",
+   "type": "Ear Mutation",
+   "description": "10% chance to backflip when targeted.",
+   "effects": "This unit has a 10% chance to automatically cast \"BackflipDodge\" when targeted",
+   "icon": "Mutation_ears.341.svg"
+  },
+  {
+   "id": "ears.342",
+   "title": "Infested Ears",
+   "type": "Ear Mutation",
+   "description": "-1 Constitution\n20% chance to spawn a Charmed Flea when damaged.",
+   "effects": "When this unit takes damage, even if the damage was lethal, 20% chance (bad roll) to spawn 1 Charmed Flea Flea Its melee attack damages itself. (good vs bad roll is from the perspective of the damage source, not the spawner)",
+   "icon": "Mutation_ears.342.svg"
+  },
+  {
+   "id": "ears.343",
+   "title": "Long Antlers",
+   "type": "Animal Ear Mutation",
+   "description": "Thorns 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_ears.343.svg"
+  },
+  {
+   "id": "ears.344",
+   "title": "Kitten",
+   "type": "Ear Mutation",
+   "description": "Spawn a Charmed Kitten familiar when you get downed.",
+   "effects": "When this unit is downed, spawn \"Charmed Kitten Kitten Runs away when damaged.\" at their location (enemy corpses will be exploded immediately, while player corpses will be pushed to a nearby tile)",
+   "icon": "Mutation_ears.344.svg"
+  },
+  {
+   "id": "ears.345",
+   "title": "Mouse Ears",
+   "type": "Animal Ear Mutation",
+   "description": "Units that contact or attack you have a 15% chance to get Charmed.",
+   "effects": "When this unit receives contact or is attacked, do the following for the target:\n- 15% chance to apply +1 Charmed",
+   "icon": "Mutation_ears.345.svg"
+  },
+  {
+   "id": "ears.400",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_ears.400.svg"
+  },
+  {
+   "id": "ears.401",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_ears.401.svg"
+  },
+  {
+   "id": "ears.402",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.402.svg"
+  },
+  {
+   "id": "ears.403",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.403.svg"
+  },
+  {
+   "id": "ears.404",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_ears.404.svg"
+  },
+  {
+   "id": "ears.405",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_ears.405.svg"
+  },
+  {
+   "id": "ears.406",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_ears.406.svg"
+  },
+  {
+   "id": "ears.407",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_ears.407.svg"
+  },
+  {
+   "id": "ears.408",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.408.svg"
+  },
+  {
+   "id": "ears.409",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.409.svg"
+  },
+  {
+   "id": "ears.410",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_ears.410.svg"
+  },
+  {
+   "id": "ears.411",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_ears.411.svg"
+  },
+  {
+   "id": "ears.412",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_ears.412.svg"
+  },
+  {
+   "id": "ears.413",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_ears.413.svg"
+  },
+  {
+   "id": "ears.414",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.414.svg"
+  },
+  {
+   "id": "ears.415",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.415.svg"
+  },
+  {
+   "id": "ears.416",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_ears.416.svg"
+  },
+  {
+   "id": "ears.417",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_ears.417.svg"
+  },
+  {
+   "id": "ears.418",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_ears.418.svg"
+  },
+  {
+   "id": "ears.419",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_ears.419.svg"
+  },
+  {
+   "id": "ears.420",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.420.svg"
+  },
+  {
+   "id": "ears.421",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_ears.421.svg"
+  },
+  {
+   "id": "ears.422",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_ears.422.svg"
+  },
+  {
+   "id": "ears.423",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_ears.423.svg"
+  },
+  {
+   "id": "ears.424",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_ears.424.svg"
+  },
+  {
+   "id": "ears.425",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_ears.425.svg"
+  },
+  {
+   "id": "ears.426",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_ears.426.svg"
+  },
+  {
+   "id": "ears.427",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.427.svg"
+  },
+  {
+   "id": "ears.428",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_ears.428.svg"
+  },
+  {
+   "id": "ears.429",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_ears.429.svg"
+  },
+  {
+   "id": "ears.430",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_ears.430.svg"
+  },
+  {
+   "id": "ears.431",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_ears.431.svg"
+  },
+  {
+   "id": "ears.432",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.432.svg"
+  },
+  {
+   "id": "ears.433",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.433.svg"
+  },
+  {
+   "id": "ears.434",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_ears.434.svg"
+  },
+  {
+   "id": "ears.435",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_ears.435.svg"
+  },
+  {
+   "id": "ears.436",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_ears.436.svg"
+  },
+  {
+   "id": "ears.437",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_ears.437.svg"
+  },
+  {
+   "id": "ears.438",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.438.svg"
+  },
+  {
+   "id": "ears.439",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.439.svg"
+  },
+  {
+   "id": "ears.440",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_ears.440.svg"
+  },
+  {
+   "id": "ears.441",
+   "title": "",
+   "type": "Common Ear Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_ears.441.svg"
+  },
+  {
+   "id": "ears.700",
+   "title": "Anotia",
+   "type": "Ear Birth Defect",
+   "description": "-2 Luck",
+   "effects": "",
+   "icon": "Mutation_ears.700.svg"
+  },
+  {
+   "id": "ears.701",
+   "title": "Turner Syndrome",
+   "type": "Ear Birth Defect",
+   "description": "-2 Intelligence",
+   "effects": "",
+   "icon": "Mutation_ears.701.svg"
+  },
+  {
+   "id": "ears.702",
+   "title": "Underdeveloped Ears",
+   "type": "Ear Birth Defect",
+   "description": "-1 Charisma",
+   "effects": "",
+   "icon": "Mutation_ears.702.svg"
+  },
+  {
+   "id": "ears.703",
+   "title": "Low Ears",
+   "type": "Ear Birth Defect",
+   "description": "Start each battle with Confusion 2.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 Confusion",
+   "icon": "Mutation_ears.703.svg"
+  },
+  {
+   "id": "ears.704",
+   "title": "Wilted Ears",
+   "type": "Ear Birth Defect",
+   "description": "Start each battle with Immobile 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Immobile",
+   "icon": "Mutation_ears.704.svg"
+  },
+  {
+   "id": "ears.750",
+   "title": "Jackrabbit Ears",
+   "type": "Animal Ear Mutation",
+   "description": "Your movement action is a jump.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Replace basic move with \"BasicJump\" (mutation, will be overridden by non-mutations)",
+   "icon": "Mutation_ears.750.svg"
+  },
+  {
+   "id": "ears.751",
+   "title": "Folded Ears",
+   "type": "Ear Mutation",
+   "description": "+10% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +10% Dodge Chance",
+   "icon": "Mutation_ears.751.svg"
+  },
+  {
+   "id": "ears.752",
+   "title": "Fin Ears",
+   "type": "Animal Ear Mutation",
+   "description": "You have +2 Damage while wet.",
+   "effects": "While this unit is \"affected\" Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +2 Damage Up",
+   "icon": "Mutation_ears.752.svg"
+  },
+  {
+   "id": "ears.753",
+   "title": "Goat Horns",
+   "type": "Animal Ear Mutation",
+   "description": "+1 Knockback damage. Your basic attack has +1 Knockback.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Knockback Damage\nThis unit's basic attacks do the following for the target:\n- Apply +1 Knockback",
+   "icon": "Mutation_ears.753.svg"
+  },
+  {
+   "id": "ears.754",
+   "title": "Electric Ears",
+   "type": "Ear Mutation",
+   "description": "+1 Speed\nElectric damage you deal is increased by 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit's \"Electric\" damage is modified by +1",
+   "icon": "Mutation_ears.754.svg"
+  },
+  {
+   "id": "ears.755",
+   "title": "Head Ferns",
+   "type": "Ear Mutation",
+   "description": "Gain +1 Charge every time you cast a spell.",
+   "effects": "When this unit casts a spell, do the following for this unit:\n- Apply +1 Charge",
+   "icon": "Mutation_ears.755.svg"
+  },
+  {
+   "id": "ears.900",
+   "title": "Slender",
+   "type": "Ear Mutation",
+   "description": "+10% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +10% Dodge Chance",
+   "icon": "Mutation_ears.900.svg"
+  },
+  {
+   "id": "eyebrows.-2",
+   "title": "No Eyebrows",
+   "type": "Eyebrow Birth Defect",
+   "description": "-2 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.-2.svg"
+  },
+  {
+   "id": "eyebrows.300",
+   "title": "Bolt Brows",
+   "type": "Eyebrow Mutation",
+   "description": "+1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyebrows.300.svg"
+  },
+  {
+   "id": "eyebrows.301",
+   "title": "Confusing Brows",
+   "type": "Eyebrow Mutation",
+   "description": "You have a 10% chance to inflict Confusion on units who contact or attack you.",
+   "effects": "When this unit receives contact or is attacked, do the following for the target:\n- 10% chance to apply +1 Confusion",
+   "icon": "Mutation_eyebrows.301.svg"
+  },
+  {
+   "id": "eyebrows.302",
+   "title": "Metal Brows",
+   "type": "Eyebrow Mutation",
+   "description": "+2",
+   "effects": "",
+   "icon": "Mutation_eyebrows.302.svg"
+  },
+  {
+   "id": "eyebrows.303",
+   "title": "Fancy Makeup",
+   "type": "Eyebrow Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.303.svg"
+  },
+  {
+   "id": "eyebrows.304",
+   "title": "Wolfy Brows",
+   "type": "Animal Eyebrow Mutation",
+   "description": "+1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyebrows.304.svg"
+  },
+  {
+   "id": "eyebrows.305",
+   "title": "Dotty Brows",
+   "type": "Eyebrow Mutation",
+   "description": "+1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyebrows.305.svg"
+  },
+  {
+   "id": "eyebrows.306",
+   "title": "Clown Makeup",
+   "type": "Eyebrow Mutation",
+   "description": "You have a 5% chance to inflict Fear on units who contact or attack you.",
+   "effects": "When this unit receives contact or is attacked, do the following for the target:\n- 5% chance to apply +1 Fear",
+   "icon": "Mutation_eyebrows.306.svg"
+  },
+  {
+   "id": "eyebrows.307",
+   "title": "Antennae",
+   "type": "Eyebrow Mutation",
+   "description": "+1 Mana Regeneration. +1 Health Regeneration.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Health Regen\n- Apply +1 mana regen",
+   "icon": "Mutation_eyebrows.307.svg"
+  },
+  {
+   "id": "eyebrows.308",
+   "title": "Long Lashes",
+   "type": "Eyebrow Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.308.svg"
+  },
+  {
+   "id": "eyebrows.309",
+   "title": "Spiny Brows",
+   "type": "Eyebrow Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_eyebrows.309.svg"
+  },
+  {
+   "id": "eyebrows.310",
+   "title": "Extra Eye",
+   "type": "Extra Eyebrow Mutation",
+   "description": "+1 Range.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 bonus range",
+   "icon": "Mutation_eyebrows.310.svg"
+  },
+  {
+   "id": "eyebrows.311",
+   "title": "Stacked Brows",
+   "type": "Eyebrow Mutation",
+   "description": "When you cast your third spell each turn, heal 2.",
+   "effects": "Every 3 spell casts this unit makes during each turn, do the following for this unit:\n- Apply +2 healing",
+   "icon": "Mutation_eyebrows.311.svg"
+  },
+  {
+   "id": "eyebrows.313",
+   "title": "Square Glasses",
+   "type": "Eyebrow Mutation",
+   "description": "Spawn 1-2 extra pickups in each battle.",
+   "effects": "On battle start, spawn 1-2 RandomPickup",
+   "icon": "Mutation_eyebrows.313.svg"
+  },
+  {
+   "id": "eyebrows.314",
+   "title": "Holy Brows",
+   "type": "Eyebrow Mutation",
+   "description": "When an allied cat dies, gain +2 Damage.",
+   "effects": "When any of this unit's allies die, do the following for this unit:\n- Apply +2 Damage Up",
+   "icon": "Mutation_eyebrows.314.svg"
+  },
+  {
+   "id": "eyebrows.315",
+   "title": "Triangle Eyes",
+   "type": "Eyebrow Mutation",
+   "description": "+1 Level Up Reroll\nYou can reroll your options when you level up.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 levelup rerolls",
+   "icon": "Mutation_eyebrows.315.svg"
+  },
+  {
+   "id": "eyebrows.400",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyebrows.400.svg"
+  },
+  {
+   "id": "eyebrows.401",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyebrows.401.svg"
+  },
+  {
+   "id": "eyebrows.402",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.402.svg"
+  },
+  {
+   "id": "eyebrows.403",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyebrows.403.svg"
+  },
+  {
+   "id": "eyebrows.404",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyebrows.404.svg"
+  },
+  {
+   "id": "eyebrows.405",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyebrows.405.svg"
+  },
+  {
+   "id": "eyebrows.406",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyebrows.406.svg"
+  },
+  {
+   "id": "eyebrows.407",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyebrows.407.svg"
+  },
+  {
+   "id": "eyebrows.408",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.408.svg"
+  },
+  {
+   "id": "eyebrows.409",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyebrows.409.svg"
+  },
+  {
+   "id": "eyebrows.410",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyebrows.410.svg"
+  },
+  {
+   "id": "eyebrows.411",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyebrows.411.svg"
+  },
+  {
+   "id": "eyebrows.412",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyebrows.412.svg"
+  },
+  {
+   "id": "eyebrows.413",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyebrows.413.svg"
+  },
+  {
+   "id": "eyebrows.414",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.414.svg"
+  },
+  {
+   "id": "eyebrows.415",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyebrows.415.svg"
+  },
+  {
+   "id": "eyebrows.416",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyebrows.416.svg"
+  },
+  {
+   "id": "eyebrows.417",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyebrows.417.svg"
+  },
+  {
+   "id": "eyebrows.418",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyebrows.418.svg"
+  },
+  {
+   "id": "eyebrows.419",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyebrows.419.svg"
+  },
+  {
+   "id": "eyebrows.420",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.420.svg"
+  },
+  {
+   "id": "eyebrows.421",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyebrows.421.svg"
+  },
+  {
+   "id": "eyebrows.422",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyebrows.422.svg"
+  },
+  {
+   "id": "eyebrows.423",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyebrows.423.svg"
+  },
+  {
+   "id": "eyebrows.424",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyebrows.424.svg"
+  },
+  {
+   "id": "eyebrows.425",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyebrows.425.svg"
+  },
+  {
+   "id": "eyebrows.426",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyebrows.426.svg"
+  },
+  {
+   "id": "eyebrows.427",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyebrows.427.svg"
+  },
+  {
+   "id": "eyebrows.428",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyebrows.428.svg"
+  },
+  {
+   "id": "eyebrows.429",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyebrows.429.svg"
+  },
+  {
+   "id": "eyebrows.430",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyebrows.430.svg"
+  },
+  {
+   "id": "eyebrows.431",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyebrows.431.svg"
+  },
+  {
+   "id": "eyebrows.432",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.432.svg"
+  },
+  {
+   "id": "eyebrows.433",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyebrows.433.svg"
+  },
+  {
+   "id": "eyebrows.434",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyebrows.434.svg"
+  },
+  {
+   "id": "eyebrows.435",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyebrows.435.svg"
+  },
+  {
+   "id": "eyebrows.436",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyebrows.436.svg"
+  },
+  {
+   "id": "eyebrows.437",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyebrows.437.svg"
+  },
+  {
+   "id": "eyebrows.438",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.438.svg"
+  },
+  {
+   "id": "eyebrows.439",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyebrows.439.svg"
+  },
+  {
+   "id": "eyebrows.440",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyebrows.440.svg"
+  },
+  {
+   "id": "eyebrows.441",
+   "title": "",
+   "type": "Common Eyebrow Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyebrows.441.svg"
+  },
+  {
+   "id": "eyebrows.700",
+   "title": "Bushy",
+   "type": "Eyebrow Birth Defect",
+   "description": "-1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyebrows.700.svg"
+  },
+  {
+   "id": "eyebrows.701",
+   "title": "No Eyebrows",
+   "type": "Eyebrow Birth Defect",
+   "description": "-1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyebrows.701.svg"
+  },
+  {
+   "id": "eyebrows.702",
+   "title": "Unibrow",
+   "type": "Eyebrow Birth Defect",
+   "description": "-1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyebrows.702.svg"
+  },
+  {
+   "id": "eyebrows.900",
+   "title": "Slender",
+   "type": "Eyebrow Mutation",
+   "description": "+5% dodge chance. Your basic attack has a 1% chance to inflict Freeze.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +5% Dodge Chance\nThis unit's basic attacks do the following for the target:\n- 1% chance to apply +1 Freeze",
+   "icon": "Mutation_eyebrows.900.svg"
+  },
+  {
+   "id": "eyes.-2",
+   "title": "No Eyes",
+   "type": "Eye Birth Defect",
+   "description": "Blind.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply Blind",
+   "icon": "Mutation_eyes.-2.svg"
+  },
+  {
+   "id": "eyes.1029",
+   "title": "Spider Eye",
+   "type": "Eye Mutation",
+   "description": "+5% crit chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +5% Crit Chance Up",
+   "icon": "Mutation_eyes.1029.svg"
+  },
+  {
+   "id": "eyes.300",
+   "title": "Button Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack has a 10% chance to inflict Fear.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 10% chance to apply +1 Fear",
+   "icon": "Mutation_eyes.300.svg"
+  },
+  {
+   "id": "eyes.301",
+   "title": "Demon Eyes",
+   "type": "Eye Mutation",
+   "description": "+1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyes.301.svg"
+  },
+  {
+   "id": "eyes.302",
+   "title": "Pop Eyes",
+   "type": "Eye Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_eyes.302.svg"
+  },
+  {
+   "id": "eyes.303",
+   "title": "Gem Eyes",
+   "type": "Eye Mutation",
+   "description": "+1 Intelligence, +1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.303.svg"
+  },
+  {
+   "id": "eyes.304",
+   "title": "Holes",
+   "type": "Eye Mutation",
+   "description": "Take your turn later.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply -20 initiative",
+   "icon": "Mutation_eyes.304.svg"
+  },
+  {
+   "id": "eyes.305",
+   "title": "Zen Eyes",
+   "type": "Eye Mutation",
+   "description": "+3 Intelligence, -1 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyes.305.svg"
+  },
+  {
+   "id": "eyes.306",
+   "title": "Confusing Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack has a 10% chance to inflict Confusion 3.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 10% chance to apply +3 Confusion",
+   "icon": "Mutation_eyes.306.svg"
+  },
+  {
+   "id": "eyes.307",
+   "title": "Half Moon Eyes",
+   "type": "Eye Mutation",
+   "description": "Gain 1 mana when anything dies.",
+   "effects": "Whenver anything dies, this unit gains +1 Mana",
+   "icon": "Mutation_eyes.307.svg"
+  },
+  {
+   "id": "eyes.308",
+   "title": "Spider Eyes",
+   "type": "Animal Eye Mutation",
+   "description": "+5% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +5% Dodge Chance",
+   "icon": "Mutation_eyes.308.svg"
+  },
+  {
+   "id": "eyes.309",
+   "title": "Doll Eyes",
+   "type": "Eye Mutation",
+   "description": "+2 corpse health.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 hits to your corpse before it's destroyed",
+   "icon": "Mutation_eyes.309.svg"
+  },
+  {
+   "id": "eyes.310",
+   "title": "Octo Eyes",
+   "type": "Animal Eye Mutation",
+   "description": "+1 Health Regeneration",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Health Regen",
+   "icon": "Mutation_eyes.310.svg"
+  },
+  {
+   "id": "eyes.311",
+   "title": "Gecko Eye",
+   "type": "Animal Eye Mutation",
+   "description": "You do not take extra damage from backstabs.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Backstabs against this unit do not receive the backstab damage multiplier",
+   "icon": "Mutation_eyes.311.svg"
+  },
+  {
+   "id": "eyes.312",
+   "title": "Metal Eyes",
+   "type": "Eye Mutation",
+   "description": "+1\n+1 Brace.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Brace",
+   "icon": "Mutation_eyes.312.svg"
+  },
+  {
+   "id": "eyes.313",
+   "title": "Isaac's Eyes",
+   "type": "Eye Mutation",
+   "description": "+1\nYour basic attack creates water tiles.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Water element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Change the tile under the target to \"WaterTile\"",
+   "icon": "Mutation_eyes.313.svg"
+  },
+  {
+   "id": "eyes.314",
+   "title": "Dead Eyes",
+   "type": "Eye Mutation",
+   "description": "When you are downed, spawn 3 Flies. +2 corpse health.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 hits to your corpse before it's destroyed\nWhen this unit is downed, spawn \"Charmed Fly Fly Melee Attacker. Flying.\" at their location (enemy corpses will be exploded immediately, while player corpses will be pushed to a nearby tile)\nWhen this unit is downed, spawn \"Charmed Fly Fly Melee Attacker. Flying.\" at their location (enemy corpses will be exploded immediately, while player corpses will be pushed to a nearby tile)\nWhen this unit is downed, spawn \"Charmed Fly Fly Melee Attacker. Flying.\" at their location (enemy corpses will be exploded immediately, while player corpses will be pushed to a nearby tile)",
+   "icon": "Mutation_eyes.314.svg"
+  },
+  {
+   "id": "eyes.315",
+   "title": "Kinetic Eyes",
+   "type": "Eye Mutation",
+   "description": "+1 Kinetic Spikes.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Kinetic Spikes",
+   "icon": "Mutation_eyes.315.svg"
+  },
+  {
+   "id": "eyes.316",
+   "title": "Lightning Eyes",
+   "type": "Eye Mutation",
+   "description": "15% chance to counter attack with Chain Lightning when you get hit.",
+   "effects": "After this unit takes non-status damage, 15% chance to automatically cast \"ChainLightning\" on the damage source if in range of the reaction spell and not stunned",
+   "icon": "Mutation_eyes.316.svg"
+  },
+  {
+   "id": "eyes.317",
+   "title": "Dice Eyes",
+   "type": "Eye Mutation",
+   "description": "Gain a random stat up at the end of each turn.",
+   "effects": "At the end of this unit's turn, do the following for this unit:\n- Apply +1 random stat up (can split across different stats)",
+   "icon": "Mutation_eyes.317.svg"
+  },
+  {
+   "id": "eyes.318",
+   "title": "Goat Eyes",
+   "type": "Animal Eye Mutation",
+   "description": "You can see hidden things. +1 Knockback damage.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit can see hidden things\n- Apply +1 knockback damage",
+   "icon": "Mutation_eyes.318.svg"
+  },
+  {
+   "id": "eyes.319",
+   "title": "Horn Eyes",
+   "type": "Eye Mutation",
+   "description": "Blind. +1 Damage. +1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply Blind\n- Apply +1 Thorns\n- Apply +1 Damage Up",
+   "icon": "Mutation_eyes.319.svg"
+  },
+  {
+   "id": "eyes.324",
+   "title": "Treasure Eyes",
+   "type": "Eye Mutation",
+   "description": "Spawn 2 extra coins each battle.",
+   "effects": "On battle start, choose a random empty tile to spawn 2 Coin",
+   "icon": "Mutation_eyes.324.svg"
+  },
+  {
+   "id": "eyes.325",
+   "title": "Nail Eyes",
+   "type": "Eye Mutation",
+   "description": "Thorns 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_eyes.325.svg"
+  },
+  {
+   "id": "eyes.326",
+   "title": "4 Eyes",
+   "type": "Eye Mutation",
+   "description": "Gain 2 Charge each time you cast 4 spells.",
+   "effects": "Every 4 spell casts this unit makes, do the following for this unit:\n- Apply +2 Charge",
+   "icon": "Mutation_eyes.326.svg"
+  },
+  {
+   "id": "eyes.327",
+   "title": "Baby Blue Eyes",
+   "type": "Eye Mutation",
+   "description": "+2 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.327.svg"
+  },
+  {
+   "id": "eyes.328",
+   "title": "Bullseyes",
+   "type": "Animal Eye Mutation",
+   "description": "+10% crit chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +10% Crit Chance Up",
+   "icon": "Mutation_eyes.328.svg"
+  },
+  {
+   "id": "eyes.329",
+   "title": "Spinning Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack has a 15% chance to inflict Confusion.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 15% chance to apply +1 Confusion",
+   "icon": "Mutation_eyes.329.svg"
+  },
+  {
+   "id": "eyes.331",
+   "title": "Glassy Eyes",
+   "type": "Eye Mutation",
+   "description": "At the start of each battle, gain a random temporary pill if your trinket slot is empty.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Equip a random temporary item from the \"pills\" pool",
+   "icon": "Mutation_eyes.331.svg"
+  },
+  {
+   "id": "eyes.332",
+   "title": "Bleeding Eyes",
+   "type": "Eye Mutation",
+   "description": "Start each battle Bleeding. Gain 1 Charge each time you take damage.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bleed\nWhen this unit takes damage, do the following for this unit:\n- Apply +1 Charge",
+   "icon": "Mutation_eyes.332.svg"
+  },
+  {
+   "id": "eyes.333",
+   "title": "Huge Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack can't miss.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit's basic attack can't miss",
+   "icon": "Mutation_eyes.333.svg"
+  },
+  {
+   "id": "eyes.334",
+   "title": "Infested Eyes",
+   "type": "Eye Mutation",
+   "description": "Blind. Spawn a Flea when you take damage.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply -1 Blind\nWhen this unit takes damage, even if the damage was lethal, spawn 1 CharmedFlea",
+   "icon": "Mutation_eyes.334.svg"
+  },
+  {
+   "id": "eyes.335",
+   "title": "Fake Eyelashes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack has a 10% chance to Charm.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 10% chance to apply +1 Charmed",
+   "icon": "Mutation_eyes.335.svg"
+  },
+  {
+   "id": "eyes.336",
+   "title": "Bolt Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack is electric element and has a 5% chance to stun.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Electric element to basic attacks\nThis unit's basic attacks do the following for the target:\n- 5% chance to apply +1 Stun",
+   "icon": "Mutation_eyes.336.svg"
+  },
+  {
+   "id": "eyes.337",
+   "title": "Ice Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack is ice element and inflicts Slow.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Ice element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Apply +1 Slow",
+   "icon": "Mutation_eyes.337.svg"
+  },
+  {
+   "id": "eyes.338",
+   "title": "Fire Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack inflicts Burn.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Fire element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Apply +1 Burn",
+   "icon": "Mutation_eyes.338.svg"
+  },
+  {
+   "id": "eyes.339",
+   "title": "Water Eyes",
+   "type": "Eye Mutation",
+   "description": "+1 Health Regeneration while wet. Your basic attack is water element.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Water element to basic attacks\nWhile this unit is \"affected\" by Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 Health Regen",
+   "icon": "Mutation_eyes.339.svg"
+  },
+  {
+   "id": "eyes.340",
+   "title": "Leech Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack inflicts Leech.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Leeches to the target (the applier drains +1 health at the end of the applier's turn)",
+   "icon": "Mutation_eyes.340.svg"
+  },
+  {
+   "id": "eyes.341",
+   "title": "Flower Eyes",
+   "type": "Eye Mutation",
+   "description": "Gain Charge 1 the first time you move each turn.",
+   "effects": "When this unit ends its movement, do the following for this unit:\n- Once per turn:\n- Apply +1 Charge",
+   "icon": "Mutation_eyes.341.svg"
+  },
+  {
+   "id": "eyes.342",
+   "title": "Poison Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack inflicts Poison 1. Start each battle Poisoned.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Poison\nThis unit's basic attacks do the following for the target:\n- Apply +1 Poison",
+   "icon": "Mutation_eyes.342.svg"
+  },
+  {
+   "id": "eyes.343",
+   "title": "Clown Eyes",
+   "type": "Eye Mutation",
+   "description": "You have a 5% chance to inflict Fear on units who contact or attack you.",
+   "effects": "When this unit receives contact or is attacked, do the following for the target:\n- 5% chance to apply +1 Fear",
+   "icon": "Mutation_eyes.343.svg"
+  },
+  {
+   "id": "eyes.344",
+   "title": "Sun Eyes",
+   "type": "Eye Mutation",
+   "description": "You have a 10% chance to Blind units who contact or attack you.",
+   "effects": "When this unit receives contact or is attacked, do the following for the target:\n- 10% chance to apply +1 Blind",
+   "icon": "Mutation_eyes.344.svg"
+  },
+  {
+   "id": "eyes.345",
+   "title": "Evil Eyes",
+   "type": "Eye Mutation",
+   "description": "Inflict a random debuff on units who contact you.",
+   "effects": "When this unit receives contact in melee range, do the following for the target:\n- Do a random one of the following:\n- Apply +1 Poison\n- Apply +1 Burn\n- Apply +1 Bleed\n- Apply +1 Blind\n- Apply +1 Weakness",
+   "icon": "Mutation_eyes.345.svg"
+  },
+  {
+   "id": "eyes.346",
+   "title": "Rock Eyes",
+   "type": "Eye Mutation",
+   "description": "+1\nSpawn a rock when damaged.",
+   "effects": "When this unit takes damage, even if the damage was lethal, spawn 1 SmallRock",
+   "icon": "Mutation_eyes.346.svg"
+  },
+  {
+   "id": "eyes.347",
+   "title": "Hypno Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack has a 15% chance to inflict Confusion 2.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 15% chance to apply +2 Confusion",
+   "icon": "Mutation_eyes.347.svg"
+  },
+  {
+   "id": "eyes.348",
+   "title": "Pop Eyes",
+   "type": "Eye Mutation",
+   "description": "+1 range, +1 reach.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 bonus range\n- Apply +1 bonus melee range",
+   "icon": "Mutation_eyes.348.svg"
+  },
+  {
+   "id": "eyes.349",
+   "title": "8 Eyes",
+   "type": "Eye Mutation",
+   "description": "Emit 4 Sparkles each time you cast 8 spells.",
+   "effects": "Every 8 spell casts this unit makes, do the following for this unit:\n- Emit 4 Sparkles",
+   "icon": "Mutation_eyes.349.svg"
+  },
+  {
+   "id": "eyes.351",
+   "title": "Chaos Eyes",
+   "type": "Eye Mutation",
+   "description": "Your bonus ability is a different random spell each battle.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit conjures a random spell from any random class as a bonus ability",
+   "icon": "Mutation_eyes.351.svg"
+  },
+  {
+   "id": "eyes.352",
+   "title": "Runny Mascara",
+   "type": "Eye Mutation",
+   "description": "You have All Stats Up while Bleeding.",
+   "effects": "While this unit has the Bleed status, do the following for this unit:\n- Apply +1 All Stats Up",
+   "icon": "Mutation_eyes.352.svg"
+  },
+  {
+   "id": "eyes.353",
+   "title": "Chameleon Eyes",
+   "type": "Animal Eye Mutation",
+   "description": "You take no extra damage from backstabs.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Backstabs against this unit do not receive the backstab damage multiplier",
+   "icon": "Mutation_eyes.353.svg"
+  },
+  {
+   "id": "eyes.400",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyes.400.svg"
+  },
+  {
+   "id": "eyes.401",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyes.401.svg"
+  },
+  {
+   "id": "eyes.402",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.402.svg"
+  },
+  {
+   "id": "eyes.403",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyes.403.svg"
+  },
+  {
+   "id": "eyes.404",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyes.404.svg"
+  },
+  {
+   "id": "eyes.405",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyes.405.svg"
+  },
+  {
+   "id": "eyes.406",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyes.406.svg"
+  },
+  {
+   "id": "eyes.407",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyes.407.svg"
+  },
+  {
+   "id": "eyes.408",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.408.svg"
+  },
+  {
+   "id": "eyes.409",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyes.409.svg"
+  },
+  {
+   "id": "eyes.410",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyes.410.svg"
+  },
+  {
+   "id": "eyes.411",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyes.411.svg"
+  },
+  {
+   "id": "eyes.412",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyes.412.svg"
+  },
+  {
+   "id": "eyes.413",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyes.413.svg"
+  },
+  {
+   "id": "eyes.414",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.414.svg"
+  },
+  {
+   "id": "eyes.415",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyes.415.svg"
+  },
+  {
+   "id": "eyes.416",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyes.416.svg"
+  },
+  {
+   "id": "eyes.417",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyes.417.svg"
+  },
+  {
+   "id": "eyes.418",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyes.418.svg"
+  },
+  {
+   "id": "eyes.419",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyes.419.svg"
+  },
+  {
+   "id": "eyes.420",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.420.svg"
+  },
+  {
+   "id": "eyes.421",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyes.421.svg"
+  },
+  {
+   "id": "eyes.422",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyes.422.svg"
+  },
+  {
+   "id": "eyes.423",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyes.423.svg"
+  },
+  {
+   "id": "eyes.424",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyes.424.svg"
+  },
+  {
+   "id": "eyes.425",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyes.425.svg"
+  },
+  {
+   "id": "eyes.426",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyes.426.svg"
+  },
+  {
+   "id": "eyes.427",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyes.427.svg"
+  },
+  {
+   "id": "eyes.428",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyes.428.svg"
+  },
+  {
+   "id": "eyes.429",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyes.429.svg"
+  },
+  {
+   "id": "eyes.430",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyes.430.svg"
+  },
+  {
+   "id": "eyes.431",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyes.431.svg"
+  },
+  {
+   "id": "eyes.432",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.432.svg"
+  },
+  {
+   "id": "eyes.433",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyes.433.svg"
+  },
+  {
+   "id": "eyes.434",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_eyes.434.svg"
+  },
+  {
+   "id": "eyes.435",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyes.435.svg"
+  },
+  {
+   "id": "eyes.436",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyes.436.svg"
+  },
+  {
+   "id": "eyes.437",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_eyes.437.svg"
+  },
+  {
+   "id": "eyes.438",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.438.svg"
+  },
+  {
+   "id": "eyes.439",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyes.439.svg"
+  },
+  {
+   "id": "eyes.440",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_eyes.440.svg"
+  },
+  {
+   "id": "eyes.441",
+   "title": "",
+   "type": "Common Eye Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_eyes.441.svg"
+  },
+  {
+   "id": "eyes.442",
+   "title": "Mirror Eyes",
+   "type": "Eye Mutation",
+   "description": "10% chance to reflect projectiles.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +10% chance to reflect projectiles",
+   "icon": "Mutation_eyes.442.svg"
+  },
+  {
+   "id": "eyes.700",
+   "title": "Graves Disease",
+   "type": "Eye Birth Defect",
+   "description": "-2 Charisma",
+   "effects": "",
+   "icon": "Mutation_eyes.700.svg"
+  },
+  {
+   "id": "eyes.701",
+   "title": "Anophthalmia",
+   "type": "Eye Birth Defect",
+   "description": "-2 Luck",
+   "effects": "",
+   "icon": "Mutation_eyes.701.svg"
+  },
+  {
+   "id": "eyes.702",
+   "title": "Human Eyes",
+   "type": "Eye Mutation",
+   "description": "+1 Charisma, +1 Intelligence, -2 Constitution",
+   "effects": "",
+   "icon": "Mutation_eyes.702.svg"
+  },
+  {
+   "id": "eyes.704",
+   "title": "Lazy Eye",
+   "type": "Eye Birth Defect",
+   "description": "10% miss chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +10% Miss Chance",
+   "icon": "Mutation_eyes.704.svg"
+  },
+  {
+   "id": "eyes.705",
+   "title": "Cataracts",
+   "type": "Eye Birth Defect",
+   "description": "Gain 5% miss chance every turn.",
+   "effects": "At the start of this unit's turn, do the following for this unit:\n- Apply +5% Miss Chance",
+   "icon": "Mutation_eyes.705.svg"
+  },
+  {
+   "id": "eyes.706",
+   "title": "Crossed Eyes",
+   "type": "Eye Birth Defect",
+   "description": "Start each battle with Confusion 2.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 Confusion",
+   "icon": "Mutation_eyes.706.svg"
+  },
+  {
+   "id": "eyes.750",
+   "title": "Glasses",
+   "type": "Eye Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_eyes.750.svg"
+  },
+  {
+   "id": "eyes.754",
+   "title": "Alien Eyes",
+   "type": "Eye Mutation",
+   "description": "+1 range. Your basic attack is gravity element.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 bonus range\n- Add the Gravity element to basic attacks",
+   "icon": "Mutation_eyes.754.svg"
+  },
+  {
+   "id": "eyes.755",
+   "title": "Mothman Eyes",
+   "type": "Eye Mutation",
+   "description": "Your basic attack has a 15% chance to inflict Fear.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 15% chance to apply +1 Fear",
+   "icon": "Mutation_eyes.755.svg"
+  },
+  {
+   "id": "eyes.900",
+   "title": "Slender",
+   "type": "Eye Mutation",
+   "description": "Your basic attack has a 10% chance to inflict Slow.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 10% chance to apply +1 Slow",
+   "icon": "Mutation_eyes.900.svg"
+  },
+  {
+   "id": "head.300",
+   "title": "Square Head",
+   "type": "Head Mutation",
+   "description": "+1 Constitution",
+   "effects": "",
+   "icon": "Mutation_head.300.svg"
+  },
+  {
+   "id": "head.301",
+   "title": "Sloth Head",
+   "type": "Head Mutation",
+   "description": "+1 Strength, +1 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.301.svg"
+  },
+  {
+   "id": "head.302",
+   "title": "Big Brain",
+   "type": "Head Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_head.302.svg"
+  },
+  {
+   "id": "head.303",
+   "title": "Spike Head",
+   "type": "Head Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_head.303.svg"
+  },
+  {
+   "id": "head.304",
+   "title": "Sludge Head",
+   "type": "Melted Head Mutation",
+   "description": "-2 Charisma\n+2 Health Regeneration +5% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 Health Regen\n- Apply +5% Dodge Chance",
+   "icon": "Mutation_head.304.svg"
+  },
+  {
+   "id": "head.305",
+   "title": "Strong Chin",
+   "type": "Head Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_head.305.svg"
+  },
+  {
+   "id": "head.306",
+   "title": "Alien Head",
+   "type": "Head Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.306.svg"
+  },
+  {
+   "id": "head.307",
+   "title": "Bump-on-the-head Head",
+   "type": "Head Mutation",
+   "description": "+1\nUnits that contact you get knocked back 1 tile.",
+   "effects": "When this unit receives contact in melee range, apply 1 knockback",
+   "icon": "Mutation_head.307.svg"
+  },
+  {
+   "id": "head.308",
+   "title": "Frog Head",
+   "type": "Animal Head Mutation",
+   "description": "+1 movement range while wet. Water does not slow movement.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit ignores the movement penalty for water tiles\nWhile this unit is \"affected\" by Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 movement range",
+   "icon": "Mutation_head.308.svg"
+  },
+  {
+   "id": "head.309",
+   "title": "Half Moon",
+   "type": "Head Mutation",
+   "description": "+2 Luck",
+   "effects": "",
+   "icon": "Mutation_head.309.svg"
+  },
+  {
+   "id": "head.310",
+   "title": "Rock Head",
+   "type": "Head Mutation",
+   "description": "+2",
+   "effects": "",
+   "icon": "Mutation_head.310.svg"
+  },
+  {
+   "id": "head.311",
+   "title": "Money Bag Head",
+   "type": "Head Mutation",
+   "description": "Spawn a coin when you take damage.",
+   "effects": "When this unit takes damage, even if the damage was lethal, spawn 1 Coin",
+   "icon": "Mutation_head.311.svg"
+  },
+  {
+   "id": "head.312",
+   "title": "Magnet Head",
+   "type": "Head Mutation",
+   "description": "Your basic attack pulls units towards you.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit's basic attack will apply +1 pull",
+   "icon": "Mutation_head.312.svg"
+  },
+  {
+   "id": "head.313",
+   "title": "Poop Head",
+   "type": "Head Mutation",
+   "description": "Poop when you take damage.",
+   "effects": "When hit, spawn \"Poop\"",
+   "icon": "Mutation_head.313.svg"
+  },
+  {
+   "id": "head.314",
+   "title": "Pyramid Head",
+   "type": "Head Mutation",
+   "description": "Gain +1 Intelligence at the end of each turn.",
+   "effects": "At the end of this unit's turn, do the following for this unit:\n- Apply +1 Intelligence Up",
+   "icon": "Mutation_head.314.svg"
+  },
+  {
+   "id": "head.315",
+   "title": "Upside Down Head",
+   "type": "Head Mutation",
+   "description": "At the start of each battle, swap your highest and lowest stats.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Swap this unit's highest and lowest stats",
+   "icon": "Mutation_head.315.svg"
+  },
+  {
+   "id": "head.316",
+   "title": "Fractured Head",
+   "type": "Head Mutation",
+   "description": "When you take damage from an attack, gain a random buff.",
+   "effects": "When this unit takes damage from an ability, do the following for this unit:\n- Do a random one of the following:\n- Apply +1 Charge\n- Apply +1 Thorns\n- When this unit takes damage, emit a Sparkle\n- Apply +1 Diminishing Health Regen\n- Apply +1 Random Stat Up\n- Apply +1 Shield",
+   "icon": "Mutation_head.316.svg"
+  },
+  {
+   "id": "head.317",
+   "title": "Sideways Head",
+   "type": "Head Mutation",
+   "description": "+5% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +5% Dodge Chance",
+   "icon": "Mutation_head.317.svg"
+  },
+  {
+   "id": "head.318",
+   "title": "Long Neck",
+   "type": "Head Mutation",
+   "description": "+1 range.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 bonus range",
+   "icon": "Mutation_head.318.svg"
+  },
+  {
+   "id": "head.319",
+   "title": "Exposed Brain",
+   "type": "Head Mutation",
+   "description": "Gain +1 Intelligence permanently at the end of each battle. Start each battle with Bruise 2.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 Bruise\nOn battle end, if not dead, do the following for this unit:\n- Apply +1 Intelligence permanently",
+   "icon": "Mutation_head.319.svg"
+  },
+  {
+   "id": "head.320",
+   "title": "Bubble Head",
+   "type": "Head Mutation",
+   "description": "Your basic attack has +2 Knockback.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +2 Knockback",
+   "icon": "Mutation_head.320.svg"
+  },
+  {
+   "id": "head.321",
+   "title": "Button Head",
+   "type": "Head Mutation",
+   "description": "You have a 5% chance to inflict Fear on units who contact or attack you.",
+   "effects": "When this unit receives contact or is attacked, do the following for the target:\n- 5% chance to apply +1 Fear",
+   "icon": "Mutation_head.321.svg"
+  },
+  {
+   "id": "head.400",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_head.400.svg"
+  },
+  {
+   "id": "head.401",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_head.401.svg"
+  },
+  {
+   "id": "head.402",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_head.402.svg"
+  },
+  {
+   "id": "head.403",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.403.svg"
+  },
+  {
+   "id": "head.404",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_head.404.svg"
+  },
+  {
+   "id": "head.405",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_head.405.svg"
+  },
+  {
+   "id": "head.406",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_head.406.svg"
+  },
+  {
+   "id": "head.407",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_head.407.svg"
+  },
+  {
+   "id": "head.408",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_head.408.svg"
+  },
+  {
+   "id": "head.409",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.409.svg"
+  },
+  {
+   "id": "head.410",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_head.410.svg"
+  },
+  {
+   "id": "head.411",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_head.411.svg"
+  },
+  {
+   "id": "head.412",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_head.412.svg"
+  },
+  {
+   "id": "head.413",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_head.413.svg"
+  },
+  {
+   "id": "head.414",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_head.414.svg"
+  },
+  {
+   "id": "head.415",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.415.svg"
+  },
+  {
+   "id": "head.416",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_head.416.svg"
+  },
+  {
+   "id": "head.417",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_head.417.svg"
+  },
+  {
+   "id": "head.418",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_head.418.svg"
+  },
+  {
+   "id": "head.419",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_head.419.svg"
+  },
+  {
+   "id": "head.420",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_head.420.svg"
+  },
+  {
+   "id": "head.421",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_head.421.svg"
+  },
+  {
+   "id": "head.422",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_head.422.svg"
+  },
+  {
+   "id": "head.423",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_head.423.svg"
+  },
+  {
+   "id": "head.424",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_head.424.svg"
+  },
+  {
+   "id": "head.425",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_head.425.svg"
+  },
+  {
+   "id": "head.426",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_head.426.svg"
+  },
+  {
+   "id": "head.427",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.427.svg"
+  },
+  {
+   "id": "head.428",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_head.428.svg"
+  },
+  {
+   "id": "head.429",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_head.429.svg"
+  },
+  {
+   "id": "head.430",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_head.430.svg"
+  },
+  {
+   "id": "head.431",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_head.431.svg"
+  },
+  {
+   "id": "head.432",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_head.432.svg"
+  },
+  {
+   "id": "head.433",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.433.svg"
+  },
+  {
+   "id": "head.434",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_head.434.svg"
+  },
+  {
+   "id": "head.435",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_head.435.svg"
+  },
+  {
+   "id": "head.436",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_head.436.svg"
+  },
+  {
+   "id": "head.437",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_head.437.svg"
+  },
+  {
+   "id": "head.438",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_head.438.svg"
+  },
+  {
+   "id": "head.439",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.439.svg"
+  },
+  {
+   "id": "head.440",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_head.440.svg"
+  },
+  {
+   "id": "head.441",
+   "title": "",
+   "type": "Common Head Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_head.441.svg"
+  },
+  {
+   "id": "head.700",
+   "title": "Microcephaly",
+   "type": "Head Birth Defect",
+   "description": "-2 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.700.svg"
+  },
+  {
+   "id": "head.701",
+   "title": "Macrocephaly",
+   "type": "Head Birth Defect",
+   "description": "-2 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.701.svg"
+  },
+  {
+   "id": "head.702",
+   "title": "Concave Head",
+   "type": "Head Birth Defect",
+   "description": "-1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.702.svg"
+  },
+  {
+   "id": "head.703",
+   "title": "Soft Spot",
+   "type": "Head Birth Defect",
+   "description": "Attacks against your face count as backstabs.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Attacks from the front against this unit now also count as backstabs in addition to those from the back (backstab immunity will prevent both)",
+   "icon": "Mutation_head.703.svg"
+  },
+  {
+   "id": "head.704",
+   "title": "Cyclops",
+   "type": "Head Birth Defect",
+   "description": "20% miss chance.\nYour spells cost 1 less mana.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +20% Miss Chance\n- Reduce mana costs by 1",
+   "icon": "Mutation_head.704.svg"
+  },
+  {
+   "id": "head.705",
+   "title": "Conjoined Head",
+   "type": "Head Birth Defect",
+   "description": "+2 Intelligence, -3 Charisma",
+   "effects": "",
+   "icon": "Mutation_head.705.svg"
+  },
+  {
+   "id": "head.706",
+   "title": "Sloth",
+   "type": "Head Birth Defect",
+   "description": "-3 Charisma\nBrace 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Brace",
+   "icon": "Mutation_head.706.svg"
+  },
+  {
+   "id": "head.750",
+   "title": "Spiked Head",
+   "type": "Head Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_head.750.svg"
+  },
+  {
+   "id": "head.753",
+   "title": "Tyler Head",
+   "type": "Head Mutation",
+   "description": "You are immune to ice.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add immunity to the Ice element\n- Apply immunity to Freeze and Slow",
+   "icon": "Mutation_head.753.svg"
+  },
+  {
+   "id": "head.757",
+   "title": "Grey Head",
+   "type": "Head Mutation",
+   "description": "+2 Intelligence",
+   "effects": "",
+   "icon": "Mutation_head.757.svg"
+  },
+  {
+   "id": "head.759",
+   "title": "Human Head",
+   "type": "Head Mutation",
+   "description": "-2 Speed\nTake an extra turn at the start of the battle.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 extra turn at the start of the battle",
+   "icon": "Mutation_head.759.svg"
+  },
+  {
+   "id": "head.900",
+   "title": "Slender",
+   "type": "Head Mutation",
+   "description": "-1 Charisma\n+1 range. +1 reach.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 bonus range\n- Apply +1 bonus melee range",
+   "icon": "Mutation_head.900.svg"
+  },
+  {
+   "id": "leg1.-2",
+   "title": "No left leg",
+   "type": "Limb Mutation",
+   "description": "",
+   "effects": "Removes any other mutation on the leg.",
+   "icon": null
+  },
+  {
+   "id": "leg2.-2",
+   "title": "No left leg",
+   "type": "Limb Mutation",
+   "description": "",
+   "effects": "Removes any other mutation on the leg.",
+   "icon": null
+  },
+  {
+   "id": "legs.300",
+   "title": "Frog Legs",
+   "type": "Animal Limb Mutation",
+   "description": "+1 movement range while wet. Water does not slow movement.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit ignores the movement penalty for water tiles\nWhile this unit is \"affected\" by Water element (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 movement range",
+   "icon": "Mutation_legs.300.svg"
+  },
+  {
+   "id": "legs.301",
+   "title": "Hooves",
+   "type": "Animal Limb Mutation",
+   "description": "+1 Speed\nYour basic attack has a 5% chance to Stun.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 5% chance to apply +1 Stun",
+   "icon": "Mutation_legs.301.svg"
+  },
+  {
+   "id": "legs.302",
+   "title": "Tentacles",
+   "type": "Animal Limb Mutation",
+   "description": "Knockback immunity.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply knockback immunity",
+   "icon": "Mutation_legs.302.svg"
+  },
+  {
+   "id": "legs.303",
+   "title": "Lobster Claws",
+   "type": "Animal Limb Mutation",
+   "description": "Your basic attack has a 5% chance to Immobilize.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 5% chance to apply +1 Immobile",
+   "icon": "Mutation_legs.303.svg"
+  },
+  {
+   "id": "legs.304",
+   "title": "Muscular Legs",
+   "type": "Limb Mutation",
+   "description": "+1 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.304.svg"
+  },
+  {
+   "id": "legs.305",
+   "title": "Tar Legs",
+   "type": "Limb Mutation",
+   "description": "+5% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +5% Dodge Chance",
+   "icon": "Mutation_legs.305.svg"
+  },
+  {
+   "id": "legs.306",
+   "title": "Bug Legs",
+   "type": "Animal Limb Mutation",
+   "description": "+1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_legs.306.svg"
+  },
+  {
+   "id": "legs.307",
+   "title": "Tires",
+   "type": "Limb Mutation",
+   "description": "+1 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.307.svg"
+  },
+  {
+   "id": "legs.308",
+   "title": "Human Legs",
+   "type": "Limb Mutation",
+   "description": "+1 Luck",
+   "effects": "",
+   "icon": "Mutation_legs.308.svg"
+  },
+  {
+   "id": "legs.309",
+   "title": "Knife Legs",
+   "type": "Limb Mutation",
+   "description": "Your basic attack has a 10% chance to inflict Bleed 3.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 10% chance to apply +3 Bleed",
+   "icon": "Mutation_legs.309.svg"
+  },
+  {
+   "id": "legs.310",
+   "title": "Spring Legs",
+   "type": "Limb Mutation",
+   "description": "Your movement action is a jump.",
+   "effects": "",
+   "icon": "Mutation_legs.310.svg"
+  },
+  {
+   "id": "legs.311",
+   "title": "Square Legs",
+   "type": "Limb Mutation",
+   "description": "+1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.311.svg"
+  },
+  {
+   "id": "legs.312",
+   "title": "Balloon Legs",
+   "type": "Limb Mutation",
+   "description": "Your basic attack has +1 Knockback.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Knockback",
+   "icon": "Mutation_legs.312.svg"
+  },
+  {
+   "id": "legs.313",
+   "title": "Snake Legs",
+   "type": "Limb Mutation",
+   "description": "+1 reach.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 bonus melee range",
+   "icon": "Mutation_legs.313.svg"
+  },
+  {
+   "id": "legs.314",
+   "title": "Weapon Legs",
+   "type": "Limb Mutation",
+   "description": "Your weapons have +1 Damage.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit's weapons gain +1 damage",
+   "icon": "Mutation_legs.314.svg"
+  },
+  {
+   "id": "legs.315",
+   "title": "Socks",
+   "type": "Limb Mutation",
+   "description": "Ice immunity.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add immunity to the Ice element",
+   "icon": "Mutation_legs.315.svg"
+  },
+  {
+   "id": "legs.317",
+   "title": "Raptor Claws",
+   "type": "Limb Mutation",
+   "description": "Your basic attack inflicts Bleed 1 if it's melee.",
+   "effects": "This unit's melee basic attacks do the following for the target:\n- Apply +1 Bleed",
+   "icon": "Mutation_legs.317.svg"
+  },
+  {
+   "id": "legs.318",
+   "title": "Stigmata",
+   "type": "Limb Mutation",
+   "description": "+1",
+   "effects": "",
+   "icon": "Mutation_legs.318.svg"
+  },
+  {
+   "id": "legs.319",
+   "title": "High Tops",
+   "type": "Limb Mutation",
+   "description": "10% chance to gain a bonus move each turn.",
+   "effects": "At the start of this unit's turn, do the following for this unit:\n- 10% chance to apply +1 Bonus Move",
+   "icon": "Mutation_legs.319.svg"
+  },
+  {
+   "id": "legs.320",
+   "title": "Talons",
+   "type": "Limb Mutation",
+   "description": "10% chance to gain a bonus attack each turn.",
+   "effects": "At the start of this unit's turn, do the following for this unit:\n- 10% chance to apply +1 Bonus Attack",
+   "icon": "Mutation_legs.320.svg"
+  },
+  {
+   "id": "legs.321",
+   "title": "Flippers",
+   "type": "Limb Mutation",
+   "description": "Moving through water tiles costs 0 movement.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- \"Water\" tiles have no movement range cost",
+   "icon": "Mutation_legs.321.svg"
+  },
+  {
+   "id": "legs.322",
+   "title": "Bear Claws",
+   "type": "Limb Mutation",
+   "description": "+1 Strength, +1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.322.svg"
+  },
+  {
+   "id": "legs.323",
+   "title": "Beetle Feet",
+   "type": "Limb Mutation",
+   "description": "+2 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.323.svg"
+  },
+  {
+   "id": "legs.324",
+   "title": "Branches",
+   "type": "Limb Mutation",
+   "description": "+1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.324.svg"
+  },
+  {
+   "id": "legs.325",
+   "title": "Extra Head",
+   "type": "Extra Limb Mutation",
+   "description": "-2 Speed\nCollarless spells cost -1 mana.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Reduce mana costs for Collarless abilities by 1",
+   "icon": "Mutation_legs.325.svg"
+  },
+  {
+   "id": "legs.326",
+   "title": "Needle Feet",
+   "type": "Limb Mutation",
+   "description": "Your basic attack inflicts a random debuff.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Do a random one of the following:\n- Apply +1 Poison\n- Apply +1 Burn\n- Apply +1 Bleed\n- Apply +1 Blind\n- Apply +1 Weakness",
+   "icon": "Mutation_legs.326.svg"
+  },
+  {
+   "id": "legs.327",
+   "title": "Mushroom Legs",
+   "type": "Limb Mutation",
+   "description": "Gain 2 random stat ups and 1 random stat down at the end of each turn.",
+   "effects": "At the end of this unit's turn, do the following for this unit:\n- Apply +2 Random Stat Ups (can split across different stats)\n- Apply +1 Random Stat Down (can split across different stats)",
+   "icon": "Mutation_legs.327.svg"
+  },
+  {
+   "id": "legs.328",
+   "title": "Glass Bottle",
+   "type": "Limb Mutation",
+   "description": "Equip a temporary Bottles weapon at the start of the battle.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Equip a temporary Bottles Bottles (Weapon) Use: A lobbed attack that spawns a glass tile.",
+   "icon": "Mutation_legs.328.svg"
+  },
+  {
+   "id": "legs.329",
+   "title": "Water Bottle",
+   "type": "Limb Mutation",
+   "description": "Equip a temporary Water Bottle trinket at the start of the battle.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Equip a temporary Water Bottle Water Bottle (Trinket) Use: Heal +5 HP and gain Heatwave immunity.\nRefills when affected by Water Element effects.",
+   "icon": "Mutation_legs.329.svg"
+  },
+  {
+   "id": "legs.330",
+   "title": "Sausage Legs",
+   "type": "Limb Mutation",
+   "description": "+1 Health Regeneration",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Health Regen",
+   "icon": "Mutation_legs.330.svg"
+  },
+  {
+   "id": "legs.331",
+   "title": "Jet Legs",
+   "type": "Limb Mutation",
+   "description": "+1 movement range. Your movement action is a jump.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 movement range",
+   "icon": "Mutation_legs.331.svg"
+  },
+  {
+   "id": "legs.332",
+   "title": "Peg Legs",
+   "type": "Limb Mutation",
+   "description": "-1 Speed\n50% chance to spawn a pickup on an adjacent tile when you end your turn.",
+   "effects": "On each of this unit's turns, 50% chance (good roll) to spawn 1 RandomPickup",
+   "icon": "Mutation_legs.332.svg"
+  },
+  {
+   "id": "legs.333",
+   "title": "Wing Legs",
+   "type": "Limb Mutation",
+   "description": "Your basic attack has wind element and +1 Knockback.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Wind element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Apply +1 Knockback\n- Spawn a \"fx_windSpell\" particle at the target tile",
+   "icon": "Mutation_legs.333.svg"
+  },
+  {
+   "id": "legs.334",
+   "title": "Ape Legs",
+   "type": "Limb Mutation",
+   "description": "+1 Strength\nYour basic attack tosses units into the air if it's melee.",
+   "effects": "This unit's melee basic attacks do the following for the target:\n- Lob the target 3 distance away from the target tile, flying over objects, and if the landing spot is not empty, deal 3 knockback damage to itself and anything else there, then bounce to a nearby empty tile",
+   "icon": "Mutation_legs.334.svg"
+  },
+  {
+   "id": "legs.335",
+   "title": "Glass Legs",
+   "type": "Limb Mutation",
+   "description": "+1 Bleed Thorns. Spawn glass when you take damage.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bleed Thorns\nWhen this unit takes damage, do the following for this unit:\n- Change the tile under this unit to \"GlassTile\"",
+   "icon": "Mutation_legs.335.svg"
+  },
+  {
+   "id": "legs.336",
+   "title": "Crow Legs",
+   "type": "Bird Limb Mutation",
+   "description": "Your basic attack inflicts Soul Link.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply Soul Link to the target",
+   "icon": "Mutation_legs.336.svg"
+  },
+  {
+   "id": "legs.337",
+   "title": "Floating Legs",
+   "type": "Limb Mutation",
+   "description": "You are immune to tile effects.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit is immune to any tile effects",
+   "icon": "Mutation_legs.337.svg"
+  },
+  {
+   "id": "legs.339",
+   "title": "Wing Legs 2",
+   "type": "Bird Limb Mutation",
+   "description": "+2 Speed\nFly away when hit.",
+   "effects": "After taking damage, use the \"BasicJump\" ability to move away from the attacker",
+   "icon": "Mutation_legs.339.svg"
+  },
+  {
+   "id": "legs.340",
+   "title": "Lucky Toe",
+   "type": "Limb Mutation",
+   "description": "When you take damage, gain +1 Luck.",
+   "effects": "When this unit takes damage, do the following for this unit:\n- Apply +1 Luck Up",
+   "icon": "Mutation_legs.340.svg"
+  },
+  {
+   "id": "legs.341",
+   "title": "Whip Legs",
+   "type": "Limb Mutation",
+   "description": "Your basic attack makes units face away from you.",
+   "effects": "This unit's basic attacks do the following for the target:\n- The target turns to face away from its attacker",
+   "icon": "Mutation_legs.341.svg"
+  },
+  {
+   "id": "legs.343",
+   "title": "Kitten Legs",
+   "type": "Limb Mutation",
+   "description": "Spawn a Charmed Kitten familiar when you get downed.",
+   "effects": "When this unit is downed, spawn \"Charmed Kitten Kitten Runs away when damaged.\" at their location (enemy corpses will be exploded immediately, while player corpses will be pushed to a nearby tile)",
+   "icon": "Mutation_legs.343.svg"
+  },
+  {
+   "id": "legs.400",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.400.svg"
+  },
+  {
+   "id": "legs.401",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_legs.401.svg"
+  },
+  {
+   "id": "legs.402",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_legs.402.svg"
+  },
+  {
+   "id": "legs.403",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_legs.403.svg"
+  },
+  {
+   "id": "legs.404",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.404.svg"
+  },
+  {
+   "id": "legs.405",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_legs.405.svg"
+  },
+  {
+   "id": "legs.406",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.406.svg"
+  },
+  {
+   "id": "legs.407",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_legs.407.svg"
+  },
+  {
+   "id": "legs.408",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_legs.408.svg"
+  },
+  {
+   "id": "legs.409",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_legs.409.svg"
+  },
+  {
+   "id": "legs.410",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.410.svg"
+  },
+  {
+   "id": "legs.411",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_legs.411.svg"
+  },
+  {
+   "id": "legs.412",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.412.svg"
+  },
+  {
+   "id": "legs.413",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.413.svg"
+  },
+  {
+   "id": "legs.414",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_legs.414.svg"
+  },
+  {
+   "id": "legs.415",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_legs.415.svg"
+  },
+  {
+   "id": "legs.416",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.416.svg"
+  },
+  {
+   "id": "legs.417",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_legs.417.svg"
+  },
+  {
+   "id": "legs.418",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.418.svg"
+  },
+  {
+   "id": "legs.419",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_legs.419.svg"
+  },
+  {
+   "id": "legs.420",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_legs.420.svg"
+  },
+  {
+   "id": "legs.421",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.421.svg"
+  },
+  {
+   "id": "legs.422",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.422.svg"
+  },
+  {
+   "id": "legs.423",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_legs.423.svg"
+  },
+  {
+   "id": "legs.424",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.424.svg"
+  },
+  {
+   "id": "legs.425",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_legs.425.svg"
+  },
+  {
+   "id": "legs.426",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.426.svg"
+  },
+  {
+   "id": "legs.427",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_legs.427.svg"
+  },
+  {
+   "id": "legs.428",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.428.svg"
+  },
+  {
+   "id": "legs.429",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_legs.429.svg"
+  },
+  {
+   "id": "legs.430",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.430.svg"
+  },
+  {
+   "id": "legs.431",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_legs.431.svg"
+  },
+  {
+   "id": "legs.432",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_legs.432.svg"
+  },
+  {
+   "id": "legs.433",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_legs.433.svg"
+  },
+  {
+   "id": "legs.434",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.434.svg"
+  },
+  {
+   "id": "legs.435",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.435.svg"
+  },
+  {
+   "id": "legs.436",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_legs.436.svg"
+  },
+  {
+   "id": "legs.437",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.437.svg"
+  },
+  {
+   "id": "legs.438",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_legs.438.svg"
+  },
+  {
+   "id": "legs.439",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_legs.439.svg"
+  },
+  {
+   "id": "legs.440",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_legs.440.svg"
+  },
+  {
+   "id": "legs.441",
+   "title": "",
+   "type": "Common Limb Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_legs.441.svg"
+  },
+  {
+   "id": "legs.700",
+   "title": "Lobster Claw",
+   "type": "Limb Birth Defect",
+   "description": "-2 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.700.svg"
+  },
+  {
+   "id": "legs.701",
+   "title": "Extra Finger",
+   "type": "Limb Birth Defect",
+   "description": "-2 Dexterity",
+   "effects": "",
+   "icon": "Mutation_legs.701.svg"
+  },
+  {
+   "id": "legs.702",
+   "title": "Club Foot",
+   "type": "Limb Birth Defect",
+   "description": "-2 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.702.svg"
+  },
+  {
+   "id": "legs.703",
+   "title": "Syndactyly",
+   "type": "Limb Birth Defect",
+   "description": "-2 Speed\nWater does not slow movement.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit ignores the movement penalty for water tiles",
+   "icon": "Mutation_legs.703.svg"
+  },
+  {
+   "id": "legs.704",
+   "title": "Curled Paw",
+   "type": "Limb Birth Defect",
+   "description": "-1 Strength",
+   "effects": "",
+   "icon": "Mutation_legs.704.svg"
+  },
+  {
+   "id": "legs.705",
+   "title": "Club Foot2",
+   "type": "Limb Birth Defect",
+   "description": "Trample.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +3 Trample",
+   "icon": "Mutation_legs.705.svg"
+  },
+  {
+   "id": "legs.706",
+   "title": "Backwards Knees",
+   "type": "Limb Birth Defect",
+   "description": "-1 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.706.svg"
+  },
+  {
+   "id": "legs.707",
+   "title": "Blob Legs",
+   "type": "Limb Birth Defect",
+   "description": "+1 Strength\nPermanently Slow.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply permanent Slow",
+   "icon": "Mutation_legs.707.svg"
+  },
+  {
+   "id": "legs.754",
+   "title": "Wing Hoof Legs",
+   "type": "Limb Mutation",
+   "description": "Your movement action is a jump. Your basic attack inflicts Bruise.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Replace basic move with \"ToadJump_BasicMove\" (non-mutation, will override mutations and other non-mutations)\nThis unit's basic attacks do the following for the target:\n- Apply +1 Bruise",
+   "icon": "Mutation_legs.754.svg"
+  },
+  {
+   "id": "legs.756",
+   "title": "Sonichu Legs",
+   "type": "Limb Mutation",
+   "description": "+2 Speed",
+   "effects": "",
+   "icon": "Mutation_legs.756.svg"
+  },
+  {
+   "id": "legs.757",
+   "title": "Bigfoot Legs",
+   "type": "Limb Mutation",
+   "description": "Trample.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +3 Trample",
+   "icon": "Mutation_legs.757.svg"
+  },
+  {
+   "id": "legs.758",
+   "title": "Nessie Legs",
+   "type": "Limb Mutation",
+   "description": "You have All Stats Up while wet.",
+   "effects": "While this unit is \"affected\" by Water element (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 All Stats Up",
+   "icon": "Mutation_legs.758.svg"
+  },
+  {
+   "id": "legs.759",
+   "title": "Nessie Legs",
+   "type": "Limb Mutation",
+   "description": "You have All Stats Up while wet.",
+   "effects": "While this unit is \"affected\" by the \"water\" element (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 All Stats Up",
+   "icon": "Mutation_legs.759.svg"
+  },
+  {
+   "id": "legs.761",
+   "title": "Mothman Legs",
+   "type": "Limb Mutation",
+   "description": "Your movement action is a jump. Your basic attack inflicts Bleed.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Replace basic move with \"ToadJump_BasicMove\" (non-mutation, will override mutations and other non-mutations)\nThis unit's basic attacks do the following for the target:\n- Apply +1 Bleed",
+   "icon": "Mutation_legs.761.svg"
+  },
+  {
+   "id": "legs.762",
+   "title": "Slender",
+   "type": "Limb Mutation",
+   "description": "Ignore the effects of tiles and traps.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit is immune to any tile effects\n- Apply +0.25 sprite Y-offset",
+   "icon": "Mutation_legs.762.svg"
+  },
+  {
+   "id": "legs.763",
+   "title": "Slender",
+   "type": "Limb Mutation",
+   "description": "Ignore the effects of tiles and traps.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit is immune to any tile effects\n- Apply +0.25 sprite Y-offset",
+   "icon": "Mutation_legs.763.svg"
+  },
+  {
+   "id": "legs.900",
+   "title": "Slender",
+   "type": "Limb Mutation",
+   "description": "Ignore the effects of tiles and traps.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit is immune to any tile effects\n- Apply +0.25 sprite Y-offset",
+   "icon": "Mutation_legs.900.svg"
+  },
+  {
+   "id": "mouth.-2",
+   "title": "No Mouth",
+   "type": "Mouth Birth Defect",
+   "description": "Can't eat food, use consumables, or use musical abilities.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit becomes vegan (unsure what this actually does as the food interactions appear handled separately)\n- Disable abilities with the tag \"consumable\"\n- Disable abilities with the tag \"musical\"\n- Prevent picking up \"food\"\n- Prevent picking up \"catnip\"\nThis unit does not consume any daily house food",
+   "icon": "Mutation_mouth.-2.svg"
+  },
+  {
+   "id": "mouth.1026",
+   "title": "Spider Mouth",
+   "type": "Animal Mouth Mutation",
+   "description": "Your basic attack has a 10% chance to inflict Webbed.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 10% chance to apply +1 Webbed",
+   "icon": "Mutation_mouth.1026.svg"
+  },
+  {
+   "id": "mouth.1500",
+   "title": "Rat Mouth",
+   "type": "Animal Mouth Mutation",
+   "description": "Your basic attack inflicts Poison.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Poison",
+   "icon": "Mutation_mouth.1500.svg"
+  },
+  {
+   "id": "mouth.300",
+   "title": "Sabertoothed",
+   "type": "Animal Mouth Mutation",
+   "description": "+1 Strength",
+   "effects": "",
+   "icon": "Mutation_mouth.300.svg"
+  },
+  {
+   "id": "mouth.301",
+   "title": "Hippo Teeth",
+   "type": "Animal Mouth Mutation",
+   "description": "Gain 1 health when you deal damage.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Whenever this unit deals any damage, it heals for +1",
+   "icon": "Mutation_mouth.301.svg"
+  },
+  {
+   "id": "mouth.302",
+   "title": "Flesh Kid",
+   "type": "Mouth Mutation",
+   "description": "+1 Health Regeneration",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Health Regen",
+   "icon": "Mutation_mouth.302.svg"
+  },
+  {
+   "id": "mouth.303",
+   "title": "Delirious",
+   "type": "Melted Mouth Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.303.svg"
+  },
+  {
+   "id": "mouth.304",
+   "title": "Spider",
+   "type": "Animal Mouth Mutation",
+   "description": "Your basic attack inflicts Poison.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Poison",
+   "icon": "Mutation_mouth.304.svg"
+  },
+  {
+   "id": "mouth.305",
+   "title": "Ash",
+   "type": "Mouth Mutation",
+   "description": "+100 corpse health.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +100 hits to your corpse before it's destroyed\nStarting with +100 corpse health has strange unexpected results:\n- The cat's corpse stops using corpse health, and is not destructible by regular attacks.\n- Any healing recieved will revive the cat.",
+   "icon": "Mutation_mouth.305.svg"
+  },
+  {
+   "id": "mouth.306",
+   "title": "Famine",
+   "type": "Mouth Mutation",
+   "description": "10% chance to spawn a Fly when you take damage.",
+   "effects": "When this unit takes damage, even if the damage was lethal, 10% chance (bad roll) to spawn 1 Fly (good vs bad roll is from the perspective of the damage source, not the spawner)",
+   "icon": "Mutation_mouth.306.svg"
+  },
+  {
+   "id": "mouth.307",
+   "title": "Alien Chomp",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack has a 1% chance to instakill.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 1% chance to deals 999 damage to non-bosses and +25 damage to bosses, ignoring crit, shields, divine shields, and other modifiers such as Brace (against bosses, if the damage value would have already exceeded +25, and the boss HP is above +25, then the instakill is ignored, allowing crit/shields/etc. to apply again)",
+   "icon": "Mutation_mouth.307.svg"
+  },
+  {
+   "id": "mouth.308",
+   "title": "Licky",
+   "type": "Mouth Mutation",
+   "description": "+1 Health Regeneration",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Health Regen",
+   "icon": "Mutation_mouth.308.svg"
+  },
+  {
+   "id": "mouth.309",
+   "title": "Jacko",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack has a 10% chance to inflict Fear.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 10% chance to apply +1 Fear",
+   "icon": "Mutation_mouth.309.svg"
+  },
+  {
+   "id": "mouth.310",
+   "title": "Lip Fillers",
+   "type": "Mouth Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.310.svg"
+  },
+  {
+   "id": "mouth.311",
+   "title": "Leech Mouth",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack inflicts Leech 1.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Leeches to the target (the applier drains +1 health at the end of the applier's turn)",
+   "icon": "Mutation_mouth.311.svg"
+  },
+  {
+   "id": "mouth.312",
+   "title": "Bear Trap Mouth",
+   "type": "Mouth Mutation",
+   "description": "+1 Strength\nYour basic attack has a 10% chance to inflict Immobile if it's melee.",
+   "effects": "This unit's melee basic attacks do the following for the target:\n- 10% chance to apply +1 Immobile",
+   "icon": "Mutation_mouth.312.svg"
+  },
+  {
+   "id": "mouth.313",
+   "title": "Full Mouth",
+   "type": "Mouth Mutation",
+   "description": "At the end of each round, spit at an enemy .",
+   "effects": "At the end of each round, do the following for this unit:\n- Use the \"Spit\" ability if able (i.e. not stunned)",
+   "icon": "Mutation_mouth.313.svg"
+  },
+  {
+   "id": "mouth.314",
+   "title": "Gold Tooth",
+   "type": "Mouth Mutation",
+   "description": "Spawn 5-10 coins when downed.",
+   "effects": "When this unit dies, do the following for this unit:\n- Spawn 5 coins near the unit\n- 50% chance to spawn 1 coin near the unit\n- 50% chance to spawn 1 coin near the unit\n- 50% chance to spawn 1 coin near the unit\n- 50% chance to spawn 1 coin near the unit\n- 50% chance to spawn 1 coin near the unit",
+   "icon": "Mutation_mouth.314.svg"
+  },
+  {
+   "id": "mouth.315",
+   "title": "Double Mouth",
+   "type": "Mouth Mutation",
+   "description": "10% chance to gain a bonus attack each turn.",
+   "effects": "At the start of this unit's turn, do the following for this unit:\n- 10% chance to apply +1 Bonus Attack",
+   "icon": "Mutation_mouth.315.svg"
+  },
+  {
+   "id": "mouth.316",
+   "title": "Horse Face",
+   "type": "Mouth Mutation",
+   "description": "-1 Charisma\nYour basic attack inflicts Bruise.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Bruise",
+   "icon": "Mutation_mouth.316.svg"
+  },
+  {
+   "id": "mouth.317",
+   "title": "Glass Teeth",
+   "type": "Mouth Mutation",
+   "description": "Spawn glass when you take damage. +1 Bleed Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bleed Thorns\nWhen this unit takes damage, do the following for this unit:\n- Change the tile under this unit to \"GlassTile\"",
+   "icon": "Mutation_mouth.317.svg"
+  },
+  {
+   "id": "mouth.318",
+   "title": "Mole Mouth",
+   "type": "Mouth Mutation",
+   "description": "Your movement action is Dig.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Replace basic move with \"BasicDig\" (mutation, will be overridden by non-mutations)",
+   "icon": "Mutation_mouth.318.svg"
+  },
+  {
+   "id": "mouth.319",
+   "title": "Catfish Mouth",
+   "type": "Mouth Mutation",
+   "description": "Water does not slow movement. +1 Health Regeneration while wet.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit ignores the movement penalty for water tiles\nWhile this unit is \"affected\" by Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 Health Regen",
+   "icon": "Mutation_mouth.319.svg"
+  },
+  {
+   "id": "mouth.321",
+   "title": "Zipper Mouth",
+   "type": "Mouth Mutation",
+   "description": "+3",
+   "effects": "",
+   "icon": "Mutation_mouth.321.svg"
+  },
+  {
+   "id": "mouth.322",
+   "title": "Shark Mouth",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack inflicts Bleed.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Bleed",
+   "icon": "Mutation_mouth.322.svg"
+  },
+  {
+   "id": "mouth.323",
+   "title": "Gills",
+   "type": "Mouth Mutation",
+   "description": "+2 Health Regeneration while wet.",
+   "effects": "While this unit is \"affected\" by Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +2 Health Regen",
+   "icon": "Mutation_mouth.323.svg"
+  },
+  {
+   "id": "mouth.324",
+   "title": "Eyeball",
+   "type": "Mouth Mutation",
+   "description": "+1 range.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 bonus range",
+   "icon": "Mutation_mouth.324.svg"
+  },
+  {
+   "id": "mouth.326",
+   "title": "Double Mouth 2",
+   "type": "Mouth Mutation",
+   "description": "Gain +1 Health Regeneration whenever you eat food.",
+   "effects": "When this unit eats food (pickup tagged with `food` or consumable tagged with `meat`), do the following for this unit:\n- Apply +1 Health Regen",
+   "icon": "Mutation_mouth.326.svg"
+  },
+  {
+   "id": "mouth.327",
+   "title": "Clown Lips",
+   "type": "Mouth Mutation",
+   "description": "+1 Level Up Reroll\nYou can reroll your options when you level up.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 levelup rerolls",
+   "icon": "Mutation_mouth.327.svg"
+  },
+  {
+   "id": "mouth.328",
+   "title": "Bandage Mouth",
+   "type": "Mouth Mutation",
+   "description": "Can't eat food, use consumables, or use musical abilities. +2 Health Regeneration",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 Health Regen\n- This unit becomes vegan (unsure what this actually does as the food interactions appear handled separately)\n- Disable abilities with the tag \"consumable\"\n- Disable abilities with the tag \"musical\"\n- Prevent picking up \"food\"\n- Prevent picking up \"catnip\"\nThis unit does not consume any daily house food",
+   "icon": "Mutation_mouth.328.svg"
+  },
+  {
+   "id": "mouth.400",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_mouth.400.svg"
+  },
+  {
+   "id": "mouth.401",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_mouth.401.svg"
+  },
+  {
+   "id": "mouth.402",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.402.svg"
+  },
+  {
+   "id": "mouth.403",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.403.svg"
+  },
+  {
+   "id": "mouth.404",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_mouth.404.svg"
+  },
+  {
+   "id": "mouth.405",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_mouth.405.svg"
+  },
+  {
+   "id": "mouth.406",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_mouth.406.svg"
+  },
+  {
+   "id": "mouth.407",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_mouth.407.svg"
+  },
+  {
+   "id": "mouth.408",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.408.svg"
+  },
+  {
+   "id": "mouth.409",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.409.svg"
+  },
+  {
+   "id": "mouth.410",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_mouth.410.svg"
+  },
+  {
+   "id": "mouth.411",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_mouth.411.svg"
+  },
+  {
+   "id": "mouth.412",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_mouth.412.svg"
+  },
+  {
+   "id": "mouth.413",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_mouth.413.svg"
+  },
+  {
+   "id": "mouth.414",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.414.svg"
+  },
+  {
+   "id": "mouth.415",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.415.svg"
+  },
+  {
+   "id": "mouth.416",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_mouth.416.svg"
+  },
+  {
+   "id": "mouth.417",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_mouth.417.svg"
+  },
+  {
+   "id": "mouth.418",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_mouth.418.svg"
+  },
+  {
+   "id": "mouth.419",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_mouth.419.svg"
+  },
+  {
+   "id": "mouth.420",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.420.svg"
+  },
+  {
+   "id": "mouth.421",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_mouth.421.svg"
+  },
+  {
+   "id": "mouth.422",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_mouth.422.svg"
+  },
+  {
+   "id": "mouth.423",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_mouth.423.svg"
+  },
+  {
+   "id": "mouth.424",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_mouth.424.svg"
+  },
+  {
+   "id": "mouth.425",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_mouth.425.svg"
+  },
+  {
+   "id": "mouth.426",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_mouth.426.svg"
+  },
+  {
+   "id": "mouth.427",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.427.svg"
+  },
+  {
+   "id": "mouth.428",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_mouth.428.svg"
+  },
+  {
+   "id": "mouth.429",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_mouth.429.svg"
+  },
+  {
+   "id": "mouth.430",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_mouth.430.svg"
+  },
+  {
+   "id": "mouth.431",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_mouth.431.svg"
+  },
+  {
+   "id": "mouth.432",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.432.svg"
+  },
+  {
+   "id": "mouth.433",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.433.svg"
+  },
+  {
+   "id": "mouth.434",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_mouth.434.svg"
+  },
+  {
+   "id": "mouth.435",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_mouth.435.svg"
+  },
+  {
+   "id": "mouth.436",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_mouth.436.svg"
+  },
+  {
+   "id": "mouth.437",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_mouth.437.svg"
+  },
+  {
+   "id": "mouth.438",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.438.svg"
+  },
+  {
+   "id": "mouth.439",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.439.svg"
+  },
+  {
+   "id": "mouth.440",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_mouth.440.svg"
+  },
+  {
+   "id": "mouth.441",
+   "title": "",
+   "type": "Common Mouth Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_mouth.441.svg"
+  },
+  {
+   "id": "mouth.700",
+   "title": "Cleft Pallet",
+   "type": "Mouth Birth Defect",
+   "description": "-2 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.700.svg"
+  },
+  {
+   "id": "mouth.701",
+   "title": "Anodontia",
+   "type": "Mouth Birth Defect",
+   "description": "-1 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_mouth.701.svg"
+  },
+  {
+   "id": "mouth.703",
+   "title": "Underbite",
+   "type": "Mouth Birth Defect",
+   "description": "+1 Constitution, -2 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.703.svg"
+  },
+  {
+   "id": "mouth.704",
+   "title": "Overbite",
+   "type": "Mouth Birth Defect",
+   "description": "+1 Strength, -2 Charisma",
+   "effects": "",
+   "icon": "Mutation_mouth.704.svg"
+  },
+  {
+   "id": "mouth.705",
+   "title": "Fetus Mouth",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack can be used two extra times each turn but is replaced with a 1-damage spit attack.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit can use its basic attack +2 extra time per turn\n- Replace basic attack with Spit Spit Spit attack with infinite range that deals 1 damage. (mutation, will be overridden by non-mutations)\nSome effects override the spit attack, but do not remove the extra attacks. An example of this is the Tinkerer's Craft Weapon Craft Weapon Craft and equip a random temporary weapon. , which allows the cat to use its basic action three times without any negative effect.",
+   "icon": "Mutation_mouth.705.svg"
+  },
+  {
+   "id": "mouth.750",
+   "title": "Beaver Teeth",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack destroys inanimate objects and turns tiles into dirt.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Change the tile under the target to \"DirtTile\"\n- This damage will instantly destroy any inanimate object",
+   "icon": "Mutation_mouth.750.svg"
+  },
+  {
+   "id": "mouth.751",
+   "title": "Pig Snout",
+   "type": "Mouth Mutation",
+   "description": "+2 Constitution",
+   "effects": "",
+   "icon": "Mutation_mouth.751.svg"
+  },
+  {
+   "id": "mouth.752",
+   "title": "Dog Tongue",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack creates water tiles.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the \"Water\" element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Change the tile under the target to \"WaterTile\"",
+   "icon": "Mutation_mouth.752.svg"
+  },
+  {
+   "id": "mouth.754",
+   "title": "Isaacs Mouth",
+   "type": "Mouth Mutation",
+   "description": "Adjacent units get All Stats Down.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Other units receive All Stats Down while they are adjacent to this unit",
+   "icon": "Mutation_mouth.754.svg"
+  },
+  {
+   "id": "mouth.755",
+   "title": "Edmund Beard",
+   "type": "Mouth Mutation",
+   "description": "Ice Immunity.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add immunity to the Ice element",
+   "icon": "Mutation_mouth.755.svg"
+  },
+  {
+   "id": "mouth.756",
+   "title": "Tylers Beard",
+   "type": "Mouth Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_mouth.756.svg"
+  },
+  {
+   "id": "mouth.757",
+   "title": "Mermaid Mouth",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack inflicts Bleed.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Bleed",
+   "icon": "Mutation_mouth.757.svg"
+  },
+  {
+   "id": "mouth.760",
+   "title": "Bigfoot Mouth",
+   "type": "Mouth Mutation",
+   "description": "When a food pickup spawns within 2 tiles of you, move to it.",
+   "effects": "When a \"food\" object moves within 2 range (including spawning), this unit automatically casts \"move\" if not stunned",
+   "icon": "Mutation_mouth.760.svg"
+  },
+  {
+   "id": "mouth.900",
+   "title": "Slender",
+   "type": "Mouth Mutation",
+   "description": "Your basic attack has a 10% chance to inflict Fear.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 10% chance to apply +1 Fear",
+   "icon": "Mutation_mouth.900.svg"
+  },
+  {
+   "id": "tail.-2",
+   "title": "No Tail",
+   "type": "Tail Birth Defect",
+   "description": "-1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.-2.svg"
+  },
+  {
+   "id": "tail.1500",
+   "title": "Rat Tail",
+   "type": "Animal Tail Mutation",
+   "description": "+1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.1500.svg"
+  },
+  {
+   "id": "tail.300",
+   "title": "Extra Paw",
+   "type": "Extra Tail Mutation",
+   "description": "+1 Strength",
+   "effects": "",
+   "icon": "Mutation_tail.300.svg"
+  },
+  {
+   "id": "tail.301",
+   "title": "Turtle Head",
+   "type": "Animal Tail Mutation",
+   "description": "Poop when you take damage.",
+   "effects": "When hit, spawn \"Poop\"",
+   "icon": "Mutation_tail.301.svg"
+  },
+  {
+   "id": "tail.302",
+   "title": "Scorpion Tail",
+   "type": "Animal Tail Mutation",
+   "description": "Your basic attack inflicts Poison.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Poison",
+   "icon": "Mutation_tail.302.svg"
+  },
+  {
+   "id": "tail.303",
+   "title": "Rock Tail",
+   "type": "Tail Mutation",
+   "description": "Your basic attack has a 5% chance to Stun.",
+   "effects": "This unit's basic attacks do the following for the target:\n- 5% chance to apply +1 Stun",
+   "icon": "Mutation_tail.303.svg"
+  },
+  {
+   "id": "tail.304",
+   "title": "Monkey Tail",
+   "type": "Animal Tail Mutation",
+   "description": "+1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.304.svg"
+  },
+  {
+   "id": "tail.305",
+   "title": "Cactus Tail",
+   "type": "Tail Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_tail.305.svg"
+  },
+  {
+   "id": "tail.306",
+   "title": "Big Lump Tail",
+   "type": "Tail Mutation",
+   "description": "+1 Constitution",
+   "effects": "",
+   "icon": "Mutation_tail.306.svg"
+  },
+  {
+   "id": "tail.307",
+   "title": "Antenna Tail",
+   "type": "Tail Mutation",
+   "description": "+1 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.307.svg"
+  },
+  {
+   "id": "tail.308",
+   "title": "Baby Tail",
+   "type": "Tail Mutation",
+   "description": "+1 Luck\n+5% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +5% Dodge Chance",
+   "icon": "Mutation_tail.308.svg"
+  },
+  {
+   "id": "tail.309",
+   "title": "Baboon's Ass",
+   "type": "Animal Tail Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.309.svg"
+  },
+  {
+   "id": "tail.310",
+   "title": "Hand Tail",
+   "type": "Tail Mutation",
+   "description": "Your basic attack has a 10% chance to repeat once.",
+   "effects": "This unit's basic attacks also perform the following:\n- Each use of this ability has a +10% chance to repeat its use again (can chain up to 2 uses total)",
+   "icon": "Mutation_tail.310.svg"
+  },
+  {
+   "id": "tail.311",
+   "title": "Thorn Tail",
+   "type": "Tail Mutation",
+   "description": "Thorns 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_tail.311.svg"
+  },
+  {
+   "id": "tail.312",
+   "title": "Holy Tail",
+   "type": "Tail Mutation",
+   "description": "+1",
+   "effects": "",
+   "icon": "Mutation_tail.312.svg"
+  },
+  {
+   "id": "tail.313",
+   "title": "Hose Tail",
+   "type": "Tail Mutation",
+   "description": "Your basic attack creates water tiles.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Water element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Change the tile under the target to \"WaterTile\"",
+   "icon": "Mutation_tail.313.svg"
+  },
+  {
+   "id": "tail.314",
+   "title": "Bone Tail",
+   "type": "Tail Mutation",
+   "description": "Whenever you down a unit, you have a 10% chance to reanimate that unit with 50% HP.",
+   "effects": "When this unit downs a unit, do the following for the target:\n- 10% chance (good roll) to do the following:\n- Revive with 50% health",
+   "icon": "Mutation_tail.314.svg"
+  },
+  {
+   "id": "tail.315",
+   "title": "Maggot Tail",
+   "type": "Tail Mutation",
+   "description": "20% chance to spawn a Maggot when hit.",
+   "effects": "When this unit takes damage, even if the damage was lethal, 20% chance (bad roll) to spawn 1 Maggot (good vs bad roll is from the perspective of the damage source, not the spawner)",
+   "icon": "Mutation_tail.315.svg"
+  },
+  {
+   "id": "tail.316",
+   "title": "Grass Tail",
+   "type": "Tail Mutation",
+   "description": "25% chance to spawn tall grass wherever you end your movement.",
+   "effects": "When this unit ends its movement, do the following for this unit:\n- 25% chance (good roll) to do the following:\n- Change the tile under this unit to \"TallGrassTile\"",
+   "icon": "Mutation_tail.316.svg"
+  },
+  {
+   "id": "tail.317",
+   "title": "Skunk Tail",
+   "type": "Tail Mutation",
+   "description": "When hit, fart a Poison 4 attack with Knockback behind you.",
+   "effects": "After this unit takes non-status damage, automatically cast \"SkunkTail\" on themself if not stunned",
+   "icon": "Mutation_tail.317.svg"
+  },
+  {
+   "id": "tail.318",
+   "title": "Rattle",
+   "type": "Tail Mutation",
+   "description": "Your basic attack inflicts Poison.",
+   "effects": "This unit's basic attacks do the following for the target:\n- Apply +1 Poison",
+   "icon": "Mutation_tail.318.svg"
+  },
+  {
+   "id": "tail.319",
+   "title": "Snake Tail",
+   "type": "Tail Mutation",
+   "description": "Units who contact you get Poisoned.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Poisonous",
+   "icon": "Mutation_tail.319.svg"
+  },
+  {
+   "id": "tail.320",
+   "title": "Glass Tail",
+   "type": "Tail Mutation",
+   "description": "Bleed 1. Bleed Thorns 2.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bleed\n- Apply +2 Bleed Thorns",
+   "icon": "Mutation_tail.320.svg"
+  },
+  {
+   "id": "tail.321",
+   "title": "Extra Head",
+   "type": "Extra Tail Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_tail.321.svg"
+  },
+  {
+   "id": "tail.322",
+   "title": "Exhaust Pipe",
+   "type": "Tail Mutation",
+   "description": "Gain +1 Speed each turn.",
+   "effects": "At the start of this unit's turn, do the following for this unit:\n- Apply +1 Speed Up",
+   "icon": "Mutation_tail.322.svg"
+  },
+  {
+   "id": "tail.323",
+   "title": "Jetpack Tail",
+   "type": "Tail Mutation",
+   "description": "Your movement action is a jump.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Replace basic move with \"BasicJump\" (mutation, will be overridden by non-mutations)",
+   "icon": "Mutation_tail.323.svg"
+  },
+  {
+   "id": "tail.324",
+   "title": "Wing Tail",
+   "type": "Tail Mutation",
+   "description": "+2 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.324.svg"
+  },
+  {
+   "id": "tail.325",
+   "title": "Spring Tail",
+   "type": "Tail Mutation",
+   "description": "Units that contact you get knocked back 2 tiles.",
+   "effects": "When this unit receives contact in melee range, apply 2 knockback",
+   "icon": "Mutation_tail.325.svg"
+  },
+  {
+   "id": "tail.326",
+   "title": "Eyeball Tail",
+   "type": "Tail Mutation",
+   "description": "10% dodge chance. Bruise 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bruise\n- Apply +10% Dodge Chance",
+   "icon": "Mutation_tail.326.svg"
+  },
+  {
+   "id": "tail.327",
+   "title": "Tree Branch Tail",
+   "type": "Tail Mutation",
+   "description": "If you don't move, gain 3 Charge at the end of the turn.",
+   "effects": "At the end of this unit's turn, if it didn't move that turn, do the following for this unit:\n- Apply +3 Charge",
+   "icon": "Mutation_tail.327.svg"
+  },
+  {
+   "id": "tail.329",
+   "title": "Mr. Worm",
+   "type": "Tail Mutation",
+   "description": "You can unequip cursed items and parasites.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Can remove cursed items",
+   "icon": "Mutation_tail.329.svg"
+  },
+  {
+   "id": "tail.331",
+   "title": "Dice Tail",
+   "type": "Tail Mutation",
+   "description": "+1 Level Up Reroll\nYou can reroll your options when you level up.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 levelup rerolls",
+   "icon": "Mutation_tail.331.svg"
+  },
+  {
+   "id": "tail.332",
+   "title": "Tennis Racket",
+   "type": "Tail Mutation",
+   "description": "+25% chance to reflect projectiles.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +25% chance to reflect projectiles",
+   "icon": "Mutation_tail.332.svg"
+  },
+  {
+   "id": "tail.334",
+   "title": "Fire Flower Tail",
+   "type": "Tail Mutation",
+   "description": "Your basic attack inflicts Burn 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Fire element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Apply +1 Burn",
+   "icon": "Mutation_tail.334.svg"
+  },
+  {
+   "id": "tail.336",
+   "title": "Horn Tail",
+   "type": "Tail Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_tail.336.svg"
+  },
+  {
+   "id": "tail.337",
+   "title": "Tail Feather",
+   "type": "Bird Tail Mutation",
+   "description": "Your basic attack is wind element.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Wind element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Apply +1 Knockback\n- Spawn a \"fx_windSpell\" particle at the target tile",
+   "icon": "Mutation_tail.337.svg"
+  },
+  {
+   "id": "tail.338",
+   "title": "Flame Tail",
+   "type": "Tail Mutation",
+   "description": "Your basic attack inflicts Burn 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Add the Fire element to basic attacks\nThis unit's basic attacks do the following for the target:\n- Apply +1 Burn",
+   "icon": "Mutation_tail.338.svg"
+  },
+  {
+   "id": "tail.339",
+   "title": "Light Bulb",
+   "type": "Tail Mutation",
+   "description": "While at full mana, you have +2 Damage.",
+   "effects": "While this unit is at full mana, do the following for this unit:\n- Apply +2 Damage Up",
+   "icon": "Mutation_tail.339.svg"
+  },
+  {
+   "id": "tail.341",
+   "title": "Tongue Tail",
+   "type": "Tail Mutation",
+   "description": "Gain +1 Charge when you take damage.",
+   "effects": "When this unit takes damage, do the following for this unit:\n- Apply +1 Charge",
+   "icon": "Mutation_tail.341.svg"
+  },
+  {
+   "id": "tail.342",
+   "title": "Kitten Tail",
+   "type": "Tail Mutation",
+   "description": "Spawn a Charmed Kitten familiar when you get downed.",
+   "effects": "When this unit is downed, spawn \"Charmed Kitten Kitten Runs away when damaged.\" at their location (enemy corpses will be exploded immediately, while player corpses will be pushed to a nearby tile)",
+   "icon": "Mutation_tail.342.svg"
+  },
+  {
+   "id": "tail.400",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_tail.400.svg"
+  },
+  {
+   "id": "tail.401",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.401.svg"
+  },
+  {
+   "id": "tail.402",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.402.svg"
+  },
+  {
+   "id": "tail.403",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_tail.403.svg"
+  },
+  {
+   "id": "tail.404",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.404.svg"
+  },
+  {
+   "id": "tail.405",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_tail.405.svg"
+  },
+  {
+   "id": "tail.406",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_tail.406.svg"
+  },
+  {
+   "id": "tail.407",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.407.svg"
+  },
+  {
+   "id": "tail.408",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.408.svg"
+  },
+  {
+   "id": "tail.409",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_tail.409.svg"
+  },
+  {
+   "id": "tail.410",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.410.svg"
+  },
+  {
+   "id": "tail.411",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_tail.411.svg"
+  },
+  {
+   "id": "tail.412",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_tail.412.svg"
+  },
+  {
+   "id": "tail.413",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_tail.413.svg"
+  },
+  {
+   "id": "tail.414",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.414.svg"
+  },
+  {
+   "id": "tail.415",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_tail.415.svg"
+  },
+  {
+   "id": "tail.416",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.416.svg"
+  },
+  {
+   "id": "tail.417",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_tail.417.svg"
+  },
+  {
+   "id": "tail.418",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_tail.418.svg"
+  },
+  {
+   "id": "tail.419",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.419.svg"
+  },
+  {
+   "id": "tail.420",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.420.svg"
+  },
+  {
+   "id": "tail.421",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_tail.421.svg"
+  },
+  {
+   "id": "tail.422",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.422.svg"
+  },
+  {
+   "id": "tail.423",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_tail.423.svg"
+  },
+  {
+   "id": "tail.424",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_tail.424.svg"
+  },
+  {
+   "id": "tail.425",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.425.svg"
+  },
+  {
+   "id": "tail.426",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_tail.426.svg"
+  },
+  {
+   "id": "tail.427",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_tail.427.svg"
+  },
+  {
+   "id": "tail.428",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.428.svg"
+  },
+  {
+   "id": "tail.429",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_tail.429.svg"
+  },
+  {
+   "id": "tail.430",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_tail.430.svg"
+  },
+  {
+   "id": "tail.431",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.431.svg"
+  },
+  {
+   "id": "tail.432",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.432.svg"
+  },
+  {
+   "id": "tail.433",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_tail.433.svg"
+  },
+  {
+   "id": "tail.434",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.434.svg"
+  },
+  {
+   "id": "tail.435",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_tail.435.svg"
+  },
+  {
+   "id": "tail.436",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_tail.436.svg"
+  },
+  {
+   "id": "tail.437",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_tail.437.svg"
+  },
+  {
+   "id": "tail.438",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.438.svg"
+  },
+  {
+   "id": "tail.439",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_tail.439.svg"
+  },
+  {
+   "id": "tail.440",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_tail.440.svg"
+  },
+  {
+   "id": "tail.441",
+   "title": "",
+   "type": "Common Tail Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_tail.441.svg"
+  },
+  {
+   "id": "tail.700",
+   "title": "Kinked Tail",
+   "type": "Tail Birth Defect",
+   "description": "-2 Luck",
+   "effects": "",
+   "icon": "Mutation_tail.700.svg"
+  },
+  {
+   "id": "tail.701",
+   "title": "Lipoma",
+   "type": "Tail Birth Defect",
+   "description": "-1 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.701.svg"
+  },
+  {
+   "id": "tail.703",
+   "title": "Heavy Tail",
+   "type": "Tail Birth Defect",
+   "description": "+1 Constitution\nStart each battle with Immobile 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Immobile",
+   "icon": "Mutation_tail.703.svg"
+  },
+  {
+   "id": "tail.704",
+   "title": "Forked Tail",
+   "type": "Tail Birth Defect",
+   "description": "-2 Luck\nHunter abilities are also offered when you level up.",
+   "effects": "This unit can also be offered Hunter class abilities on levelup",
+   "icon": "Mutation_tail.704.svg"
+  },
+  {
+   "id": "tail.750",
+   "title": "Bunny Tail*",
+   "type": "Tail Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_tail.750.svg"
+  },
+  {
+   "id": "tail.751",
+   "title": "Beaver Tail*",
+   "type": "Tail Mutation",
+   "description": "+1 Brace.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Brace",
+   "icon": "Mutation_tail.751.svg"
+  },
+  {
+   "id": "tail.752",
+   "title": "Pig Tail*",
+   "type": "Tail Mutation",
+   "description": "+1 Constitution",
+   "effects": "",
+   "icon": "Mutation_tail.752.svg"
+  },
+  {
+   "id": "tail.754",
+   "title": "Spiked Tail*",
+   "type": "Tail Mutation",
+   "description": "+1 Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Thorns",
+   "icon": "Mutation_tail.754.svg"
+  },
+  {
+   "id": "tail.755",
+   "title": "Mermaid Tail*",
+   "type": "Tail Mutation",
+   "description": "Water does not slow movement.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- This unit ignores the movement penalty for water tiles",
+   "icon": "Mutation_tail.755.svg"
+  },
+  {
+   "id": "tail.756",
+   "title": "Devil Tail*",
+   "type": "Tail Mutation",
+   "description": "+1 Bleed Thorns.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bleed Thorns",
+   "icon": "Mutation_tail.756.svg"
+  },
+  {
+   "id": "tail.757",
+   "title": "Sonichu Tail*",
+   "type": "Tail Mutation",
+   "description": "Your movement action is shadowstep.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Replace basic move with \"Shadowstep\" (non-mutation, will override mutations and other non-mutations)",
+   "icon": "Mutation_tail.757.svg"
+  },
+  {
+   "id": "tail.759",
+   "title": "Slender Tail*",
+   "type": "Tail Mutation",
+   "description": "Start with +1 Bonus Attack.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bonus Attack",
+   "icon": "Mutation_tail.759.svg"
+  },
+  {
+   "id": "tail.760",
+   "title": "Human Head Tail",
+   "type": "Tail Mutation",
+   "description": "Start with 2 backflips.",
+   "effects": "Apply +2 Backflip",
+   "icon": "Mutation_tail.760.svg"
+  },
+  {
+   "id": "tail.900",
+   "title": "Slender",
+   "type": "Tail Mutation",
+   "description": "+1 Speed",
+   "effects": "",
+   "icon": "Mutation_tail.900.svg"
+  },
+  {
+   "id": "texture.300",
+   "title": "Stitches",
+   "type": "Fur Mutation",
+   "description": "-1 Charisma\n+1 Health Regeneration",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Health Regen",
+   "icon": "Mutation_texture.300.svg"
+  },
+  {
+   "id": "texture.301",
+   "title": "Fish Scales",
+   "type": "Fur Mutation",
+   "description": "+1 Health and Mana Regeneration while wet.",
+   "effects": "While this unit is \"affected\" by Water element effects (e.g. Wet or standing in \"water\" tiles), do the following for this unit:\n- Apply +1 Health Regen\n- Apply +1 mana regen",
+   "icon": "Mutation_texture.301.svg"
+  },
+  {
+   "id": "texture.302",
+   "title": "Conjoined",
+   "type": "Fur Mutation",
+   "description": "+1 Luck",
+   "effects": "",
+   "icon": "Mutation_texture.302.svg"
+  },
+  {
+   "id": "texture.303",
+   "title": "Patches",
+   "type": "Fur Mutation",
+   "description": "Start each battle with a random stat up.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Random Stat Up",
+   "icon": "Mutation_texture.303.svg"
+  },
+  {
+   "id": "texture.304",
+   "title": "Confusing Hide",
+   "type": "Fur Mutation",
+   "description": "Units that contact or attack you have a 10% chance to become Confused.",
+   "effects": "When this unit receives contact or is attacked, do the following for the target:\n- 10% chance to apply +1 Confusion",
+   "icon": "Mutation_texture.304.svg"
+  },
+  {
+   "id": "texture.305",
+   "title": "Robot Hide",
+   "type": "Fur Mutation",
+   "description": "+1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_texture.305.svg"
+  },
+  {
+   "id": "texture.306",
+   "title": "Veiny",
+   "type": "Fur Mutation",
+   "description": "+1 Strength",
+   "effects": "",
+   "icon": "Mutation_texture.306.svg"
+  },
+  {
+   "id": "texture.307",
+   "title": "Eyeballs",
+   "type": "Fur Mutation",
+   "description": "+5% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +5% Dodge Chance",
+   "icon": "Mutation_texture.307.svg"
+  },
+  {
+   "id": "texture.308",
+   "title": "Heart Tattoo",
+   "type": "Fur Mutation",
+   "description": "+1 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.308.svg"
+  },
+  {
+   "id": "texture.309",
+   "title": "Tatted Up",
+   "type": "Fur Mutation",
+   "description": "Your basic attack has a 5% chance to inflict Fear. You have a 5% chance to inflict Fear on units who contact or attack you.",
+   "effects": "When this unit receives contact or is attacked, do the following for the target:\n- 5% chance to apply +1 Fear\nThis unit's basic attacks do the following for the target:\n- 5% chance to apply +1 Fear",
+   "icon": "Mutation_texture.309.svg"
+  },
+  {
+   "id": "texture.310",
+   "title": "Cash Hide",
+   "type": "Fur Mutation",
+   "description": "Gain double the effects of pickups you collect.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- When this unit collects a pickup, its value is doubled",
+   "icon": "Mutation_texture.310.svg"
+  },
+  {
+   "id": "texture.400",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Strength, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_texture.400.svg"
+  },
+  {
+   "id": "texture.401",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Strength, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_texture.401.svg"
+  },
+  {
+   "id": "texture.402",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Strength, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.402.svg"
+  },
+  {
+   "id": "texture.403",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Strength, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_texture.403.svg"
+  },
+  {
+   "id": "texture.404",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Strength, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_texture.404.svg"
+  },
+  {
+   "id": "texture.405",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Strength, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_texture.405.svg"
+  },
+  {
+   "id": "texture.406",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Constitution, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_texture.406.svg"
+  },
+  {
+   "id": "texture.407",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Constitution, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_texture.407.svg"
+  },
+  {
+   "id": "texture.408",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Constitution, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.408.svg"
+  },
+  {
+   "id": "texture.409",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Constitution, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_texture.409.svg"
+  },
+  {
+   "id": "texture.410",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Constitution, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_texture.410.svg"
+  },
+  {
+   "id": "texture.411",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Constitution, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_texture.411.svg"
+  },
+  {
+   "id": "texture.412",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Dexterity, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_texture.412.svg"
+  },
+  {
+   "id": "texture.413",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Dexterity, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_texture.413.svg"
+  },
+  {
+   "id": "texture.414",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Dexterity, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.414.svg"
+  },
+  {
+   "id": "texture.415",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Dexterity, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_texture.415.svg"
+  },
+  {
+   "id": "texture.416",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Dexterity, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_texture.416.svg"
+  },
+  {
+   "id": "texture.417",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Dexterity, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_texture.417.svg"
+  },
+  {
+   "id": "texture.418",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Intelligence, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_texture.418.svg"
+  },
+  {
+   "id": "texture.419",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Intelligence, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_texture.419.svg"
+  },
+  {
+   "id": "texture.420",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Intelligence, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.420.svg"
+  },
+  {
+   "id": "texture.421",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Intelligence, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_texture.421.svg"
+  },
+  {
+   "id": "texture.422",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Intelligence, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_texture.422.svg"
+  },
+  {
+   "id": "texture.423",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Intelligence, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_texture.423.svg"
+  },
+  {
+   "id": "texture.424",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Charisma, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_texture.424.svg"
+  },
+  {
+   "id": "texture.425",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Charisma, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_texture.425.svg"
+  },
+  {
+   "id": "texture.426",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Charisma, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_texture.426.svg"
+  },
+  {
+   "id": "texture.427",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Charisma, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_texture.427.svg"
+  },
+  {
+   "id": "texture.428",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Charisma, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_texture.428.svg"
+  },
+  {
+   "id": "texture.429",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Charisma, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_texture.429.svg"
+  },
+  {
+   "id": "texture.430",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Luck, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_texture.430.svg"
+  },
+  {
+   "id": "texture.431",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Luck, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_texture.431.svg"
+  },
+  {
+   "id": "texture.432",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Luck, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.432.svg"
+  },
+  {
+   "id": "texture.433",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Luck, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_texture.433.svg"
+  },
+  {
+   "id": "texture.434",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Luck, -1 Speed",
+   "effects": "",
+   "icon": "Mutation_texture.434.svg"
+  },
+  {
+   "id": "texture.435",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Luck, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_texture.435.svg"
+  },
+  {
+   "id": "texture.436",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Speed, -1 Constitution",
+   "effects": "",
+   "icon": "Mutation_texture.436.svg"
+  },
+  {
+   "id": "texture.437",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Speed, -1 Strength",
+   "effects": "",
+   "icon": "Mutation_texture.437.svg"
+  },
+  {
+   "id": "texture.438",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Speed, -1 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.438.svg"
+  },
+  {
+   "id": "texture.439",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Speed, -1 Intelligence",
+   "effects": "",
+   "icon": "Mutation_texture.439.svg"
+  },
+  {
+   "id": "texture.440",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Speed, -1 Dexterity",
+   "effects": "",
+   "icon": "Mutation_texture.440.svg"
+  },
+  {
+   "id": "texture.441",
+   "title": "",
+   "type": "Common Fur Mutation",
+   "description": "+2 Speed, -1 Luck",
+   "effects": "",
+   "icon": "Mutation_texture.441.svg"
+  },
+  {
+   "id": "texture.700",
+   "title": "Neurofibromatosis",
+   "type": "Fur Birth Defect",
+   "description": "-2 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.700.svg"
+  },
+  {
+   "id": "texture.701",
+   "title": "Melanocytic Nevus",
+   "type": "Fur Birth Defect",
+   "description": "+1, -2 Charisma",
+   "effects": "",
+   "icon": "Mutation_texture.701.svg"
+  },
+  {
+   "id": "texture.702",
+   "title": "Bleeding",
+   "type": "Fur Birth Defect",
+   "description": "Start each battle with Bleed 1.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +1 Bleed",
+   "icon": "Mutation_texture.702.svg"
+  },
+  {
+   "id": "texture.703",
+   "title": "Blue Spots",
+   "type": "Fur Birth Defect",
+   "description": "-2 Charisma\nMage abilities are also offered when you level up.",
+   "effects": "This unit can also be offered Mage class abilities on levelup",
+   "icon": "Mutation_texture.703.svg"
+  },
+  {
+   "id": "texture.704",
+   "title": "Red Dots",
+   "type": "Fur Birth Defect",
+   "description": "-2 Charisma\nFighter abilities are also offered when you level up.",
+   "effects": "This unit can also be offered Fighter class abilities on levelup",
+   "icon": "Mutation_texture.704.svg"
+  },
+  {
+   "id": "texture.705",
+   "title": "Jaundice",
+   "type": "Fur Birth Defect",
+   "description": "-2 Charisma\nThief abilities are also offered when you level up.",
+   "effects": "This unit can also be offered Thief class abilities on levelup",
+   "icon": "Mutation_texture.705.svg"
+  },
+  {
+   "id": "texture.706",
+   "title": "Vitiligo",
+   "type": "Fur Birth Defect",
+   "description": "-1 Charisma\n10% dodge chance.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +10% Dodge Chance",
+   "icon": "Mutation_texture.706.svg"
+  },
+  {
+   "id": "texture.750",
+   "title": "Skunk Hide",
+   "type": "Fur Mutation",
+   "description": "Units who contact you get Poison 2.",
+   "effects": "On battle start, or when the effect is created, do the following for this unit:\n- Apply +2 Poisonous",
+   "icon": "Mutation_texture.750.svg"
+  }
+ ]
+}

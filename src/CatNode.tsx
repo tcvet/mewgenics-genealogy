@@ -1,7 +1,8 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { coiTier, formatCOI } from './genealogy';
 import { useI18n } from './i18n';
-import { CLASS_COLOR, ROOM_SHORT, SEX_GLYPH, textColorOn, type Cat } from './types';
+import { mutationLabel } from './mutations';
+import { CLASS_COLOR, MUTATION_SLOTS, ROOM_SHORT, SEX_GLYPH, textColorOn, type Cat } from './types';
 
 const SEX_CLASS: Record<Cat['sex'], string> = { F: 'female', M: 'male', '?': 'any' };
 
@@ -43,6 +44,7 @@ export function CatNode({ data }: NodeProps) {
     else if (d.isAssignParent) cls.push('assign-parent');
     else if (d.assignInvalid) cls.push('dimmed');
   }
+  const mutCount = Object.keys(cat.mutations).length;
   // card fill comes from the cat's class color
   const fill = cat.class ? CLASS_COLOR[cat.class] : undefined;
   const style = fill ? { background: fill, color: textColorOn(fill) } : undefined;
@@ -63,6 +65,16 @@ export function CatNode({ data }: NodeProps) {
       {cat.room && (
         <span className="room-chip" title={t.rooms[cat.room]}>
           {ROOM_SHORT[cat.room]}
+        </span>
+      )}
+      {mutCount > 0 && (
+        <span
+          className="mut-chip"
+          title={MUTATION_SLOTS.filter((s) => cat.mutations[s]).map(
+            (s) => `${t.mutationSlots[s]}: ${mutationLabel(cat.mutations[s]!)}`,
+          ).join('\n')}
+        >
+          🧬{mutCount}
         </span>
       )}
       {d.mateMode && !d.mateSource && d.coi !== null && (
