@@ -66,7 +66,10 @@ Node.js works too: `npm install && npm run dev`.
   (the toolbar button returns to the full tree).
 - **“Show mate COI”** displays, on every compatible cat (by sex and
   orientation), the inbreeding coefficient (COI) of their potential offspring:
-  green — 0, yellow — ≤6.25% (first-cousin level), red — above.
+  green — 0, yellow — ≤6.25% (first-cousin level), red — above. A panel on the
+  left lists the same candidates sortable by COI (default), name, or stat
+  total; clicking a row pairs the cat with the source cat and opens the litter
+  panel.
 - The cat panel shows the cat's own **F** (inbreeding coefficient), and when a
   pair is selected — the predicted COI of a future litter.
 - Data is autosaved to the browser's localStorage; **Export/Import** (in the ⚙️

@@ -52,6 +52,9 @@ const normName = (s: string) => s.trim().toLowerCase();
 /** Normalize a possibly-missing/invalid orientation (older saves/imports). */
 const normOrientation = (o: unknown): Orientation => (o === 'bi' || o === 'homo' ? o : 'hetero');
 
+/** Total of the recorded base stats (unset stats count as 0). */
+const statSum = (c: Cat) => STAT_KEYS.reduce((sum, k) => sum + (c.stats[k] ?? 0), 0);
+
 function makeCat(
   name: string,
   sex: Sex,
@@ -641,6 +644,78 @@ function SearchBox({ cats, onPick }: { cats: Cat[]; onPick: (id: string) => void
   );
 }
 
+type MateSort = 'coi' | 'name' | 'stats';
+
+/** Floating list of the mate-mode candidates with their offspring COI. */
+function MatePanel(props: {
+  source: Cat;
+  mates: { cat: Cat; coi: number }[];
+  pickedIds: string[];
+  onPick: (id: string) => void;
+  onClose: () => void;
+}) {
+  const { t } = useI18n();
+  const [sort, setSort] = useState<MateSort>('coi');
+  const sorted = useMemo(() => {
+    const byName = (a: { cat: Cat }, b: { cat: Cat }) => a.cat.name.localeCompare(b.cat.name);
+    const list = [...props.mates];
+    if (sort === 'name') list.sort(byName);
+    else if (sort === 'stats')
+      list.sort((a, b) => statSum(b.cat) - statSum(a.cat) || a.coi - b.coi || byName(a, b));
+    else list.sort((a, b) => a.coi - b.coi || byName(a, b));
+    return list;
+  }, [props.mates, sort]);
+  const sorts: { key: MateSort; label: string }[] = [
+    { key: 'coi', label: 'COI' },
+    { key: 'name', label: t.mateSortName },
+    { key: 'stats', label: t.mateSortStats },
+  ];
+  return (
+    <div className="panel mate-panel">
+      <div className="hint-head">
+        <b>{t.matePanelTitle(props.source.name)}</b>
+        <button className="small" title={t.collapseTitle} onClick={props.onClose}>
+          ✕
+        </button>
+      </div>
+      <div className="row">
+        {sorts.map((s) => (
+          <button
+            key={s.key}
+            className={`small${sort === s.key ? ' accent' : ''}`}
+            onClick={() => setSort(s.key)}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+      {sorted.length === 0 ? (
+        <div className="meta">{t.mateEmpty}</div>
+      ) : (
+        <div className="mate-list">
+          {sorted.map(({ cat, coi }) => (
+            <button
+              key={cat.id}
+              className={`mate-row${props.pickedIds.includes(cat.id) ? ' picked' : ''}`}
+              onClick={() => props.onPick(cat.id)}
+            >
+              <span className="mate-sex">{SEX_GLYPH[cat.sex]}</span>
+              <span className="mate-name">{cat.name}</span>
+              {statSum(cat) > 0 && (
+                <span className="mate-sum" title={t.mateStatsTitle}>
+                  Σ{statSum(cat)}
+                </span>
+              )}
+              <span className={`coi-inline ${coiTier(coi)}`}>{formatCOI(coi)}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="meta">{t.mateLegend}</div>
+    </div>
+  );
+}
+
 function GenealogyApp() {
   const { t, lang, setLang } = useI18n();
   const [cats, setCats] = useState<Cat[]>(loadCats);
@@ -747,6 +822,13 @@ function GenealogyApp() {
     () => (mateModeFor && byId.has(mateModeFor) ? mateCOIs(mateModeFor, cats) : null),
     [mateModeFor, cats, byId],
   );
+
+  const mateList = useMemo(() => {
+    if (!mateCOIMap) return null;
+    return [...mateCOIMap]
+      .map(([id, coi]) => ({ cat: byId.get(id), coi }))
+      .filter((m): m is { cat: Cat; coi: number } => m.cat !== undefined);
+  }, [mateCOIMap, byId]);
 
   const assignChild = assigningFor && byId.has(assigningFor) ? byId.get(assigningFor)! : null;
   // cats that cannot be assigned as a parent: the child itself and all its descendants (cycle otherwise)
@@ -909,6 +991,19 @@ function GenealogyApp() {
     } else {
       setSelection((sel) => (sel.includes(id) ? sel : [...sel, id].slice(-2)));
     }
+    focusPendingRef.current = true;
+    setPendingFocus(id);
+  };
+
+  /**
+   * Picking a candidate in the mate list: unlike a map click, the source cat
+   * always stays in the pair — the click swaps only the partner. Also centers
+   * the camera and drops the pedigree view (the candidate may be outside it).
+   */
+  const pickMate = (id: string) => {
+    if (!mateModeFor) return;
+    setViewRootId(null);
+    setSelection([mateModeFor, id]);
     focusPendingRef.current = true;
     setPendingFocus(id);
   };
@@ -1077,30 +1172,38 @@ function GenealogyApp() {
         />
       </ReactFlow>
 
-      <div className="toolbar">
-        <span className="title">🐱 Mewgenics Genealogy</span>
-        <SearchBox cats={cats} onPick={focusCat} />
-        <button
-          onClick={() => {
-            setAddingFounder(true);
-            setSelection([]);
-          }}
-        >
-          {t.addCat}
-        </button>
-        {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
-        <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
-        <span className="count">{t.catCount(cats.length)}</span>
-        {viewRootId && byId.has(viewRootId) && (
-          <button className="accent" onClick={() => setViewRootId(null)}>
-            {t.backToFullTree(byId.get(viewRootId)!.name)}
+      <div className="leftside">
+        <div className="toolbar">
+          <span className="title">🐱 Mewgenics Genealogy</span>
+          <SearchBox cats={cats} onPick={focusCat} />
+          <button
+            onClick={() => {
+              setAddingFounder(true);
+              setSelection([]);
+            }}
+          >
+            {t.addCat}
           </button>
-        )}
-        {mateModeFor && byId.has(mateModeFor) && (
-          <span className="badge safe-badge">{t.mateBadge(byId.get(mateModeFor)!.name)}</span>
-        )}
-        {assignChild && (
-          <span className="badge assign-badge">{t.assignBadge(assignChild.name)}</span>
+          {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
+          <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
+          <span className="count">{t.catCount(cats.length)}</span>
+          {viewRootId && byId.has(viewRootId) && (
+            <button className="accent" onClick={() => setViewRootId(null)}>
+              {t.backToFullTree(byId.get(viewRootId)!.name)}
+            </button>
+          )}
+          {assignChild && (
+            <span className="badge assign-badge">{t.assignBadge(assignChild.name)}</span>
+          )}
+        </div>
+        {mateModeFor && byId.has(mateModeFor) && mateList && (
+          <MatePanel
+            source={byId.get(mateModeFor)!}
+            mates={mateList}
+            pickedIds={selection}
+            onPick={pickMate}
+            onClose={() => setMateModeFor(null)}
+          />
         )}
       </div>
 

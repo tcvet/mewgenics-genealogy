@@ -44,16 +44,26 @@ body {
 
 /* --- panels above the canvas --- */
 
-.toolbar {
+/* left column: the toolbar with the mate-mode partner list below it;
+   height is capped so it stays clear of the zoom controls in the bottom-left corner */
+.leftside {
   position: absolute;
   top: 12px;
   left: 12px;
   z-index: 10;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: calc(100% - 340px);
+  max-height: calc(100% - 130px);
+}
+
+.toolbar {
+  display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  max-width: calc(100% - 340px);
 }
 
 .side {
@@ -177,14 +187,72 @@ body {
   background: var(--btn-hover);
 }
 
-.safe-badge {
-  color: #7fdc9f;
-  border-color: #3d6b4f;
-}
-
 .assign-badge {
   color: #c494ff;
   border-color: #6a4f8c;
+}
+
+/* mate-mode partner list: only the rows scroll, header/sort/legend stay put */
+.mate-panel {
+  width: 280px;
+  min-height: 0;
+  flex-shrink: 1;
+}
+
+.mate-panel .hint-head {
+  margin-bottom: 0;
+}
+
+.mate-list {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mate-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.mate-row:hover {
+  background: var(--btn-hover);
+}
+
+.mate-row.picked {
+  background: var(--control-bg);
+  box-shadow: inset 0 0 0 1px var(--control-border);
+}
+
+.mate-row .mate-sex {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.mate-row .mate-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mate-row .mate-sum {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.mate-row .coi-inline {
+  flex-shrink: 0;
+  font-size: 13px;
 }
 
 .parent-slot {
