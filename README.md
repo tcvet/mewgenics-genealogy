@@ -83,6 +83,11 @@ Node.js works too: `npm install && npm run dev`.
   (died/sold/left): the card is dimmed and struck through, and the cat is not
   shown among candidates in “mate COI” mode. It stays in the pedigree and still
   counts as an ancestor in inbreeding calculations.
+- **Statistics** — the 📊 toolbar button (it also shows the cat count) opens a
+  panel describing the cats currently in the house: how many there are, the
+  breakdown into females, males and “?”-sex cats, and how many have every base
+  stat at 7. Cats that left home are excluded from these numbers; a separate
+  line shows the overall total in the tree.
 - **Roll call** — the “📋 Roll call” toolbar button opens an alphabetical
   checklist of every cat still at home, for syncing the tree with the game:
   walk your in-game roster and tick each cat you find here (a cat present in

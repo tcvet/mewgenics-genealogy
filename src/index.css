@@ -128,7 +128,6 @@ body {
   padding: 8px 12px;
 }
 
-.count,
 .badge {
   color: var(--text-muted);
   background: var(--panel-bg);
@@ -253,6 +252,39 @@ body {
 .mate-row .coi-inline {
   flex-shrink: 0;
   font-size: 13px;
+}
+
+/* house statistics panel (shares the mate-panel shell) */
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 8px;
+}
+
+.stats-row.sub {
+  padding-left: 22px;
+}
+
+.stats-row.sep {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--panel-border);
+}
+
+.stats-row span:first-child {
+  color: var(--text-muted);
+}
+
+.stats-row .stats-val {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 /* mutation inventory panel (shares the mate-panel shell and row styles) */

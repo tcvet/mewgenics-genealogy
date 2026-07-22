@@ -1036,6 +1036,52 @@ function MutationPanel(props: {
   );
 }
 
+/** Floating house statistics: sex breakdown, totals and perfect-stat cats. */
+function StatsPanel(props: { cats: Cat[]; onClose: () => void }) {
+  const { t } = useI18n();
+  const s = useMemo(() => {
+    const acc = { f: 0, m: 0, any: 0, home: 0, perfect: 0 };
+    for (const c of props.cats) {
+      if (c.gone) continue; // only cats currently in the house are of interest
+      acc.home++;
+      if (c.sex === 'F') acc.f++;
+      else if (c.sex === 'M') acc.m++;
+      else acc.any++;
+      if (STAT_KEYS.every((k) => c.stats[k] === 7)) acc.perfect++;
+    }
+    return acc;
+  }, [props.cats]);
+  const rows: { label: string; n: number; sub?: boolean; sep?: boolean }[] = [
+    { label: t.statsAtHome, n: s.home },
+    { label: t.statsFemales, n: s.f, sub: true },
+    { label: t.statsMales, n: s.m, sub: true },
+    { label: t.statsAnySex, n: s.any, sub: true },
+    { label: t.statsPerfect, n: s.perfect },
+    { label: t.statsTotal, n: props.cats.length, sep: true },
+  ];
+  return (
+    <div className="panel mate-panel">
+      <div className="hint-head">
+        <b>{t.statsPanelTitle}</b>
+        <button className="small" title={t.collapseTitle} onClick={props.onClose}>
+          ✕
+        </button>
+      </div>
+      <div className="stats-list">
+        {rows.map((row) => (
+          <div
+            key={row.label}
+            className={`stats-row${row.sub ? ' sub' : ''}${row.sep ? ' sep' : ''}`}
+          >
+            <span>{row.label}</span>
+            <span className="stats-val">{row.n}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** Floating roll-call checklist: walk the in-game roster and tick every cat
  * found here; "Finish" reviews the unticked ones and marks them as left home. */
 function RollCallPanel(props: {
@@ -1156,6 +1202,7 @@ function GenealogyApp() {
   const [assigningFor, setAssigningFor] = useState<string | null>(null);
   const [mutsOpen, setMutsOpen] = useState(false);
   const [mutFocus, setMutFocus] = useState<MutFocus | null>(null);
+  const [statsOpen, setStatsOpen] = useState(false);
   // roll call: the ticked ids (null — no session) + whether its panel is shown.
   // The session survives hiding the panel and page reloads (localStorage).
   const [rollChecked, setRollChecked] = useState<Set<string> | null>(loadRollcall);
@@ -1295,6 +1342,19 @@ function GenealogyApp() {
     setRollOpen(true);
     setMateModeFor(null); // the leftside panels are exclusive
     closeMutPanel();
+    setStatsOpen(false);
+  };
+
+  /** Toolbar button: toggles the statistics panel (leftside panels are exclusive). */
+  const toggleStats = () => {
+    if (statsOpen) {
+      setStatsOpen(false);
+      return;
+    }
+    setStatsOpen(true);
+    setMateModeFor(null);
+    closeMutPanel();
+    setRollOpen(false);
   };
 
   const toggleRollCheck = (id: string) => {
@@ -1549,6 +1609,7 @@ function GenealogyApp() {
     setSelection([]);
     setMateModeFor(null);
     closeMutPanel();
+    setStatsOpen(false);
     setRollOpen(false);
     setViewRootId(null); // full tree — so all candidates are visible, including new ones
     setAddingFounder(false);
@@ -1717,6 +1778,7 @@ function GenealogyApp() {
               else {
                 setMutsOpen(true);
                 setMateModeFor(null); // the leftside panels are exclusive
+                setStatsOpen(false);
                 setRollOpen(false);
               }
             }}
@@ -1728,7 +1790,9 @@ function GenealogyApp() {
           </button>
           {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
           <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
-          <span className="count">{t.catCount(cats.length)}</span>
+          <button className={statsOpen ? 'accent' : ''} onClick={toggleStats}>
+            📊 {t.catCount(cats.length)}
+          </button>
           {viewRootId && byId.has(viewRootId) && (
             <button className="accent" onClick={() => setViewRootId(null)}>
               {t.backToFullTree(byId.get(viewRootId)!.name)}
@@ -1756,6 +1820,7 @@ function GenealogyApp() {
             onClose={closeMutPanel}
           />
         )}
+        {statsOpen && <StatsPanel cats={cats} onClose={() => setStatsOpen(false)} />}
         {rollChecked && rollOpen && (
           <RollCallPanel
             cats={rollCats}
@@ -1879,6 +1944,7 @@ function GenealogyApp() {
                 setMateModeFor(next);
                 if (next) {
                   closeMutPanel();
+                  setStatsOpen(false);
                   setRollOpen(false);
                 }
               }}
