@@ -62,6 +62,13 @@ Node.js works too: `npm install && npm run dev`.
   one-click “inherit from ♀/♂” chips — and the litter form lists the parents'
   mutations under every kitten row, so you can click what each newborn
   inherited right as you record the litter.
+- **Mutation inventory** — the “🧬 Mutations” toolbar button opens a panel
+  listing every mutation the cats currently in the house carry, grouped by
+  body part with a carrier count (cats that left home are not counted).
+  Click a mutation to highlight its carriers on the map (cyan ring, everyone
+  else dims) and to unfold the carrier list — click a name to jump to that
+  cat. Gone carriers appear struck through in the list and stay highlighted
+  on the map, so you can trace where a line's mutation came from.
 - **Search** (top bar) — type a name and pick a cat from the list (or press
   Enter) — the map jumps to it and selects it. Picking from search acts like
   clicking the cat: a second found cat is added to the selection (so a litter

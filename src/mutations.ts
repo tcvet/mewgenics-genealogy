@@ -101,6 +101,50 @@ export function otherStat(other: StatKey): StatKey {
   return STAT_KEYS.find((k) => k !== other) ?? other;
 }
 
+/** One inventory row: a mutation present in the house, under a specific slot. */
+export interface HouseMutation {
+  slot: MutationSlot;
+  id: string;
+  /** all carriers of this mutation in this slot: living first, then gone */
+  carriers: Cat[];
+  /** carriers still in the house (`gone` excluded) — the panel's ×N count */
+  living: number;
+}
+
+/**
+ * Inventory of the mutations the house currently has, keyed by (slot, id) —
+ * a shared-pool (limbs) mutation sitting on arms and on legs makes two rows.
+ * Only mutations with at least one living carrier are listed, but gone
+ * carriers stay in `carriers`: they show where a line's mutation came from.
+ * Order: slot order, then more living carriers first, then by label.
+ */
+export function houseMutations(cats: Cat[]): HouseMutation[] {
+  const rows: HouseMutation[] = [];
+  for (const slot of MUTATION_SLOTS) {
+    const bySlot = new Map<string, Cat[]>();
+    for (const cat of cats) {
+      const id = cat.mutations[slot];
+      if (!id) continue;
+      const list = bySlot.get(id);
+      if (list) list.push(cat);
+      else bySlot.set(id, [cat]);
+    }
+    const slotRows = [...bySlot.entries()]
+      .map(([id, all]) => {
+        const living = all.filter((c) => !c.gone);
+        const gone = all.filter((c) => c.gone);
+        return { slot, id, carriers: [...living, ...gone], living: living.length };
+      })
+      .filter((r) => r.living > 0)
+      .sort(
+        (a, b) =>
+          b.living - a.living || mutationLabel(a.id).localeCompare(mutationLabel(b.id)),
+      );
+    rows.push(...slotRows);
+  }
+  return rows;
+}
+
 /**
  * Normalize a possibly-missing/foreign `mutations` value (older saves/imports):
  * keep known mutation ids sitting under a slot that accepts them; an id under

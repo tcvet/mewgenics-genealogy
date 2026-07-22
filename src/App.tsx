@@ -34,10 +34,12 @@ import {
   commonId,
   getCommon,
   getNamed,
+  houseMutations,
   mutationLabel,
   NAMED_BY_SLOT,
   normMutations,
   otherStat,
+  type HouseMutation,
 } from './mutations';
 import {
   childrenIndex,
@@ -936,6 +938,92 @@ function MatePanel(props: {
   );
 }
 
+/** A mutation highlighted via the inventory panel: the id under a specific slot. */
+type MutFocus = { slot: MutationSlot; id: string };
+
+/** Floating inventory of the mutations carried by the cats now in the house,
+ * grouped by body-part slot; clicking a row highlights its carriers on the map. */
+function MutationPanel(props: {
+  rows: HouseMutation[];
+  focus: MutFocus | null;
+  onFocus: (focus: MutFocus | null) => void;
+  onPickCat: (id: string) => void;
+  onClose: () => void;
+}) {
+  const { t } = useI18n();
+  // consecutive rows share the slot (houseMutations returns them in slot order)
+  const groups = useMemo(() => {
+    const gs: { slot: MutationSlot; rows: HouseMutation[] }[] = [];
+    for (const row of props.rows) {
+      const last = gs[gs.length - 1];
+      if (last && last.slot === row.slot) last.rows.push(row);
+      else gs.push({ slot: row.slot, rows: [row] });
+    }
+    return gs;
+  }, [props.rows]);
+  return (
+    <div className="panel mate-panel">
+      <div className="hint-head">
+        <b>{t.mutPanelTitle}</b>
+        <button className="small" title={t.collapseTitle} onClick={props.onClose}>
+          ✕
+        </button>
+      </div>
+      {groups.length === 0 ? (
+        <div className="meta">{t.mutPanelEmpty}</div>
+      ) : (
+        <div className="mate-list">
+          {groups.map((g) => (
+            <Fragment key={g.slot}>
+              <div className="mut-group">{t.mutationSlots[g.slot]}</div>
+              {g.rows.map((row) => {
+                const active = props.focus?.slot === row.slot && props.focus.id === row.id;
+                const named = getNamed(row.id);
+                return (
+                  <Fragment key={row.id}>
+                    <button
+                      className={`mate-row${active ? ' picked' : ''}`}
+                      title={named?.desc || undefined}
+                      onClick={() =>
+                        props.onFocus(active ? null : { slot: row.slot, id: row.id })
+                      }
+                    >
+                      <span className="mate-name">
+                        {named?.defect && (
+                          <span className="mut-defect" title={t.mutationDefectsGroup}>
+                            ⚠{' '}
+                          </span>
+                        )}
+                        {mutationLabel(row.id)}
+                      </span>
+                      <span className="mut-count">×{row.living}</span>
+                    </button>
+                    {active && (
+                      <div className="mut-carriers">
+                        {row.carriers.map((c) => (
+                          <button
+                            key={c.id}
+                            type="button"
+                            className={`mut-inherit${c.gone ? ' gone' : ''}`}
+                            onClick={() => props.onPickCat(c.id)}
+                          >
+                            {SEX_GLYPH[c.sex]} {c.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </Fragment>
+                );
+              })}
+            </Fragment>
+          ))}
+        </div>
+      )}
+      <div className="meta">{t.mutPanelHint}</div>
+    </div>
+  );
+}
+
 function GenealogyApp() {
   const { t, lang, setLang } = useI18n();
   const [cats, setCats] = useState<Cat[]>(loadCats);
@@ -943,6 +1031,8 @@ function GenealogyApp() {
   const [viewRootId, setViewRootId] = useState<string | null>(null);
   const [mateModeFor, setMateModeFor] = useState<string | null>(null);
   const [assigningFor, setAssigningFor] = useState<string | null>(null);
+  const [mutsOpen, setMutsOpen] = useState(false);
+  const [mutFocus, setMutFocus] = useState<MutFocus | null>(null);
   const [addingFounder, setAddingFounder] = useState(false);
   const [helpOpen, setHelpOpen] = useState(() => localStorage.getItem(HELP_KEY) !== 'closed');
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -1043,6 +1133,20 @@ function GenealogyApp() {
     [mateModeFor, cats, byId],
   );
 
+  const houseMuts = useMemo(() => houseMutations(cats), [cats]);
+  // active highlight only while the panel is open and its row still exists
+  // (the last living carrier may have been edited away, deleted or marked gone)
+  const mutHighlight = useMemo(() => {
+    if (!mutsOpen || !mutFocus) return null;
+    const exists = houseMuts.some((r) => r.slot === mutFocus.slot && r.id === mutFocus.id);
+    return exists ? mutFocus : null;
+  }, [mutsOpen, mutFocus, houseMuts]);
+
+  const closeMutPanel = () => {
+    setMutsOpen(false);
+    setMutFocus(null);
+  };
+
   const mateList = useMemo(() => {
     if (!mateCOIMap) return null;
     return [...mateCOIMap]
@@ -1087,6 +1191,9 @@ function GenealogyApp() {
               mateMode: mateCOIMap != null,
               mateSource: n.id === mateModeFor,
               coi: mateCOIMap?.get(n.id) ?? null,
+              mutMode: mutHighlight != null,
+              mutCarrier:
+                mutHighlight != null && cat.mutations[mutHighlight.slot] === mutHighlight.id,
               assignMode: assignChild != null,
               isAssignChild: n.id === assignChild?.id,
               isAssignParent:
@@ -1106,6 +1213,7 @@ function GenealogyApp() {
       selection,
       mateCOIMap,
       mateModeFor,
+      mutHighlight,
       viewRootId,
       assignChild,
       assignBlockedIds,
@@ -1228,6 +1336,17 @@ function GenealogyApp() {
     setPendingFocus(id);
   };
 
+  /**
+   * Picking a carrier in the mutation panel: select just that cat and center
+   * the camera; drops the pedigree view (the carrier may be outside it).
+   */
+  const pickCarrier = (id: string) => {
+    setViewRootId(null);
+    setSelection([id]);
+    focusPendingRef.current = true;
+    setPendingFocus(id);
+  };
+
   const onNodeClick: NodeMouseHandler = (_, node) => {
     if (node.type !== 'cat') return;
     const cat = byId.get(node.id);
@@ -1253,6 +1372,7 @@ function GenealogyApp() {
     setAssigningFor(childId);
     setSelection([]);
     setMateModeFor(null);
+    closeMutPanel();
     setViewRootId(null); // full tree — so all candidates are visible, including new ones
     setAddingFounder(false);
   };
@@ -1336,6 +1456,7 @@ function GenealogyApp() {
         setViewRootId(null);
         setMateModeFor(null);
         setAssigningFor(null);
+        closeMutPanel();
       } catch {
         alert(t.importError);
       }
@@ -1349,6 +1470,7 @@ function GenealogyApp() {
     setViewRootId(null);
     setMateModeFor(null);
     setAssigningFor(null);
+    closeMutPanel();
   };
 
   const selectedCats = selection
@@ -1407,6 +1529,18 @@ function GenealogyApp() {
           >
             {t.addCat}
           </button>
+          <button
+            className={mutsOpen ? 'accent' : ''}
+            onClick={() => {
+              if (mutsOpen) closeMutPanel();
+              else {
+                setMutsOpen(true);
+                setMateModeFor(null); // the two leftside panels are exclusive
+              }
+            }}
+          >
+            {t.mutPanelBtn}
+          </button>
           {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
           <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
           <span className="count">{t.catCount(cats.length)}</span>
@@ -1426,6 +1560,15 @@ function GenealogyApp() {
             pickedIds={selection}
             onPick={pickMate}
             onClose={() => setMateModeFor(null)}
+          />
+        )}
+        {mutsOpen && (
+          <MutationPanel
+            rows={houseMuts}
+            focus={mutFocus}
+            onFocus={setMutFocus}
+            onPickCat={pickCarrier}
+            onClose={closeMutPanel}
           />
         )}
       </div>
@@ -1535,7 +1678,12 @@ function GenealogyApp() {
               onUpdate={(patch) => updateCat(single.id, patch)}
               onDelete={() => deleteCat(single.id)}
               onPedigree={() => setViewRootId(viewRootId === single.id ? null : single.id)}
-              onMates={() => setMateModeFor(mateModeFor === single.id ? null : single.id)}
+              onMates={() => {
+                // the mate panel and the mutation panel share the leftside slot
+                const next = mateModeFor === single.id ? null : single.id;
+                setMateModeFor(next);
+                if (next) closeMutPanel();
+              }}
               onAssignParents={() => startAssignParents(single.id)}
             />
           ) : helpOpen ? (

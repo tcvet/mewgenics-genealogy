@@ -16,6 +16,10 @@ export interface CatNodeData {
   mateSource: boolean;
   /** COI of future offspring with the selected cat; null — not a candidate (same sex / itself) */
   coi: number | null;
+  /** mutation-highlight mode is active (a mutation picked in the inventory panel) */
+  mutMode: boolean;
+  /** carries the highlighted mutation (in the highlighted slot) */
+  mutCarrier: boolean;
   /** parent-assignment mode is active */
   assignMode: boolean;
   /** the cat whose parents are being assigned */
@@ -38,6 +42,11 @@ export function CatNode({ data }: NodeProps) {
   if (d.mateMode && !d.mateSource) {
     if (d.coi === null) cls.push('dimmed');
     else cls.push('candidate', coiTier(d.coi));
+  }
+  // exclusive with mate/assign modes by the App's state transitions
+  if (d.mutMode) {
+    if (d.mutCarrier) cls.push('mut-carrier');
+    else cls.push('dimmed');
   }
   if (d.assignMode) {
     if (d.isAssignChild) cls.push('assign-child');

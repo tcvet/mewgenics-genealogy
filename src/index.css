@@ -255,6 +255,44 @@ body {
   font-size: 13px;
 }
 
+/* mutation inventory panel (shares the mate-panel shell and row styles) */
+.mut-group {
+  margin-top: 6px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mut-group:first-child {
+  margin-top: 0;
+}
+
+.mate-row .mut-count {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.mut-defect {
+  color: #f0a0a0;
+}
+
+/* carrier chips under the selected mutation row */
+.mut-carriers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 2px 8px 6px;
+}
+
+.mut-inherit.gone {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
 .parent-slot {
   display: flex;
   align-items: center;
@@ -829,6 +867,13 @@ input[type='text'].dup {
 
 .cat-node.dimmed {
   opacity: 0.18;
+}
+
+/* carrier of the mutation picked in the inventory panel (cyan — the only
+   state color not taken by selection, COI tiers or assign mode) */
+.cat-node.mut-carrier {
+  box-shadow: 0 0 0 3px rgba(89, 192, 232, 0.85), 0 0 16px rgba(89, 192, 232, 0.4),
+    var(--card-lift);
 }
 
 /* parent-assignment mode */

@@ -159,6 +159,11 @@ const en = {
   mateSortStats: 'Σ stats',
   mateStatsTitle: 'Stat total',
   mateEmpty: 'No compatible partners.',
+  mutPanelBtn: '🧬 Mutations',
+  mutPanelTitle: 'Mutations in the house',
+  mutPanelEmpty: 'The cats in the house have no mutations.',
+  mutPanelHint:
+    'Click a mutation to highlight its carriers on the map; click a name to jump to that cat.',
   assignBadge: (name: string) =>
     `Assigning parents for “${name}” — click cats on the map or use the search`,
   // dialogs
@@ -309,6 +314,11 @@ const ru: Dict = {
   mateSortStats: 'Σ статов',
   mateStatsTitle: 'Сумма статов',
   mateEmpty: 'Совместимых партнёров нет.',
+  mutPanelBtn: '🧬 Мутации',
+  mutPanelTitle: 'Мутации в доме',
+  mutPanelEmpty: 'У котов в доме нет мутаций.',
+  mutPanelHint:
+    'Клик по мутации — подсветка носителей на карте; клик по имени — переход к коту.',
   assignBadge: (name) =>
     `Назначение родителей для «${name}» — кликайте котов на карте или ищите поиском`,
   deleteHasChildren: 'У этого кота есть потомки — сначала удалите их.',
@@ -454,6 +464,11 @@ const de: Dict = {
   mateSortStats: 'Σ Werte',
   mateStatsTitle: 'Summe der Werte',
   mateEmpty: 'Keine passenden Partner.',
+  mutPanelBtn: '🧬 Mutationen',
+  mutPanelTitle: 'Mutationen im Haus',
+  mutPanelEmpty: 'Die Katzen im Haus haben keine Mutationen.',
+  mutPanelHint:
+    'Klick auf eine Mutation hebt ihre Träger hervor; Klick auf einen Namen springt zur Katze.',
   assignBadge: (name) =>
     `Eltern für „${name}“ festlegen — klicke Katzen auf der Karte an oder nutze die Suche`,
   deleteHasChildren: 'Diese Katze hat Nachkommen — lösche sie zuerst.',
@@ -600,6 +615,11 @@ const fr: Dict = {
   mateSortStats: 'Σ stats',
   mateStatsTitle: 'Total des stats',
   mateEmpty: 'Aucun partenaire compatible.',
+  mutPanelBtn: '🧬 Mutations',
+  mutPanelTitle: 'Mutations dans la maison',
+  mutPanelEmpty: 'Les chats de la maison n’ont aucune mutation.',
+  mutPanelHint:
+    'Cliquez sur une mutation pour surligner ses porteurs ; cliquez sur un nom pour aller au chat.',
   assignBadge: (name) =>
     `Attribution des parents de « ${name} » — cliquez sur les chats ou utilisez la recherche`,
   deleteHasChildren: 'Ce chat a des descendants — supprimez-les d’abord.',
@@ -747,6 +767,11 @@ const es: Dict = {
   mateSortStats: 'Σ stats',
   mateStatsTitle: 'Suma de stats',
   mateEmpty: 'No hay parejas compatibles.',
+  mutPanelBtn: '🧬 Mutaciones',
+  mutPanelTitle: 'Mutaciones en la casa',
+  mutPanelEmpty: 'Los gatos de la casa no tienen mutaciones.',
+  mutPanelHint:
+    'Haz clic en una mutación para resaltar a sus portadores; haz clic en un nombre para ir al gato.',
   assignBadge: (name) =>
     `Asignando padres a «${name}» — haz clic en los gatos del mapa o usa la búsqueda`,
   deleteHasChildren: 'Este gato tiene descendientes — elimínalos primero.',
@@ -893,6 +918,11 @@ const pt: Dict = {
   mateSortStats: 'Σ stats',
   mateStatsTitle: 'Soma dos stats',
   mateEmpty: 'Nenhum parceiro compatível.',
+  mutPanelBtn: '🧬 Mutações',
+  mutPanelTitle: 'Mutações na casa',
+  mutPanelEmpty: 'Os gatos da casa não têm mutações.',
+  mutPanelHint:
+    'Clique numa mutação para destacar os portadores; clique num nome para ir ao gato.',
   assignBadge: (name) => `Definindo pais de “${name}” — clique nos gatos do mapa ou use a busca`,
   deleteHasChildren: 'Este gato tem descendentes — exclua-os primeiro.',
   deleteConfirm: (name) => `Excluir “${name}”?`,
@@ -1038,6 +1068,10 @@ const zh: Dict = {
   mateSortStats: 'Σ 属性',
   mateStatsTitle: '属性总和',
   mateEmpty: '没有合适的伴侣。',
+  mutPanelBtn: '🧬 变异',
+  mutPanelTitle: '家中的变异',
+  mutPanelEmpty: '家中的猫没有变异。',
+  mutPanelHint: '点击变异可在图上高亮携带者；点击名字可跳转到该猫。',
   assignBadge: (name) => `正在为“${name}”指定父母——点击地图上的猫或使用搜索`,
   deleteHasChildren: '这只猫有后代——请先删除它们。',
   deleteConfirm: (name) => `删除“${name}”？`,
@@ -1181,6 +1215,11 @@ const ja: Dict = {
   mateSortStats: 'Σ 能力',
   mateStatsTitle: '能力値の合計',
   mateEmpty: '相性の合う相手がいません。',
+  mutPanelBtn: '🧬 ミューテーション',
+  mutPanelTitle: '家にあるミューテーション',
+  mutPanelEmpty: '家の猫にミューテーションはありません。',
+  mutPanelHint:
+    'ミューテーションをクリックすると持ち主がハイライトされ、名前をクリックするとその猫へ移動します。',
   assignBadge: (name) =>
     `「${name}」の両親を設定中——マップ上の猫をクリックするか検索してください`,
   deleteHasChildren: 'この猫には子孫がいます——先に子孫を削除してください。',
@@ -1328,6 +1367,11 @@ const ko: Dict = {
   mateSortStats: 'Σ 스탯',
   mateStatsTitle: '스탯 합계',
   mateEmpty: '호환되는 짝이 없습니다.',
+  mutPanelBtn: '🧬 돌연변이',
+  mutPanelTitle: '집안의 돌연변이',
+  mutPanelEmpty: '집에 있는 고양이에게 돌연변이가 없습니다.',
+  mutPanelHint:
+    '돌연변이를 클릭하면 보유자가 강조되고, 이름을 클릭하면 해당 고양이로 이동합니다.',
   assignBadge: (name) =>
     `“${name}”의 부모 지정 중 — 지도의 고양이를 클릭하거나 검색을 사용하세요`,
   deleteHasChildren: '이 고양이에게는 자손이 있습니다 — 먼저 자손을 삭제하세요.',
