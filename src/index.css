@@ -293,6 +293,36 @@ body {
   opacity: 0.7;
 }
 
+/* roll-call checklist (shares the mate-panel shell and row styles) */
+.roll-box {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.roll-box.on {
+  color: #8fd6a4;
+  border-color: #4d8763;
+}
+
+/* review step: the ✕ marks cats about to be set to "left home" */
+.roll-box.on.gone {
+  color: #f0a0a0;
+  border-color: #6b3740;
+}
+
+.mate-row.roll-done .mate-name {
+  color: var(--text-muted);
+}
+
 .parent-slot {
   display: flex;
   align-items: center;

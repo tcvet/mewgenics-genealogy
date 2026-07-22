@@ -58,6 +58,7 @@ import { I18nProvider, LANGS, useI18n, type Lang } from './i18n';
 
 const STORAGE_KEY = 'mewgenics-genealogy';
 const HELP_KEY = 'mewgenics-help';
+const ROLLCALL_KEY = 'mewgenics-rollcall';
 const nodeTypes = { cat: CatNode, union: UnionNode };
 
 /** Name normalization for duplicate checks: trimmed, case-insensitive. */
@@ -221,6 +222,17 @@ function loadCats(): Cat[] {
     // corrupted data — start with the example
   }
   return seedCats();
+}
+
+/** An in-progress roll call survives reloads: the key exists ⇔ a session is active. */
+function loadRollcall(): Set<string> | null {
+  try {
+    const raw = localStorage.getItem(ROLLCALL_KEY);
+    if (raw !== null) return new Set(JSON.parse(raw) as string[]);
+  } catch {
+    // corrupted data — no session
+  }
+  return null;
 }
 
 const SEX_OPTIONS: { sex: Sex; cls: string }[] = [
@@ -1024,6 +1036,117 @@ function MutationPanel(props: {
   );
 }
 
+/** Floating roll-call checklist: walk the in-game roster and tick every cat
+ * found here; "Finish" reviews the unticked ones and marks them as left home. */
+function RollCallPanel(props: {
+  cats: Cat[]; // cats still at home, alphabetical
+  checked: Set<string>;
+  onToggle: (id: string) => void;
+  onFinish: (goneIds: string[]) => void;
+  onCancel: () => void;
+  onHide: () => void;
+}) {
+  const { t } = useI18n();
+  const [reviewing, setReviewing] = useState(false);
+  // review step: unticked cats the user opts to keep at home anyway
+  const [keep, setKeep] = useState<Set<string>>(() => new Set());
+  const done = props.cats.filter((c) => props.checked.has(c.id)).length;
+  const missing = props.cats.filter((c) => !props.checked.has(c.id));
+  const toggleKeep = (id: string) =>
+    setKeep((s) => {
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  const hideBtn = (
+    <button className="small" title={t.collapseTitle} onClick={props.onHide}>
+      ✕
+    </button>
+  );
+  if (reviewing) {
+    const goneIds = missing.filter((c) => !keep.has(c.id)).map((c) => c.id);
+    return (
+      <div className="panel mate-panel">
+        <div className="hint-head">
+          <b>{t.rollReviewTitle}</b>
+          {hideBtn}
+        </div>
+        {missing.length === 0 ? (
+          <>
+            <div className="meta">{t.rollAllHome}</div>
+            <button className="accent" onClick={() => props.onFinish([])}>
+              {t.done}
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="meta">{t.rollReviewDesc}</div>
+            <div className="mate-list">
+              {missing.map((c) => {
+                const marked = !keep.has(c.id);
+                return (
+                  <button key={c.id} className="mate-row" onClick={() => toggleKeep(c.id)}>
+                    <span className={`roll-box${marked ? ' on gone' : ''}`}>
+                      {marked ? '✕' : ''}
+                    </span>
+                    <span className="mate-sex">{SEX_GLYPH[c.sex]}</span>
+                    <span className="mate-name">{c.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="row">
+              <button className="accent" onClick={() => props.onFinish(goneIds)}>
+                {t.rollApply(goneIds.length)}
+              </button>
+              <button onClick={() => setReviewing(false)}>{t.rollBack}</button>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+  return (
+    <div className="panel mate-panel">
+      <div className="hint-head">
+        <b>{t.rollPanelTitle}</b>
+        {hideBtn}
+      </div>
+      <div className="meta">{t.rollProgress(done, props.cats.length)}</div>
+      <div className="mate-list">
+        {props.cats.map((c) => {
+          const on = props.checked.has(c.id);
+          return (
+            <button
+              key={c.id}
+              className={`mate-row${on ? ' roll-done' : ''}`}
+              onClick={() => props.onToggle(c.id)}
+            >
+              <span className={`roll-box${on ? ' on' : ''}`}>{on ? '✓' : ''}</span>
+              <span className="mate-sex">{SEX_GLYPH[c.sex]}</span>
+              <span className="mate-name">{c.name}</span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="row">
+        <button
+          className="accent"
+          onClick={() => {
+            setKeep(new Set());
+            setReviewing(true);
+          }}
+        >
+          {t.rollFinish}
+        </button>
+        <button onClick={props.onCancel}>{t.cancel}</button>
+      </div>
+      <div className="meta">{t.rollHint}</div>
+    </div>
+  );
+}
+
 function GenealogyApp() {
   const { t, lang, setLang } = useI18n();
   const [cats, setCats] = useState<Cat[]>(loadCats);
@@ -1033,6 +1156,10 @@ function GenealogyApp() {
   const [assigningFor, setAssigningFor] = useState<string | null>(null);
   const [mutsOpen, setMutsOpen] = useState(false);
   const [mutFocus, setMutFocus] = useState<MutFocus | null>(null);
+  // roll call: the ticked ids (null — no session) + whether its panel is shown.
+  // The session survives hiding the panel and page reloads (localStorage).
+  const [rollChecked, setRollChecked] = useState<Set<string> | null>(loadRollcall);
+  const [rollOpen, setRollOpen] = useState(() => localStorage.getItem(ROLLCALL_KEY) !== null);
   const [addingFounder, setAddingFounder] = useState(false);
   const [helpOpen, setHelpOpen] = useState(() => localStorage.getItem(HELP_KEY) !== 'closed');
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -1068,6 +1195,11 @@ function GenealogyApp() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cats));
   }, [cats]);
+
+  useEffect(() => {
+    if (rollChecked) localStorage.setItem(ROLLCALL_KEY, JSON.stringify([...rollChecked]));
+    else localStorage.removeItem(ROLLCALL_KEY);
+  }, [rollChecked]);
 
   const byId = useMemo(() => indexCats(cats), [cats]);
   const children = useMemo(() => childrenIndex(cats), [cats]);
@@ -1145,6 +1277,50 @@ function GenealogyApp() {
   const closeMutPanel = () => {
     setMutsOpen(false);
     setMutFocus(null);
+  };
+
+  // roll-call checklist: cats still at home, alphabetical (like the game roster)
+  const rollCats = useMemo(
+    () => cats.filter((c) => !c.gone).sort((a, b) => a.name.localeCompare(b.name)),
+    [cats],
+  );
+
+  /** Toolbar button: starts a session, or toggles the panel of the running one. */
+  const toggleRollcall = () => {
+    if (rollChecked && rollOpen) {
+      setRollOpen(false);
+      return;
+    }
+    if (!rollChecked) setRollChecked(new Set());
+    setRollOpen(true);
+    setMateModeFor(null); // the leftside panels are exclusive
+    closeMutPanel();
+  };
+
+  const toggleRollCheck = (id: string) => {
+    setRollChecked((s) => {
+      if (!s) return s;
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  /** Ends the session, marking the confirmed leavers as gone. */
+  const finishRollcall = (goneIds: string[]) => {
+    if (goneIds.length > 0) {
+      const gone = new Set(goneIds);
+      setCats((cs) => cs.map((c) => (gone.has(c.id) ? { ...c, gone: true } : c)));
+    }
+    setRollChecked(null);
+    setRollOpen(false);
+  };
+
+  const cancelRollcall = () => {
+    if (rollChecked && rollChecked.size > 0 && !confirm(t.rollCancelConfirm)) return;
+    setRollChecked(null);
+    setRollOpen(false);
   };
 
   const mateList = useMemo(() => {
@@ -1373,6 +1549,7 @@ function GenealogyApp() {
     setSelection([]);
     setMateModeFor(null);
     closeMutPanel();
+    setRollOpen(false);
     setViewRootId(null); // full tree — so all candidates are visible, including new ones
     setAddingFounder(false);
   };
@@ -1457,6 +1634,8 @@ function GenealogyApp() {
         setMateModeFor(null);
         setAssigningFor(null);
         closeMutPanel();
+        setRollChecked(null); // the ids in the ticks belong to the replaced cats
+        setRollOpen(false);
       } catch {
         alert(t.importError);
       }
@@ -1471,6 +1650,8 @@ function GenealogyApp() {
     setMateModeFor(null);
     setAssigningFor(null);
     closeMutPanel();
+    setRollChecked(null);
+    setRollOpen(false);
   };
 
   const selectedCats = selection
@@ -1535,11 +1716,15 @@ function GenealogyApp() {
               if (mutsOpen) closeMutPanel();
               else {
                 setMutsOpen(true);
-                setMateModeFor(null); // the two leftside panels are exclusive
+                setMateModeFor(null); // the leftside panels are exclusive
+                setRollOpen(false);
               }
             }}
           >
             {t.mutPanelBtn}
+          </button>
+          <button className={rollChecked ? 'accent' : ''} onClick={toggleRollcall}>
+            {t.rollBtn}
           </button>
           {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
           <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
@@ -1569,6 +1754,16 @@ function GenealogyApp() {
             onFocus={setMutFocus}
             onPickCat={pickCarrier}
             onClose={closeMutPanel}
+          />
+        )}
+        {rollChecked && rollOpen && (
+          <RollCallPanel
+            cats={rollCats}
+            checked={rollChecked}
+            onToggle={toggleRollCheck}
+            onFinish={finishRollcall}
+            onCancel={cancelRollcall}
+            onHide={() => setRollOpen(false)}
           />
         )}
       </div>
@@ -1679,10 +1874,13 @@ function GenealogyApp() {
               onDelete={() => deleteCat(single.id)}
               onPedigree={() => setViewRootId(viewRootId === single.id ? null : single.id)}
               onMates={() => {
-                // the mate panel and the mutation panel share the leftside slot
+                // the leftside panels (mates/mutations/roll call) share the slot
                 const next = mateModeFor === single.id ? null : single.id;
                 setMateModeFor(next);
-                if (next) closeMutPanel();
+                if (next) {
+                  closeMutPanel();
+                  setRollOpen(false);
+                }
               }}
               onAssignParents={() => startAssignParents(single.id)}
             />

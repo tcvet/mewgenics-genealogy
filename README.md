@@ -83,6 +83,15 @@ Node.js works too: `npm install && npm run dev`.
   (died/sold/left): the card is dimmed and struck through, and the cat is not
   shown among candidates in “mate COI” mode. It stays in the pedigree and still
   counts as an ancestor in inbreeding calculations.
+- **Roll call** — the “📋 Roll call” toolbar button opens an alphabetical
+  checklist of every cat still at home, for syncing the tree with the game:
+  walk your in-game roster and tick each cat you find here (a cat present in
+  the game but missing from the list is one you forgot to add). “Finish” shows
+  the cats that were never ticked, pre-marked — untick anyone you merely
+  overlooked and apply to set the rest to “left home”. The ticks survive page
+  reloads, and hiding the panel (✕, or opening another left-side panel) keeps
+  the session going — the toolbar button stays highlighted until you finish or
+  cancel.
 - **“Pedigree”** shows only the ancestors and descendants of the selected cat
   (the toolbar button returns to the full tree).
 - **“Show mate COI”** displays, on every compatible cat (by sex and
