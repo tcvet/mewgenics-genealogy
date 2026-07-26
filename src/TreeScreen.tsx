@@ -401,7 +401,15 @@ function RollCallPanel(props: {
   );
 }
 
-function TreeView({ store }: { store: CatsStore }) {
+function TreeView({
+  store,
+  focusId,
+  onFocusDone,
+}: {
+  store: CatsStore;
+  focusId: string | null;
+  onFocusDone: () => void;
+}) {
   const { t, lang, setLang } = useI18n();
   const {
     cats,
@@ -784,6 +792,16 @@ function TreeView({ store }: { store: CatsStore }) {
     setPendingFocus(id);
   };
 
+  // Arriving from another screen ("show in the tree"): select the cat, center
+  // on it, and drop any mode that would hijack the next clicks.
+  useEffect(() => {
+    if (!focusId) return;
+    setAssigningFor(null);
+    pickCarrier(focusId);
+    onFocusDone();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusId]);
+
   const onNodeClick: NodeMouseHandler = (_, node) => {
     if (node.type !== 'cat') return;
     const cat = byId.get(node.id);
@@ -1153,10 +1171,18 @@ function TreeView({ store }: { store: CatsStore }) {
 }
 
 /** The genealogy-map screen: the interactive family tree plus its side panels. */
-export function TreeScreen({ store }: { store: CatsStore }) {
+export function TreeScreen({
+  store,
+  focusId,
+  onFocusDone,
+}: {
+  store: CatsStore;
+  focusId: string | null;
+  onFocusDone: () => void;
+}) {
   return (
     <ReactFlowProvider>
-      <TreeView store={store} />
+      <TreeView store={store} focusId={focusId} onFocusDone={onFocusDone} />
     </ReactFlowProvider>
   );
 }

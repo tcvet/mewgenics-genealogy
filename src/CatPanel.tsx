@@ -175,18 +175,31 @@ export function CatPanel(props: {
   father: Cat | null;
   childrenCount: number;
   inbreeding: number;
-  pedigreeActive: boolean;
-  mateActive: boolean;
+  pedigreeActive?: boolean;
+  mateActive?: boolean;
   nameTaken: (name: string) => boolean;
   onUpdate: (patch: Partial<Cat>) => void;
   onDelete: () => void;
-  onPedigree: () => void;
-  onMates: () => void;
-  onAssignParents: () => void;
+  /** tree-screen actions; each button renders only when its handler is given */
+  onPedigree?: () => void;
+  onMates?: () => void;
+  onAssignParents?: () => void;
+  /** overview: jump to the tree centered on this cat */
+  onShowInTree?: () => void;
+  /** overview: parent names become links that open that cat */
+  onOpenCat?: (id: string) => void;
 }) {
   const { t } = useI18n();
   const { cat } = props;
   const dupName = cat.name.trim() !== '' && props.nameTaken(cat.name);
+  const parentName = (p: Cat | null) =>
+    p && props.onOpenCat ? (
+      <button type="button" className="link-btn" onClick={() => props.onOpenCat!(p.id)}>
+        {p.name}
+      </button>
+    ) : (
+      (p?.name ?? '—')
+    );
   return (
     <div className="panel">
       <div className="row">
@@ -206,7 +219,7 @@ export function CatPanel(props: {
       <RoomToggle value={cat.room} onChange={(room) => props.onUpdate({ room })} />
       <ClassSelect value={cat.class} onChange={(cls) => props.onUpdate({ class: cls })} />
       <div className="meta">
-        {t.parents}: {props.mother?.name ?? '—'} × {props.father?.name ?? '—'}
+        {t.parents}: {parentName(props.mother)} × {parentName(props.father)}
         <br />
         {t.childrenCount}: {props.childrenCount}
         <br />
@@ -292,11 +305,18 @@ export function CatPanel(props: {
         value={cat.notes ?? ''}
         onChange={(e) => props.onUpdate({ notes: e.target.value })}
       />
-      <button onClick={props.onAssignParents}>{t.assignParentsBtn}</button>
-      <button onClick={props.onPedigree}>
-        {props.pedigreeActive ? t.fullTreeBtn : t.pedigreeBtn}
-      </button>
-      <button onClick={props.onMates}>{props.mateActive ? t.hideMates : t.showMates}</button>
+      {props.onAssignParents && (
+        <button onClick={props.onAssignParents}>{t.assignParentsBtn}</button>
+      )}
+      {props.onPedigree && (
+        <button onClick={props.onPedigree}>
+          {props.pedigreeActive ? t.fullTreeBtn : t.pedigreeBtn}
+        </button>
+      )}
+      {props.onMates && (
+        <button onClick={props.onMates}>{props.mateActive ? t.hideMates : t.showMates}</button>
+      )}
+      {props.onShowInTree && <button onClick={props.onShowInTree}>{t.showInTreeBtn}</button>}
       <button onClick={() => props.onUpdate({ gone: !cat.gone })}>
         {cat.gone ? t.returnHomeBtn : t.leftHomeBtn}
       </button>
