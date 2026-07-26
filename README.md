@@ -5,7 +5,8 @@ No backend: everything runs in the browser, data lives in localStorage with
 JSON export/import.
 
 The app is organized into screens, switched with the tabs in the top bar:
-a cat browser, a breeding planner, a roll call, statistics, the interactive
+a cat browser, a breeding planner, a roll call, statistics, a legacy report
+(which bonded pairs keep each mutation in the house), the interactive
 family tree (actually a DAG — inbreeding is handled correctly, and the map
 lays itself out automatically) and settings.
 
@@ -100,6 +101,31 @@ with carrier counts. Click a mutation to unfold its carriers (gone carriers
 are struck through, so you can trace where a line's mutation came from);
 click a carrier to open it in the browser.
 
+### 🧬 Legacy — mutation preservation
+
+If you keep bonded pairs specifically so that a mutation stays in the house,
+this screen replaces the spreadsheet: everything is derived from the cats'
+mutations and bonds, nothing to maintain by hand. A named mutation counts as
+**kept** while an active bond (two or more members still in the house) has a
+carrier — the pair can always breed the mutation back.
+
+- **By mutation** (default): every named mutation the house has seen, worst
+  first, with a status pill — red “last carrier” (a single carrier and no
+  bond), yellow “not secured” (carriers, but none in an active bond), green
+  “secured” (kept by a bond; ✓✓ marks a bond whose every member is a
+  carrier). Each row lists the keeping bonds and the unbonded carriers; a
+  “💞 Find a partner” button on problem rows jumps to the breeding screen
+  with the carrier preselected. A grey “Lost” section at the bottom lists
+  mutations that left the house entirely — carried only by cats that are
+  gone.
+- **By bond**: the same report pivoted — every active bond with the mutations
+  it keeps, and a ⚠ “sole keeper” warning where no other bond has the
+  mutation (dissolve that pair and the mutation hangs by a thread). Bonds
+  that keep nothing are listed too.
+
+Common +2/−1 mutations are deliberately ignored here — they are day-to-day
+noise, not something to preserve. Cat names jump to the browser everywhere.
+
 ### 🌳 Tree — the family map
 
 The interactive DAG, laid out automatically: parent pairs join through a
@@ -168,7 +194,7 @@ identical by descent. Full siblings or parent×child → 25%, half siblings →
   operations, shared by every screen.
 - `src/App.tsx` — the shell: the top tab bar and the screens
   (`OverviewScreen`, `BreedingScreen`, `RollCallScreen`, `StatsScreen`,
-  `TreeScreen`, `SettingsScreen`); shared widgets live in `controls.tsx`,
+  `LegacyScreen`, `TreeScreen`, `SettingsScreen`); shared widgets live in `controls.tsx`,
   `CatPanel.tsx`, `forms.tsx` and `MateList.tsx`.
 - `src/layout.ts` — auto-layout of the map via ELK (layered): every parent
   pair gets a “union node” (the heart) from which edges go to the litter's

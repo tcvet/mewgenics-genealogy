@@ -1510,6 +1510,177 @@ input[type='text'].dup {
   width: 100%;
 }
 
+/* --- legacy screen: which bonds keep each named mutation in the house --- */
+
+.lg-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lg-toggle {
+  display: flex;
+  gap: 4px;
+}
+
+.lg-toggle button {
+  font-size: 12px;
+  padding: 4px 10px;
+}
+
+.lg-toggle button.on {
+  background: #8563b4;
+  border-color: #a184cf;
+}
+
+.lg-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lg-row {
+  max-width: 760px;
+  padding: 8px 10px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lg-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* preservation status pill; colors echo the green/yellow/red of the COI tiers */
+.lg-status {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid;
+}
+
+.lg-status.secured {
+  color: #7fdc9f;
+  border-color: rgba(127, 220, 159, 0.45);
+}
+
+.lg-status.loose {
+  color: #e6c988;
+  border-color: rgba(230, 201, 136, 0.45);
+}
+
+.lg-status.last {
+  color: #f0a0a0;
+  border-color: rgba(240, 160, 160, 0.5);
+}
+
+.lg-status.lost {
+  color: var(--text-muted);
+  border-color: var(--control-border);
+}
+
+.lg-mut {
+  font-weight: 700;
+}
+
+.lg-slot {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.lg-keepers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+/* one keeping bond: 💞 + clickable member names (non-carriers dimmed) */
+.lg-bond {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+}
+
+.lg-bond .mut-inherit {
+  background: none;
+  border-color: transparent;
+  padding: 2px 4px;
+}
+
+.lg-bond .mut-inherit.dim {
+  opacity: 0.55;
+}
+
+.lg-full {
+  color: #7fdc9f;
+  font-weight: 700;
+  font-size: 12px;
+  margin-left: 3px;
+}
+
+.lg-loose,
+.lg-bondhead {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.lg-label {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.lg-pairup {
+  font-size: 12px;
+  padding: 4px 9px;
+}
+
+.lg-sep {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lg-warn {
+  color: #e6c988;
+  font-size: 13px;
+}
+
+.lg-mutchip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 3px 8px;
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  font-size: 13px;
+}
+
 /* --- settings screen --- */
 
 .se-screen {

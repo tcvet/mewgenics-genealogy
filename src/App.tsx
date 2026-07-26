@@ -6,6 +6,7 @@ import { OverviewScreen } from './OverviewScreen';
 import { BreedingScreen } from './BreedingScreen';
 import { RollCallScreen } from './RollCallScreen';
 import { StatsScreen } from './StatsScreen';
+import { LegacyScreen } from './LegacyScreen';
 import { SettingsScreen } from './SettingsScreen';
 
 const SCREEN_KEY = 'mewgenics-screen';
@@ -16,6 +17,7 @@ const NAV: { key: string; icon: string; label: keyof Dict }[] = [
   { key: 'breeding', icon: '💕', label: 'navBreeding' },
   { key: 'rollcall', icon: '📋', label: 'navRollcall' },
   { key: 'stats', icon: '📊', label: 'navStats' },
+  { key: 'legacy', icon: '🧬', label: 'navLegacy' },
   { key: 'tree', icon: '🌳', label: 'navTree' },
   { key: 'settings', icon: '⚙️', label: 'navSettings' },
 ];
@@ -107,6 +109,10 @@ function Shell() {
         )}
         {fill('rollcall', <RollCallScreen store={store} />)}
         {fill('stats', <StatsScreen store={store} onOpenCat={openCat} />)}
+        {fill(
+          'legacy',
+          <LegacyScreen store={store} onOpenCat={openCat} onOpenBreeding={openBreeding} />,
+        )}
         {fill(
           'tree',
           <TreeScreen store={store} focusId={treeFocus} onFocusDone={() => setTreeFocus(null)} />,

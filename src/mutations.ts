@@ -145,6 +145,121 @@ export function houseMutations(cats: Cat[]): HouseMutation[] {
   return rows;
 }
 
+/* --- legacy report: which bonds keep each named mutation in the house --- */
+
+export type LegacyStatus = 'secured' | 'loose' | 'last' | 'lost';
+
+/** An active bond (≥2 living members) seen from one mutation's perspective. */
+export interface LegacyBond {
+  bondId: string;
+  /** living members that carry the mutation (under this slot) */
+  carriers: Cat[];
+  /** the remaining living members; empty ⇒ the whole bond carries it */
+  others: Cat[];
+}
+
+/** One row of the legacy report: a named mutation and who keeps it alive. */
+export interface LegacyRow {
+  slot: MutationSlot;
+  id: string;
+  /** secured — kept by a bond; loose — living carriers but no bond;
+   *  last — a single unbonded living carrier; lost — gone carriers only */
+  status: LegacyStatus;
+  /** active bonds with at least one living carrier */
+  bonds: LegacyBond[];
+  /** living carriers not covered by any of those bonds */
+  loose: Cat[];
+  /** carriers that left the house (all of the carriers for `lost` rows) */
+  gone: Cat[];
+}
+
+const STATUS_ORDER: Record<LegacyStatus, number> = { last: 0, loose: 1, secured: 2, lost: 3 };
+
+/**
+ * The preservation report over the named mutations the house has seen
+ * (commons are day-to-day noise, not something to preserve). Keyed by
+ * (slot, id) like `houseMutations`; `bonds` is the store's bondId index.
+ * A mutation counts as kept while an active bond — two or more living
+ * members — contains a living carrier: the bond can breed it back. A
+ * carrier whose bond is widowed down to one member counts as loose.
+ * Rows come sorted problems-first: last carrier, loose, secured, lost.
+ */
+export function legacyReport(cats: Cat[], bonds: Map<string, Cat[]>): LegacyRow[] {
+  const rows: LegacyRow[] = [];
+  for (const slot of MUTATION_SLOTS) {
+    const bySlot = new Map<string, Cat[]>();
+    for (const cat of cats) {
+      const id = cat.mutations[slot];
+      if (!id || !namedById.has(id)) continue;
+      const list = bySlot.get(id);
+      if (list) list.push(cat);
+      else bySlot.set(id, [cat]);
+    }
+    for (const [id, all] of bySlot) {
+      const living = all.filter((c) => !c.gone);
+      const gone = all.filter((c) => c.gone);
+      if (living.length === 0) {
+        rows.push({ slot, id, status: 'lost', bonds: [], loose: [], gone });
+        continue;
+      }
+      const held = new Map<string, LegacyBond>();
+      for (const c of living) {
+        if (!c.bondId || held.has(c.bondId)) continue;
+        const members = (bonds.get(c.bondId) ?? []).filter((m) => !m.gone);
+        if (members.length < 2) continue;
+        held.set(c.bondId, {
+          bondId: c.bondId,
+          carriers: members.filter((m) => m.mutations[slot] === id),
+          others: members.filter((m) => m.mutations[slot] !== id),
+        });
+      }
+      const loose = living.filter((c) => !(c.bondId && held.has(c.bondId)));
+      const status: LegacyStatus =
+        held.size > 0 ? 'secured' : living.length === 1 ? 'last' : 'loose';
+      rows.push({ slot, id, status, bonds: [...held.values()], loose, gone });
+    }
+  }
+  return rows.sort(
+    (a, b) =>
+      STATUS_ORDER[a.status] - STATUS_ORDER[b.status] ||
+      MUTATION_SLOTS.indexOf(a.slot) - MUTATION_SLOTS.indexOf(b.slot) ||
+      mutationLabel(a.id).localeCompare(mutationLabel(b.id)),
+  );
+}
+
+/** One bond of the by-bond view: what it keeps and where it is irreplaceable. */
+export interface LegacyBondRow {
+  bondId: string;
+  /** living members */
+  members: Cat[];
+  /** report rows this bond keeps */
+  holds: LegacyRow[];
+  /** the subset of `holds` where no other bond keeps the mutation */
+  sole: LegacyRow[];
+}
+
+/**
+ * The report pivoted to bonds: every active bond with the mutations it keeps.
+ * Bonds keeping nothing are listed too — a preservation pair that lost its
+ * point is worth noticing. Sorted: irreplaceable bonds first, then by load.
+ */
+export function legacyBondRows(rows: LegacyRow[], bonds: Map<string, Cat[]>): LegacyBondRow[] {
+  const out: LegacyBondRow[] = [];
+  for (const [bondId, all] of bonds) {
+    const members = all.filter((c) => !c.gone);
+    if (members.length < 2) continue;
+    const holds = rows.filter((r) => r.bonds.some((b) => b.bondId === bondId));
+    const sole = holds.filter((r) => r.bonds.length === 1);
+    out.push({ bondId, members, holds, sole });
+  }
+  return out.sort(
+    (a, b) =>
+      b.sole.length - a.sole.length ||
+      b.holds.length - a.holds.length ||
+      (a.members[0]?.name ?? '').localeCompare(b.members[0]?.name ?? ''),
+  );
+}
+
 /**
  * Normalize a possibly-missing/foreign `mutations` value (older saves/imports):
  * keep known mutation ids sitting under a slot that accepts them; an id under
