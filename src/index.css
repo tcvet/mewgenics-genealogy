@@ -1463,3 +1463,16 @@ input[type='text'].dup {
 .st-group .mate-row {
   width: 100%;
 }
+
+/* --- settings screen --- */
+
+.se-screen {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+}
+
+.se-panel {
+  width: 360px;
+  margin: 48px auto;
+}

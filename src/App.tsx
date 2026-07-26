@@ -6,16 +6,18 @@ import { OverviewScreen } from './OverviewScreen';
 import { BreedingScreen } from './BreedingScreen';
 import { RollCallScreen } from './RollCallScreen';
 import { StatsScreen } from './StatsScreen';
+import { SettingsScreen } from './SettingsScreen';
 
 const SCREEN_KEY = 'mewgenics-screen';
 
-/** The screens of the app; the list grows as panels graduate into screens. */
+/** The screens of the app. */
 const NAV: { key: string; icon: string; label: keyof Dict }[] = [
   { key: 'cats', icon: '🐈', label: 'navCats' },
   { key: 'breeding', icon: '💕', label: 'navBreeding' },
   { key: 'rollcall', icon: '📋', label: 'navRollcall' },
   { key: 'stats', icon: '📊', label: 'navStats' },
   { key: 'tree', icon: '🌳', label: 'navTree' },
+  { key: 'settings', icon: '⚙️', label: 'navSettings' },
 ];
 type Screen = (typeof NAV)[number]['key'];
 
@@ -82,7 +84,9 @@ function Shell() {
           );
         })}
       </nav>
-      <main className="screen">
+      {/* keyed on the data epoch: importing/resetting remounts every screen,
+          dropping local state that would point at the replaced cats */}
+      <main className="screen" key={store.epoch}>
         {fill(
           'cats',
           <OverviewScreen
@@ -107,6 +111,7 @@ function Shell() {
           'tree',
           <TreeScreen store={store} focusId={treeFocus} onFocusDone={() => setTreeFocus(null)} />,
         )}
+        {fill('settings', <SettingsScreen store={store} />)}
       </main>
     </div>
   );

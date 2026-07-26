@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Background,
   Controls,
@@ -22,12 +22,12 @@ import {
 } from './genealogy';
 import { CAT_H, CAT_W, layoutCats, type LaidOutNode } from './layout';
 import { CatNode, UnionNode } from './CatNode';
-import { LANGS, useI18n, type Lang } from './i18n';
+import { useI18n } from './i18n';
 import { assignParents, type CatsStore } from './store';
 import { SearchBox } from './controls';
 import { MateList, type MateEntry } from './MateList';
 import { CatPanel } from './CatPanel';
-import { AddCatForm, LitterPanel } from './forms';
+import { LitterPanel } from './forms';
 
 const HELP_KEY = 'mewgenics-help';
 const nodeTypes = { cat: CatNode, union: UnionNode };
@@ -190,17 +190,15 @@ function TreeView({
   focusId: string | null;
   onFocusDone: () => void;
 }) {
-  const { t, lang, setLang } = useI18n();
+  const { t } = useI18n();
   const {
     cats,
     byId,
     children,
     updateCat,
     nameTakenBy,
-    addFounder,
     createLitter,
     removeCat,
-    importCats,
   } = store;
   const [selection, setSelection] = useState<string[]>([]);
   const [viewRootId, setViewRootId] = useState<string | null>(null);
@@ -208,33 +206,13 @@ function TreeView({
   const [assigningFor, setAssigningFor] = useState<string | null>(null);
   const [mutsOpen, setMutsOpen] = useState(false);
   const [mutFocus, setMutFocus] = useState<MutFocus | null>(null);
-  const [addingFounder, setAddingFounder] = useState(false);
   const [helpOpen, setHelpOpen] = useState(() => localStorage.getItem(HELP_KEY) !== 'closed');
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [pendingFocus, setPendingFocus] = useState<string | null>(null);
   const [graph, setGraph] = useState<{ nodes: LaidOutNode[]; edges: Edge[] }>({
     nodes: [],
     edges: [],
   });
-  const fileRef = useRef<HTMLInputElement>(null);
-  const settingsRef = useRef<HTMLDivElement>(null);
   const { fitView, setCenter, getViewport } = useReactFlow();
-
-  useEffect(() => {
-    if (!settingsOpen) return;
-    const onDown = (e: MouseEvent) => {
-      if (!settingsRef.current?.contains(e.target as globalThis.Node)) setSettingsOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSettingsOpen(false);
-    };
-    document.addEventListener('mousedown', onDown);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('mousedown', onDown);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [settingsOpen]);
 
   useEffect(() => {
     localStorage.setItem(HELP_KEY, helpOpen ? 'open' : 'closed');
@@ -469,7 +447,6 @@ function TreeView({
   const focusCat = (id: string) => {
     const cat = byId.get(id);
     if (!cat) return;
-    setAddingFounder(false);
     setViewRootId(null); // full tree — the cat is guaranteed to be visible
     if (assignChild) {
       pickParent(assignChild, cat);
@@ -522,7 +499,6 @@ function TreeView({
       pickParent(assignChild, cat);
       return;
     }
-    setAddingFounder(false);
     setSelection((sel) =>
       sel.includes(node.id) ? sel.filter((id) => id !== node.id) : [...sel, node.id].slice(-2),
     );
@@ -532,7 +508,6 @@ function TreeView({
     if (assigningFor) return; // assignment mode is only exited via the "Done" button
     setSelection([]);
     setMateModeFor(null);
-    setAddingFounder(false);
   };
 
   const startAssignParents = (childId: string) => {
@@ -541,7 +516,6 @@ function TreeView({
     setMateModeFor(null);
     closeMutPanel();
     setViewRootId(null); // full tree — so all candidates are visible, including new ones
-    setAddingFounder(false);
   };
 
   const finishAssignParents = () => {
@@ -561,59 +535,6 @@ function TreeView({
     setSelection((sel) => sel.filter((s) => s !== id));
     if (viewRootId === id) setViewRootId(null);
     if (mateModeFor === id) setMateModeFor(null);
-  };
-
-  const exportJson = () => {
-    const blob = new Blob([JSON.stringify(cats, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'mewgenics-genealogy.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  };
-
-  const importJson = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = '';
-    if (!file) return;
-    file.text().then((text) => {
-      try {
-        const data: unknown = JSON.parse(text);
-        if (
-          !Array.isArray(data) ||
-          !data.every(
-            (c) =>
-              c &&
-              typeof c.id === 'string' &&
-              typeof c.name === 'string' &&
-              (c.sex === 'F' || c.sex === 'M' || c.sex === '?'),
-          )
-        ) {
-          throw new Error('bad format');
-        }
-        if (!confirm(t.importConfirm(cats.length, data.length))) {
-          return;
-        }
-        importCats(data as Partial<Cat>[]);
-        setSelection([]);
-        setViewRootId(null);
-        setMateModeFor(null);
-        setAssigningFor(null);
-        closeMutPanel();
-      } catch {
-        alert(t.importError);
-      }
-    });
-  };
-
-  const resetAll = () => {
-    if (!confirm(t.resetConfirm)) return;
-    store.resetAll();
-    setSelection([]);
-    setViewRootId(null);
-    setMateModeFor(null);
-    setAssigningFor(null);
-    closeMutPanel();
   };
 
   const selectedCats = selection
@@ -664,14 +585,6 @@ function TreeView({
         <div className="toolbar">
           <SearchBox cats={cats} onPick={focusCat} />
           <button
-            onClick={() => {
-              setAddingFounder(true);
-              setSelection([]);
-            }}
-          >
-            {t.addCat}
-          </button>
-          <button
             className={mutsOpen ? 'accent' : ''}
             onClick={() => {
               if (mutsOpen) closeMutPanel();
@@ -683,8 +596,6 @@ function TreeView({
           >
             {t.mutPanelBtn}
           </button>
-          {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
-          <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
           {viewRootId && byId.has(viewRootId) && (
             <button className="accent" onClick={() => setViewRootId(null)}>
               {t.backToFullTree(byId.get(viewRootId)!.name)}
@@ -716,65 +627,11 @@ function TreeView({
 
       <div className="side">
         <div className="side-tools">
-          {!assignChild && !addingFounder && selectedCats.length === 0 && !helpOpen && (
+          {!assignChild && selectedCats.length === 0 && !helpOpen && (
             <button className="help-fab" onClick={() => setHelpOpen(true)}>
               {t.helpBtn}
             </button>
           )}
-          <div className="settings-wrap" ref={settingsRef}>
-            <button
-              className="settings-btn"
-              title={t.settingsTitle}
-              aria-label={t.settingsTitle}
-              aria-expanded={settingsOpen}
-              onClick={() => setSettingsOpen((o) => !o)}
-            >
-              ⚙️
-            </button>
-            {settingsOpen && (
-              <div className="settings-menu">
-                <button
-                  onClick={() => {
-                    setSettingsOpen(false);
-                    exportJson();
-                  }}
-                >
-                  {t.exportBtn}
-                </button>
-                <button
-                  onClick={() => {
-                    setSettingsOpen(false);
-                    fileRef.current?.click();
-                  }}
-                >
-                  {t.importBtn}
-                </button>
-                <button
-                  className="danger"
-                  onClick={() => {
-                    setSettingsOpen(false);
-                    resetAll();
-                  }}
-                >
-                  {t.resetBtn}
-                </button>
-                <label className="settings-lang">
-                  {t.langTitle}
-                  <select
-                    className="lang-select"
-                    value={lang}
-                    onChange={(e) => setLang(e.target.value as Lang)}
-                  >
-                    {LANGS.map((l) => (
-                      <option key={l.code} value={l.code}>
-                        {l.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-            )}
-          </div>
         </div>
         <div className="side-scroll">
           {assignChild ? (
@@ -785,15 +642,6 @@ function TreeView({
               onClearMother={() => updateCat(assignChild.id, { motherId: null })}
               onClearFather={() => updateCat(assignChild.id, { fatherId: null })}
               onDone={finishAssignParents}
-            />
-          ) : addingFounder ? (
-            <AddCatForm
-              nameTaken={(n) => nameTakenBy(n)}
-              onAdd={(name, sex, room, cls, orientation) => {
-                addFounder(name, sex, room, cls, orientation);
-                setAddingFounder(false);
-              }}
-              onCancel={() => setAddingFounder(false)}
             />
           ) : pair ? (
             <LitterPanel

@@ -168,6 +168,10 @@ export function useCatsStore() {
   const [cats, setCats] = useState<Cat[]>(loadCats);
   // roll-call session: the ticked ids (null — no session); survives reloads
   const [rollChecked, setRollChecked] = useState<Set<string> | null>(loadRollcall);
+  // bumped when the whole dataset is replaced (import/reset); the shell keys
+  // the screens on it, so every screen's local state (selections, modes,
+  // filters) is dropped instead of pointing at dead cat ids
+  const [epoch, setEpoch] = useState(0);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cats));
@@ -220,12 +224,14 @@ export function useCatsStore() {
   const importCats = (data: Partial<Cat>[]) => {
     setCats(data.map(normCat));
     setRollChecked(null);
+    setEpoch((e) => e + 1);
   };
 
   /** Wipe all data (the confirmation lives in the UI). */
   const resetAll = () => {
     setCats([]);
     setRollChecked(null);
+    setEpoch((e) => e + 1);
   };
 
   const startRollcall = () => setRollChecked(new Set());
@@ -254,6 +260,7 @@ export function useCatsStore() {
   return {
     cats,
     setCats,
+    epoch,
     byId,
     children,
     updateCat,
