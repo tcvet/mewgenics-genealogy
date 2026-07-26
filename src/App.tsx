@@ -3,12 +3,14 @@ import { I18nProvider, useI18n, type Dict } from './i18n';
 import { useCatsStore } from './store';
 import { TreeScreen } from './TreeScreen';
 import { OverviewScreen } from './OverviewScreen';
+import { BreedingScreen } from './BreedingScreen';
 
 const SCREEN_KEY = 'mewgenics-screen';
 
 /** The screens of the app; the list grows as panels graduate into screens. */
 const NAV: { key: string; icon: string; label: keyof Dict }[] = [
   { key: 'cats', icon: '🐈', label: 'navCats' },
+  { key: 'breeding', icon: '💕', label: 'navBreeding' },
   { key: 'tree', icon: '🌳', label: 'navTree' },
 ];
 type Screen = (typeof NAV)[number]['key'];
@@ -24,6 +26,8 @@ function Shell() {
   const [screen, setScreen] = useState<Screen>(loadScreen);
   // A cat to focus when arriving at the tree from another screen.
   const [treeFocus, setTreeFocus] = useState<string | null>(null);
+  // A cat to preselect as the first parent when arriving at the breeding screen.
+  const [breedFocus, setBreedFocus] = useState<string | null>(null);
   // Screens stay mounted once visited (hidden via CSS) so the tree keeps its
   // layout/viewport and list screens keep their filters across tab switches.
   const visited = useRef(new Set<Screen>());
@@ -36,6 +40,11 @@ function Shell() {
   const showInTree = (id: string) => {
     setTreeFocus(id);
     setScreen('tree');
+  };
+
+  const openBreeding = (id: string) => {
+    setBreedFocus(id);
+    setScreen('breeding');
   };
 
   const fill = (key: Screen, node: React.ReactNode) =>
@@ -59,7 +68,18 @@ function Shell() {
         ))}
       </nav>
       <main className="screen">
-        {fill('cats', <OverviewScreen store={store} onShowInTree={showInTree} />)}
+        {fill(
+          'cats',
+          <OverviewScreen store={store} onShowInTree={showInTree} onOpenBreeding={openBreeding} />,
+        )}
+        {fill(
+          'breeding',
+          <BreedingScreen
+            store={store}
+            sourceId={breedFocus}
+            onSourceConsumed={() => setBreedFocus(null)}
+          />,
+        )}
         {fill(
           'tree',
           <TreeScreen store={store} focusId={treeFocus} onFocusDone={() => setTreeFocus(null)} />,

@@ -1261,3 +1261,85 @@ input[type='text'].dup {
   background: none;
   color: var(--text);
 }
+
+/* --- breeding screen: parent list | COI-ranked partners | litter form --- */
+
+.br-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.br-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--panel-border);
+}
+
+.br-list-col {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.br-mates-col {
+  width: 330px;
+  flex-shrink: 0;
+}
+
+.br-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.br-head input[type='text'] {
+  flex: 1;
+  min-width: 120px;
+  width: auto;
+}
+
+.br-rows {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+}
+
+/* the partner column scrolls as a whole (sort row + rows) */
+.br-mates-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 8px 0;
+}
+
+.br-col .meta {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.br-legend {
+  padding: 8px 12px;
+}
+
+.br-form-col {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.br-form-col .panel {
+  max-width: 420px;
+}

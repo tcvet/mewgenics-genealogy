@@ -21,9 +21,7 @@ import {
 } from './types';
 import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
 import {
-  coiTier,
   descendantIds,
-  formatCOI,
   inbreedingCoefficient,
   mateCOIs,
   pairCOI,
@@ -36,10 +34,10 @@ import {
   assignParents,
   loadRollcall,
   ROLLCALL_KEY,
-  statSum,
   type CatsStore,
 } from './store';
 import { SearchBox } from './controls';
+import { MateList, type MateEntry } from './MateList';
 import { CatPanel } from './CatPanel';
 import { AddCatForm, LitterPanel } from './forms';
 
@@ -86,32 +84,15 @@ function AssignParentsPanel(props: {
   );
 }
 
-type MateSort = 'coi' | 'name' | 'stats';
-
 /** Floating list of the mate-mode candidates with their offspring COI. */
 function MatePanel(props: {
   source: Cat;
-  mates: { cat: Cat; coi: number }[];
+  mates: MateEntry[];
   pickedIds: string[];
   onPick: (id: string) => void;
   onClose: () => void;
 }) {
   const { t } = useI18n();
-  const [sort, setSort] = useState<MateSort>('coi');
-  const sorted = useMemo(() => {
-    const byName = (a: { cat: Cat }, b: { cat: Cat }) => a.cat.name.localeCompare(b.cat.name);
-    const list = [...props.mates];
-    if (sort === 'name') list.sort(byName);
-    else if (sort === 'stats')
-      list.sort((a, b) => statSum(b.cat) - statSum(a.cat) || a.coi - b.coi || byName(a, b));
-    else list.sort((a, b) => a.coi - b.coi || byName(a, b));
-    return list;
-  }, [props.mates, sort]);
-  const sorts: { key: MateSort; label: string }[] = [
-    { key: 'coi', label: 'COI' },
-    { key: 'name', label: t.mateSortName },
-    { key: 'stats', label: t.mateSortStats },
-  ];
   return (
     <div className="panel mate-panel">
       <div className="hint-head">
@@ -120,39 +101,7 @@ function MatePanel(props: {
           ✕
         </button>
       </div>
-      <div className="row">
-        {sorts.map((s) => (
-          <button
-            key={s.key}
-            className={`small${sort === s.key ? ' accent' : ''}`}
-            onClick={() => setSort(s.key)}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
-      {sorted.length === 0 ? (
-        <div className="meta">{t.mateEmpty}</div>
-      ) : (
-        <div className="mate-list">
-          {sorted.map(({ cat, coi }) => (
-            <button
-              key={cat.id}
-              className={`mate-row${props.pickedIds.includes(cat.id) ? ' picked' : ''}`}
-              onClick={() => props.onPick(cat.id)}
-            >
-              <span className="mate-sex">{SEX_GLYPH[cat.sex]}</span>
-              <span className="mate-name">{cat.name}</span>
-              {statSum(cat) > 0 && (
-                <span className="mate-sum" title={t.mateStatsTitle}>
-                  Σ{statSum(cat)}
-                </span>
-              )}
-              <span className={`coi-inline ${coiTier(coi)}`}>{formatCOI(coi)}</span>
-            </button>
-          ))}
-        </div>
-      )}
+      <MateList mates={props.mates} pickedIds={props.pickedIds} onPick={props.onPick} />
       <div className="meta">{t.mateLegend}</div>
     </div>
   );

@@ -64,9 +64,11 @@ function CatCard({ cat, picked, onClick }: { cat: Cat; picked: boolean; onClick:
 export function OverviewScreen({
   store,
   onShowInTree,
+  onOpenBreeding,
 }: {
   store: CatsStore;
   onShowInTree: (id: string) => void;
+  onOpenBreeding: (id: string) => void;
 }) {
   const { t } = useI18n();
   const { cats, byId, children, updateCat, nameTakenBy, removeCat } = store;
@@ -213,6 +215,7 @@ export function OverviewScreen({
             nameTaken={(n) => nameTakenBy(n, selected.id)}
             onUpdate={(patch) => updateCat(selected.id, patch)}
             onDelete={() => deleteCat(selected)}
+            onMates={() => onOpenBreeding(selected.id)}
             onShowInTree={() => onShowInTree(selected.id)}
             onOpenCat={(id) => setSelectedId(id)}
           />
