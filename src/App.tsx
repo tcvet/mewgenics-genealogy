@@ -4,6 +4,7 @@ import { useCatsStore } from './store';
 import { TreeScreen } from './TreeScreen';
 import { OverviewScreen } from './OverviewScreen';
 import { BreedingScreen } from './BreedingScreen';
+import { RollCallScreen } from './RollCallScreen';
 
 const SCREEN_KEY = 'mewgenics-screen';
 
@@ -11,6 +12,7 @@ const SCREEN_KEY = 'mewgenics-screen';
 const NAV: { key: string; icon: string; label: keyof Dict }[] = [
   { key: 'cats', icon: '🐈', label: 'navCats' },
   { key: 'breeding', icon: '💕', label: 'navBreeding' },
+  { key: 'rollcall', icon: '📋', label: 'navRollcall' },
   { key: 'tree', icon: '🌳', label: 'navTree' },
 ];
 type Screen = (typeof NAV)[number]['key'];
@@ -56,16 +58,20 @@ function Shell() {
     <div className="shell">
       <nav className="topnav">
         <span className="nav-brand">🐱 Mewgenics Genealogy</span>
-        {NAV.map((s) => (
-          <button
-            key={s.key}
-            type="button"
-            className={`nav-tab${screen === s.key ? ' on' : ''}`}
-            onClick={() => setScreen(s.key)}
-          >
-            {s.icon} {t[s.label] as string}
-          </button>
-        ))}
+        {NAV.map((s) => {
+          // the roll-call tab glows while a session is in progress
+          const attn = s.key === 'rollcall' && store.rollChecked !== null;
+          return (
+            <button
+              key={s.key}
+              type="button"
+              className={`nav-tab${screen === s.key ? ' on' : ''}${attn ? ' attn' : ''}`}
+              onClick={() => setScreen(s.key)}
+            >
+              {s.icon} {t[s.label] as string}
+            </button>
+          );
+        })}
       </nav>
       <main className="screen">
         {fill(
@@ -80,6 +86,7 @@ function Shell() {
             onSourceConsumed={() => setBreedFocus(null)}
           />,
         )}
+        {fill('rollcall', <RollCallScreen store={store} />)}
         {fill(
           'tree',
           <TreeScreen store={store} focusId={treeFocus} onFocusDone={() => setTreeFocus(null)} />,

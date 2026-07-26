@@ -119,7 +119,7 @@ function loadCats(): Cat[] {
 }
 
 /** An in-progress roll call survives reloads: the key exists ⇔ a session is active. */
-export function loadRollcall(): Set<string> | null {
+function loadRollcall(): Set<string> | null {
   try {
     const raw = localStorage.getItem(ROLLCALL_KEY);
     if (raw !== null) return new Set(JSON.parse(raw) as string[]);
@@ -166,10 +166,17 @@ export const emptyKitten = (): KittenDraft => ({
  */
 export function useCatsStore() {
   const [cats, setCats] = useState<Cat[]>(loadCats);
+  // roll-call session: the ticked ids (null — no session); survives reloads
+  const [rollChecked, setRollChecked] = useState<Set<string> | null>(loadRollcall);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cats));
   }, [cats]);
+
+  useEffect(() => {
+    if (rollChecked) localStorage.setItem(ROLLCALL_KEY, JSON.stringify([...rollChecked]));
+    else localStorage.removeItem(ROLLCALL_KEY);
+  }, [rollChecked]);
 
   const byId = useMemo(() => indexCats(cats), [cats]);
   const children = useMemo(() => childrenIndex(cats), [cats]);
@@ -208,9 +215,40 @@ export function useCatsStore() {
     setCats((cs) => cs.filter((c) => c.id !== id));
   };
 
-  /** Replace everything with imported data (already validated; fields get normalized here). */
+  /** Replace everything with imported data (already validated; fields get normalized here).
+   * Kills the roll-call session — its ticks reference the replaced cats' ids. */
   const importCats = (data: Partial<Cat>[]) => {
     setCats(data.map(normCat));
+    setRollChecked(null);
+  };
+
+  /** Wipe all data (the confirmation lives in the UI). */
+  const resetAll = () => {
+    setCats([]);
+    setRollChecked(null);
+  };
+
+  const startRollcall = () => setRollChecked(new Set());
+
+  const toggleRollCheck = (id: string) => {
+    setRollChecked((s) => {
+      if (!s) return s;
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const cancelRollcall = () => setRollChecked(null);
+
+  /** Ends the session, marking the confirmed leavers as gone. */
+  const finishRollcall = (goneIds: string[]) => {
+    if (goneIds.length > 0) {
+      const gone = new Set(goneIds);
+      setCats((cs) => cs.map((c) => (gone.has(c.id) ? { ...c, gone: true } : c)));
+    }
+    setRollChecked(null);
   };
 
   return {
@@ -224,6 +262,12 @@ export function useCatsStore() {
     createLitter,
     removeCat,
     importCats,
+    resetAll,
+    rollChecked,
+    startRollcall,
+    toggleRollCheck,
+    cancelRollcall,
+    finishRollcall,
   };
 }
 

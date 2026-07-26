@@ -30,12 +30,7 @@ import {
 import { CAT_H, CAT_W, layoutCats, type LaidOutNode } from './layout';
 import { CatNode, UnionNode } from './CatNode';
 import { LANGS, useI18n, type Lang } from './i18n';
-import {
-  assignParents,
-  loadRollcall,
-  ROLLCALL_KEY,
-  type CatsStore,
-} from './store';
+import { assignParents, type CatsStore } from './store';
 import { SearchBox } from './controls';
 import { MateList, type MateEntry } from './MateList';
 import { CatPanel } from './CatPanel';
@@ -239,117 +234,6 @@ function StatsPanel(props: { cats: Cat[]; onClose: () => void }) {
   );
 }
 
-/** Floating roll-call checklist: walk the in-game roster and tick every cat
- * found here; "Finish" reviews the unticked ones and marks them as left home. */
-function RollCallPanel(props: {
-  cats: Cat[]; // cats still at home, alphabetical
-  checked: Set<string>;
-  onToggle: (id: string) => void;
-  onFinish: (goneIds: string[]) => void;
-  onCancel: () => void;
-  onHide: () => void;
-}) {
-  const { t } = useI18n();
-  const [reviewing, setReviewing] = useState(false);
-  // review step: unticked cats the user opts to keep at home anyway
-  const [keep, setKeep] = useState<Set<string>>(() => new Set());
-  const done = props.cats.filter((c) => props.checked.has(c.id)).length;
-  const missing = props.cats.filter((c) => !props.checked.has(c.id));
-  const toggleKeep = (id: string) =>
-    setKeep((s) => {
-      const next = new Set(s);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  const hideBtn = (
-    <button className="small" title={t.collapseTitle} onClick={props.onHide}>
-      ✕
-    </button>
-  );
-  if (reviewing) {
-    const goneIds = missing.filter((c) => !keep.has(c.id)).map((c) => c.id);
-    return (
-      <div className="panel mate-panel">
-        <div className="hint-head">
-          <b>{t.rollReviewTitle}</b>
-          {hideBtn}
-        </div>
-        {missing.length === 0 ? (
-          <>
-            <div className="meta">{t.rollAllHome}</div>
-            <button className="accent" onClick={() => props.onFinish([])}>
-              {t.done}
-            </button>
-          </>
-        ) : (
-          <>
-            <div className="meta">{t.rollReviewDesc}</div>
-            <div className="mate-list">
-              {missing.map((c) => {
-                const marked = !keep.has(c.id);
-                return (
-                  <button key={c.id} className="mate-row" onClick={() => toggleKeep(c.id)}>
-                    <span className={`roll-box${marked ? ' on gone' : ''}`}>
-                      {marked ? '✕' : ''}
-                    </span>
-                    <span className="mate-sex">{SEX_GLYPH[c.sex]}</span>
-                    <span className="mate-name">{c.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="row">
-              <button className="accent" onClick={() => props.onFinish(goneIds)}>
-                {t.rollApply(goneIds.length)}
-              </button>
-              <button onClick={() => setReviewing(false)}>{t.rollBack}</button>
-            </div>
-          </>
-        )}
-      </div>
-    );
-  }
-  return (
-    <div className="panel mate-panel">
-      <div className="hint-head">
-        <b>{t.rollPanelTitle}</b>
-        {hideBtn}
-      </div>
-      <div className="meta">{t.rollProgress(done, props.cats.length)}</div>
-      <div className="mate-list">
-        {props.cats.map((c) => {
-          const on = props.checked.has(c.id);
-          return (
-            <button
-              key={c.id}
-              className={`mate-row${on ? ' roll-done' : ''}`}
-              onClick={() => props.onToggle(c.id)}
-            >
-              <span className={`roll-box${on ? ' on' : ''}`}>{on ? '✓' : ''}</span>
-              <span className="mate-sex">{SEX_GLYPH[c.sex]}</span>
-              <span className="mate-name">{c.name}</span>
-            </button>
-          );
-        })}
-      </div>
-      <div className="row">
-        <button
-          className="accent"
-          onClick={() => {
-            setKeep(new Set());
-            setReviewing(true);
-          }}
-        >
-          {t.rollFinish}
-        </button>
-        <button onClick={props.onCancel}>{t.cancel}</button>
-      </div>
-      <div className="meta">{t.rollHint}</div>
-    </div>
-  );
-}
-
 function TreeView({
   store,
   focusId,
@@ -362,7 +246,6 @@ function TreeView({
   const { t, lang, setLang } = useI18n();
   const {
     cats,
-    setCats,
     byId,
     children,
     updateCat,
@@ -379,10 +262,6 @@ function TreeView({
   const [mutsOpen, setMutsOpen] = useState(false);
   const [mutFocus, setMutFocus] = useState<MutFocus | null>(null);
   const [statsOpen, setStatsOpen] = useState(false);
-  // roll call: the ticked ids (null — no session) + whether its panel is shown.
-  // The session survives hiding the panel and page reloads (localStorage).
-  const [rollChecked, setRollChecked] = useState<Set<string> | null>(loadRollcall);
-  const [rollOpen, setRollOpen] = useState(() => localStorage.getItem(ROLLCALL_KEY) !== null);
   const [addingFounder, setAddingFounder] = useState(false);
   const [helpOpen, setHelpOpen] = useState(() => localStorage.getItem(HELP_KEY) !== 'closed');
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -414,11 +293,6 @@ function TreeView({
   useEffect(() => {
     localStorage.setItem(HELP_KEY, helpOpen ? 'open' : 'closed');
   }, [helpOpen]);
-
-  useEffect(() => {
-    if (rollChecked) localStorage.setItem(ROLLCALL_KEY, JSON.stringify([...rollChecked]));
-    else localStorage.removeItem(ROLLCALL_KEY);
-  }, [rollChecked]);
 
   const visibleCats = useMemo(() => {
     if (!viewRootId || !byId.has(viewRootId)) return cats;
@@ -495,25 +369,6 @@ function TreeView({
     setMutFocus(null);
   };
 
-  // roll-call checklist: cats still at home, alphabetical (like the game roster)
-  const rollCats = useMemo(
-    () => cats.filter((c) => !c.gone).sort((a, b) => a.name.localeCompare(b.name)),
-    [cats],
-  );
-
-  /** Toolbar button: starts a session, or toggles the panel of the running one. */
-  const toggleRollcall = () => {
-    if (rollChecked && rollOpen) {
-      setRollOpen(false);
-      return;
-    }
-    if (!rollChecked) setRollChecked(new Set());
-    setRollOpen(true);
-    setMateModeFor(null); // the leftside panels are exclusive
-    closeMutPanel();
-    setStatsOpen(false);
-  };
-
   /** Toolbar button: toggles the statistics panel (leftside panels are exclusive). */
   const toggleStats = () => {
     if (statsOpen) {
@@ -523,33 +378,6 @@ function TreeView({
     setStatsOpen(true);
     setMateModeFor(null);
     closeMutPanel();
-    setRollOpen(false);
-  };
-
-  const toggleRollCheck = (id: string) => {
-    setRollChecked((s) => {
-      if (!s) return s;
-      const next = new Set(s);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  /** Ends the session, marking the confirmed leavers as gone. */
-  const finishRollcall = (goneIds: string[]) => {
-    if (goneIds.length > 0) {
-      const gone = new Set(goneIds);
-      setCats((cs) => cs.map((c) => (gone.has(c.id) ? { ...c, gone: true } : c)));
-    }
-    setRollChecked(null);
-    setRollOpen(false);
-  };
-
-  const cancelRollcall = () => {
-    if (rollChecked && rollChecked.size > 0 && !confirm(t.rollCancelConfirm)) return;
-    setRollChecked(null);
-    setRollOpen(false);
   };
 
   const mateList = useMemo(() => {
@@ -778,7 +606,6 @@ function TreeView({
     setMateModeFor(null);
     closeMutPanel();
     setStatsOpen(false);
-    setRollOpen(false);
     setViewRootId(null); // full tree — so all candidates are visible, including new ones
     setAddingFounder(false);
   };
@@ -839,8 +666,6 @@ function TreeView({
         setMateModeFor(null);
         setAssigningFor(null);
         closeMutPanel();
-        setRollChecked(null); // the ids in the ticks belong to the replaced cats
-        setRollOpen(false);
       } catch {
         alert(t.importError);
       }
@@ -849,14 +674,12 @@ function TreeView({
 
   const resetAll = () => {
     if (!confirm(t.resetConfirm)) return;
-    setCats([]);
+    store.resetAll();
     setSelection([]);
     setViewRootId(null);
     setMateModeFor(null);
     setAssigningFor(null);
     closeMutPanel();
-    setRollChecked(null);
-    setRollOpen(false);
   };
 
   const selectedCats = selection
@@ -922,14 +745,10 @@ function TreeView({
                 setMutsOpen(true);
                 setMateModeFor(null); // the leftside panels are exclusive
                 setStatsOpen(false);
-                setRollOpen(false);
               }
             }}
           >
             {t.mutPanelBtn}
-          </button>
-          <button className={rollChecked ? 'accent' : ''} onClick={toggleRollcall}>
-            {t.rollBtn}
           </button>
           {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
           <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
@@ -964,16 +783,6 @@ function TreeView({
           />
         )}
         {statsOpen && <StatsPanel cats={cats} onClose={() => setStatsOpen(false)} />}
-        {rollChecked && rollOpen && (
-          <RollCallPanel
-            cats={rollCats}
-            checked={rollChecked}
-            onToggle={toggleRollCheck}
-            onFinish={finishRollcall}
-            onCancel={cancelRollcall}
-            onHide={() => setRollOpen(false)}
-          />
-        )}
       </div>
 
       <div className="side">
@@ -1088,7 +897,6 @@ function TreeView({
                 if (next) {
                   closeMutPanel();
                   setStatsOpen(false);
-                  setRollOpen(false);
                 }
               }}
               onAssignParents={() => startAssignParents(single.id)}

@@ -192,6 +192,7 @@ const en = {
   mutPanelHint:
     'Click a mutation to highlight its carriers on the map; click a name to jump to that cat.',
   // roll call (checking the tree against the in-game roster)
+  rollStartBtn: 'Start a roll call',
   rollBtn: '📋 Roll call',
   rollPanelTitle: 'Roll call',
   rollProgress: (done: number, total: number) => `Ticked: ${done} of ${total}`,
@@ -382,6 +383,7 @@ const ru: Dict = {
   mutPanelEmpty: 'У котов в доме нет мутаций.',
   mutPanelHint:
     'Клик по мутации — подсветка носителей на карте; клик по имени — переход к коту.',
+  rollStartBtn: 'Начать перекличку',
   rollBtn: '📋 Перекличка',
   rollPanelTitle: 'Перекличка',
   rollProgress: (done, total) => `Отмечено: ${done} из ${total}`,
@@ -567,6 +569,7 @@ const de: Dict = {
   mutPanelEmpty: 'Die Katzen im Haus haben keine Mutationen.',
   mutPanelHint:
     'Klick auf eine Mutation hebt ihre Träger hervor; Klick auf einen Namen springt zur Katze.',
+  rollStartBtn: 'Appell starten',
   rollBtn: '📋 Appell',
   rollPanelTitle: 'Appell',
   rollProgress: (done, total) => `Abgehakt: ${done} von ${total}`,
@@ -753,6 +756,7 @@ const fr: Dict = {
   mutPanelEmpty: 'Les chats de la maison n’ont aucune mutation.',
   mutPanelHint:
     'Cliquez sur une mutation pour surligner ses porteurs ; cliquez sur un nom pour aller au chat.',
+  rollStartBtn: 'Commencer l’appel',
   rollBtn: '📋 Appel',
   rollPanelTitle: 'Appel',
   rollProgress: (done, total) => `Cochés : ${done} sur ${total}`,
@@ -940,6 +944,7 @@ const es: Dict = {
   mutPanelEmpty: 'Los gatos de la casa no tienen mutaciones.',
   mutPanelHint:
     'Haz clic en una mutación para resaltar a sus portadores; haz clic en un nombre para ir al gato.',
+  rollStartBtn: 'Iniciar el recuento',
   rollBtn: '📋 Pase de lista',
   rollPanelTitle: 'Pase de lista',
   rollProgress: (done, total) => `Marcados: ${done} de ${total}`,
@@ -1126,6 +1131,7 @@ const pt: Dict = {
   mutPanelEmpty: 'Os gatos da casa não têm mutações.',
   mutPanelHint:
     'Clique numa mutação para destacar os portadores; clique num nome para ir ao gato.',
+  rollStartBtn: 'Iniciar a chamada',
   rollBtn: '📋 Chamada',
   rollPanelTitle: 'Chamada',
   rollProgress: (done, total) => `Marcados: ${done} de ${total}`,
@@ -1310,6 +1316,7 @@ const zh: Dict = {
   mutPanelTitle: '家中的变异',
   mutPanelEmpty: '家中的猫没有变异。',
   mutPanelHint: '点击变异可在图上高亮携带者；点击名字可跳转到该猫。',
+  rollStartBtn: '开始点名',
   rollBtn: '📋 点名',
   rollPanelTitle: '点名',
   rollProgress: (done, total) => `已勾选 ${done} / ${total}`,
@@ -1493,6 +1500,7 @@ const ja: Dict = {
   mutPanelEmpty: '家の猫にミューテーションはありません。',
   mutPanelHint:
     'ミューテーションをクリックすると持ち主がハイライトされ、名前をクリックするとその猫へ移動します。',
+  rollStartBtn: '点呼を始める',
   rollBtn: '📋 点呼',
   rollPanelTitle: '点呼',
   rollProgress: (done, total) => `チェック済み：${done} / ${total}`,
@@ -1680,6 +1688,7 @@ const ko: Dict = {
   mutPanelEmpty: '집에 있는 고양이에게 돌연변이가 없습니다.',
   mutPanelHint:
     '돌연변이를 클릭하면 보유자가 강조되고, 이름을 클릭하면 해당 고양이로 이동합니다.',
+  rollStartBtn: '점호 시작',
   rollBtn: '📋 점호',
   rollPanelTitle: '점호',
   rollProgress: (done, total) => `체크됨: ${done} / ${total}`,

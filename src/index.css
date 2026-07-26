@@ -1343,3 +1343,67 @@ input[type='text'].dup {
 .br-form-col .panel {
   max-width: 420px;
 }
+
+/* --- roll-call screen --- */
+
+.rc-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* start / all-accounted-for card, centered */
+.rc-start {
+  margin: 48px auto;
+  width: 360px;
+}
+
+.rc-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.rc-head .meta {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.rc-hint {
+  margin-left: auto;
+  max-width: 520px;
+}
+
+.rc-grid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2px 18px;
+  align-content: start;
+}
+
+.rc-foot {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--panel-border);
+}
+
+/* a session in progress marks its nav tab with a green dot */
+.nav-tab.attn::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4d8763;
+  margin-left: 6px;
+  vertical-align: 2px;
+}
