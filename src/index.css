@@ -297,6 +297,10 @@ body {
   white-space: nowrap;
 }
 
+.mate-row .flag-chip {
+  flex-shrink: 0;
+}
+
 .mate-row .mate-sum {
   flex-shrink: 0;
   color: var(--text-muted);

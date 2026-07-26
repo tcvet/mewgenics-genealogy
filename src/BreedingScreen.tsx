@@ -89,6 +89,12 @@ export function BreedingScreen({
             >
               <span className="mate-sex">{SEX_GLYPH[c.sex]}</span>
               <span className="mate-name">{c.name}</span>
+              {c.orientation !== 'hetero' && (
+                <span
+                  className={`flag-chip flag-${c.orientation}`}
+                  title={c.orientation === 'bi' ? t.oriBi : t.oriHomo}
+                />
+              )}
               {statSum(c) > 0 && (
                 <span className="mate-sum" title={t.mateStatsTitle}>
                   Σ{statSum(c)}

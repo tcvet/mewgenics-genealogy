@@ -60,6 +60,12 @@ export function MateList({
             >
               <span className="mate-sex">{SEX_GLYPH[cat.sex]}</span>
               <span className="mate-name">{cat.name}</span>
+              {cat.orientation !== 'hetero' && (
+                <span
+                  className={`flag-chip flag-${cat.orientation}`}
+                  title={cat.orientation === 'bi' ? t.oriBi : t.oriHomo}
+                />
+              )}
               {statSum(cat) > 0 && (
                 <span className="mate-sum" title={t.mateStatsTitle}>
                   Σ{statSum(cat)}
