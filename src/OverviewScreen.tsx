@@ -12,7 +12,7 @@ import {
   type Sex,
 } from './types';
 import { inbreedingCoefficient } from './genealogy';
-import { statSum, type CatsStore } from './store';
+import { activeBondPartners, bondPartnersOf, statSum, type CatsStore } from './store';
 import { CatPanel } from './CatPanel';
 import { useI18n } from './i18n';
 
@@ -21,8 +21,19 @@ const SEX_CLASS: Record<Sex, string> = { F: 'female', M: 'male', '?': 'any' };
 type OvSort = 'name' | 'stats' | 'recent';
 
 /** Compact list card speaking the map card's visual language:
- * fill = class color, sex chip, room/mutation/stat-total chips. */
-function CatCard({ cat, picked, onClick }: { cat: Cat; picked: boolean; onClick: () => void }) {
+ * fill = class color, sex chip, room/mutation/stat-total/bond chips. */
+function CatCard({
+  cat,
+  bondNames,
+  picked,
+  onClick,
+}: {
+  cat: Cat;
+  /** names of the cat's active bond partners (null — not in an active bond) */
+  bondNames: string | null;
+  picked: boolean;
+  onClick: () => void;
+}) {
   const { t } = useI18n();
   const fill = cat.class ? CLASS_COLOR[cat.class] : undefined;
   const style = fill ? { background: fill, color: textColorOn(fill) } : undefined;
@@ -51,6 +62,11 @@ function CatCard({ cat, picked, onClick }: { cat: Cat; picked: boolean; onClick:
         </span>
       )}
       {mutCount > 0 && <span className="ov-chip">🧬{mutCount}</span>}
+      {bondNames && (
+        <span className="ov-chip" title={t.bondWith(bondNames)}>
+          💞
+        </span>
+      )}
       {cat.room && (
         <span className="ov-chip" title={t.rooms[cat.room]}>
           {ROOM_SHORT[cat.room]}
@@ -76,7 +92,7 @@ export function OverviewScreen({
   onFocusDone: () => void;
 }) {
   const { t } = useI18n();
-  const { cats, byId, children, updateCat, nameTakenBy, removeCat } = store;
+  const { cats, byId, children, bonds, updateCat, nameTakenBy, removeCat, unbondCat } = store;
   const [q, setQ] = useState('');
   const [atHome, setAtHome] = useState(true);
   const [sex, setSex] = useState<Sex | null>(null);
@@ -205,14 +221,20 @@ export function OverviewScreen({
           <div className="ov-empty">{t.ovEmpty}</div>
         ) : (
           <div className="ov-list">
-            {filtered.map((c) => (
-              <CatCard
-                key={c.id}
-                cat={c}
-                picked={c.id === selectedId}
-                onClick={() => setSelectedId(c.id === selectedId ? null : c.id)}
-              />
-            ))}
+            {filtered.map((c) => {
+              const partners = activeBondPartners(c, bonds);
+              return (
+                <CatCard
+                  key={c.id}
+                  cat={c}
+                  bondNames={
+                    partners.length > 0 ? partners.map((p) => p.name).join(', ') : null
+                  }
+                  picked={c.id === selectedId}
+                  onClick={() => setSelectedId(c.id === selectedId ? null : c.id)}
+                />
+              );
+            })}
           </div>
         )}
       </div>
@@ -224,9 +246,11 @@ export function OverviewScreen({
             father={selected.fatherId ? (byId.get(selected.fatherId) ?? null) : null}
             childrenCount={children.get(selected.id)?.length ?? 0}
             inbreeding={inbreedingCoefficient(selected.id, cats)}
+            bondPartners={bondPartnersOf(selected, bonds)}
             nameTaken={(n) => nameTakenBy(n, selected.id)}
             onUpdate={(patch) => updateCat(selected.id, patch)}
             onDelete={() => deleteCat(selected)}
+            onUnbond={() => unbondCat(selected.id)}
             onMates={() => onOpenBreeding(selected.id)}
             onShowInTree={() => onShowInTree(selected.id)}
             onOpenCat={(id) => setSelectedId(id)}

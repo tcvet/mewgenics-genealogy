@@ -35,6 +35,7 @@ function normCat(c: Partial<Cat>): Cat {
     room: c.room ?? null,
     class: c.class ?? null,
     gone: c.gone ?? false,
+    bondId: typeof c.bondId === 'string' ? c.bondId : null,
     notes: c.notes ?? '',
     stats: c.stats ?? {},
     mutations: normMutations(c.mutations),
@@ -61,6 +62,7 @@ export function makeCat(
     room,
     class: cls,
     gone: false,
+    bondId: null,
     notes: '',
     stats: {},
     mutations,
@@ -88,6 +90,7 @@ function seedCats(): Cat[] {
       room: null,
       class: cls,
       gone: false,
+      bondId: null,
       notes: '',
       stats: {},
       mutations,
@@ -103,6 +106,8 @@ function seedCats(): Cat[] {
   add('Ginger', 'M', misty, shadow, 'fighter');
   add('Toffee', 'F', luna, tom, 'thief');
   add('Cosmo', 'M', luna, tom, 'tinkerer');
+  // Misty and Shadow are an established pair — shows off the bond feature
+  for (const c of cats) if (c.id === misty || c.id === shadow) c.bondId = 'seed-bond';
   return cats;
 }
 
@@ -145,6 +150,54 @@ export function assignParents(a: Cat, b: Cat): { mother: Cat; father: Cat } | nu
   return { mother: a, father: b }; // both are '?'
 }
 
+/** bondId → members index; one-member bonds are kept (harmless, count as inactive). */
+export function bondsIndex(cats: Cat[]): Map<string, Cat[]> {
+  const map = new Map<string, Cat[]>();
+  for (const cat of cats) {
+    if (!cat.bondId) continue;
+    const list = map.get(cat.bondId);
+    if (list) list.push(cat);
+    else map.set(cat.bondId, [cat]);
+  }
+  return map;
+}
+
+/** All other members of the cat's bond, gone ones included (for management UI). */
+export function bondPartnersOf(cat: Cat, bonds: Map<string, Cat[]>): Cat[] {
+  if (!cat.bondId) return [];
+  return (bonds.get(cat.bondId) ?? []).filter((c) => c.id !== cat.id);
+}
+
+/** The bond partners still in the house; a cat with none is free to mate again. */
+export function activeBondPartners(cat: Cat, bonds: Map<string, Cat[]>): Cat[] {
+  return bondPartnersOf(cat, bonds).filter((c) => !c.gone);
+}
+
+/** Tie two cats into one bond, merging the existing bonds of both sides (pure). */
+export function mergeBonds(cats: Cat[], aId: string, bId: string, newId: string): Cat[] {
+  const a = cats.find((c) => c.id === aId);
+  const b = cats.find((c) => c.id === bId);
+  if (!a || !b || aId === bId) return cats;
+  const target = a.bondId ?? b.bondId ?? newId;
+  const merged = new Set([a.bondId, b.bondId].filter((id): id is string => id !== null));
+  return cats.map((c) =>
+    c.id === aId || c.id === bId || (c.bondId !== null && merged.has(c.bondId))
+      ? { ...c, bondId: target }
+      : c,
+  );
+}
+
+/** Remove one cat from its bond; a bond left with a single member dissolves (pure). */
+export function withoutBondMember(cats: Cat[], id: string): Cat[] {
+  const bondId = cats.find((c) => c.id === id)?.bondId;
+  if (!bondId) return cats;
+  const rest = cats.filter((c) => c.bondId === bondId && c.id !== id);
+  const dissolve = rest.length < 2;
+  return cats.map((c) =>
+    c.id === id || (dissolve && c.bondId === bondId) ? { ...c, bondId: null } : c,
+  );
+}
+
 export type KittenDraft = {
   name: string;
   sex: Sex;
@@ -184,6 +237,7 @@ export function useCatsStore() {
 
   const byId = useMemo(() => indexCats(cats), [cats]);
   const children = useMemo(() => childrenIndex(cats), [cats]);
+  const bonds = useMemo(() => bondsIndex(cats), [cats]);
 
   const updateCat = (id: string, patch: Partial<Cat>) => {
     setCats((cs) => cs.map((c) => (c.id === id ? { ...c, ...patch } : c)));
@@ -217,6 +271,21 @@ export function useCatsStore() {
 
   const removeCat = (id: string) => {
     setCats((cs) => cs.filter((c) => c.id !== id));
+  };
+
+  /** Tie two cats into one bond (existing bonds of either side merge in). */
+  const bondCats = (aId: string, bId: string) => {
+    setCats((cs) => mergeBonds(cs, aId, bId, crypto.randomUUID()));
+  };
+
+  /** Remove one cat from its bond (a bond left with one member dissolves). */
+  const unbondCat = (id: string) => {
+    setCats((cs) => withoutBondMember(cs, id));
+  };
+
+  /** Dissolve a bond entirely — every member becomes free again. */
+  const dissolveBond = (bondId: string) => {
+    setCats((cs) => cs.map((c) => (c.bondId === bondId ? { ...c, bondId: null } : c)));
   };
 
   /** Replace everything with imported data (already validated; fields get normalized here).
@@ -263,11 +332,15 @@ export function useCatsStore() {
     epoch,
     byId,
     children,
+    bonds,
     updateCat,
     nameTakenBy,
     addFounder,
     createLitter,
     removeCat,
+    bondCats,
+    unbondCat,
+    dissolveBond,
     importCats,
     resetAll,
     rollChecked,

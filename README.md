@@ -35,7 +35,8 @@ a column on the right.
   recently added.
 - **Cards** speak the same visual language as the map: the class color fills
   the card, sex is a colored ♀/♂/? chip, non-straight cats carry a pride-flag
-  chip, and small chips show the stat total, the mutation count and the room.
+  chip, and small chips show the stat total, the mutation count, the room and
+  a 💞 for cats in an established bond (hover it to see the partners).
 - **Click a card** to open the editor: name, sex, orientation, room, class,
   base stats, mutations, notes, plus the cat's own F (inbreeding coefficient)
   and its parents — parent names are links, so you can walk up a pedigree
@@ -68,6 +69,17 @@ Compatibility follows the game: same-sex pairs can never have a litter,
 straight cats breed only with opposite-sex straight cats, bi cats only with
 opposite-sex bi cats, and gay cats only with a “?”-sex cat (“?” mates with
 anyone).
+
+**Bonds.** Once two cats become an established couple, select them and hit
+“💞 Make a pair” above the litter form. Bonded cats disappear from other
+cats' partner lists (the “💞 Show bonded cats” toggle reveals them, dimmed),
+a cat's own partner is pinned on top of its list and preselected when it is
+the only one, and every screen marks bonded cats with a 💞 chip. A pair can
+grow into a collective (“Add to the collective” with a third cat) and is
+dissolved from the same spot (💔); a single cat can also be removed from its
+bond in the cat editor. The exclusion is soft — bonded candidates stay
+clickable once revealed — and a cat whose partners all left home counts as
+free again automatically.
 
 ### 📋 Roll call — syncing with the game
 

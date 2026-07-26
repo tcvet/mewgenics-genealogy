@@ -1,15 +1,41 @@
 import { useMemo, useState } from 'react';
 import { SEX_GLYPH, type Cat } from './types';
 import { coiTier, formatCOI } from './genealogy';
-import { statSum } from './store';
+import { activeBondPartners, statSum } from './store';
 import { useI18n } from './i18n';
 
-export type MateEntry = { cat: Cat; coi: number };
+export type MateEntry = {
+  cat: Cat;
+  coi: number;
+  /** set when the candidate is in an active bond; own — bonded with the source cat */
+  bond?: { own: boolean; names: string };
+};
+
+/** Attach bond info to raw candidate entries (shared by both MateList call sites). */
+export function decorateBonds(
+  entries: { cat: Cat; coi: number }[],
+  source: Cat,
+  bonds: Map<string, Cat[]>,
+): MateEntry[] {
+  return entries.map((e) => {
+    const partners = activeBondPartners(e.cat, bonds);
+    if (partners.length === 0) return e;
+    return {
+      ...e,
+      bond: {
+        own: e.cat.bondId !== null && e.cat.bondId === source.bondId,
+        names: partners.map((p) => p.name).join(', '),
+      },
+    };
+  });
+}
 
 type MateSort = 'coi' | 'name' | 'stats';
 
 /** Sortable list of breeding candidates with their offspring COI; shared by
- * the tree's floating mate panel and the breeding screen's partner column. */
+ * the tree's floating mate panel and the breeding screen's partner column.
+ * The source's own bond partners are pinned on top; cats bonded elsewhere
+ * are hidden behind the "show bonded" toggle. */
 export function MateList({
   mates,
   pickedIds,
@@ -21,6 +47,7 @@ export function MateList({
 }) {
   const { t } = useI18n();
   const [sort, setSort] = useState<MateSort>('coi');
+  const [showTaken, setShowTaken] = useState(false);
   const sorted = useMemo(() => {
     const byName = (a: { cat: Cat }, b: { cat: Cat }) => a.cat.name.localeCompare(b.cat.name);
     const list = [...mates];
@@ -30,6 +57,15 @@ export function MateList({
     else list.sort((a, b) => a.coi - b.coi || byName(a, b));
     return list;
   }, [mates, sort]);
+  const { shown, takenCount } = useMemo(() => {
+    const own = sorted.filter((m) => m.bond?.own);
+    const free = sorted.filter((m) => !m.bond);
+    const taken = sorted.filter((m) => m.bond && !m.bond.own);
+    return {
+      shown: showTaken ? [...own, ...free, ...taken] : [...own, ...free],
+      takenCount: taken.length,
+    };
+  }, [sorted, showTaken]);
   const sorts: { key: MateSort; label: string }[] = [
     { key: 'coi', label: 'COI' },
     { key: 'name', label: t.mateSortName },
@@ -48,14 +84,16 @@ export function MateList({
           </button>
         ))}
       </div>
-      {sorted.length === 0 ? (
+      {mates.length === 0 ? (
         <div className="meta">{t.mateEmpty}</div>
       ) : (
         <div className="mate-list">
-          {sorted.map(({ cat, coi }) => (
+          {shown.map(({ cat, coi, bond }) => (
             <button
               key={cat.id}
-              className={`mate-row${pickedIds.includes(cat.id) ? ' picked' : ''}`}
+              className={`mate-row${pickedIds.includes(cat.id) ? ' picked' : ''}${
+                bond && !bond.own ? ' engaged' : ''
+              }`}
               onClick={() => onPick(cat.id)}
             >
               <span className="mate-sex">{SEX_GLYPH[cat.sex]}</span>
@@ -66,6 +104,11 @@ export function MateList({
                   title={cat.orientation === 'bi' ? t.oriBi : t.oriHomo}
                 />
               )}
+              {bond && (
+                <span className="bond-chip" title={t.bondWith(bond.names)}>
+                  💞
+                </span>
+              )}
               {statSum(cat) > 0 && (
                 <span className="mate-sum" title={t.mateStatsTitle}>
                   Σ{statSum(cat)}
@@ -75,6 +118,11 @@ export function MateList({
             </button>
           ))}
         </div>
+      )}
+      {takenCount > 0 && (
+        <button type="button" className="small bond-toggle" onClick={() => setShowTaken((v) => !v)}>
+          {showTaken ? t.bondHideTaken : t.bondShowTaken(takenCount)}
+        </button>
       )}
     </>
   );

@@ -307,6 +307,22 @@ body {
   font-size: 12px;
 }
 
+.mate-row .bond-chip {
+  flex-shrink: 0;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* a candidate already bonded elsewhere (revealed by the "show bonded" toggle) */
+.mate-row.engaged {
+  opacity: 0.55;
+}
+
+.bond-toggle {
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
 .mate-row .coi-inline {
   flex-shrink: 0;
   font-size: 13px;
@@ -1041,6 +1057,20 @@ input[type='text'].dup {
   color: #ddd5e8;
 }
 
+/* bond marker on the card's top edge (the corners belong to the other chips) */
+.cat-node .bond-chip {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 5px;
+  background: #3a3048;
+  border: 1px solid #574a68;
+  border-radius: 6px;
+}
+
 .coi-badge {
   position: absolute;
   top: -10px;
@@ -1097,6 +1127,12 @@ input[type='text'].dup {
 .gone-tag {
   color: #d78a8a;
   font-weight: 700;
+}
+
+/* a bond partner that already left home (in the cat panel's bond row) */
+.bond-gone {
+  text-decoration: line-through;
+  opacity: 0.7;
 }
 
 /* union node: the heart through which the mother/father → kitten edges go */
@@ -1342,6 +1378,12 @@ input[type='text'].dup {
   min-width: 0;
   overflow-y: auto;
   padding: 14px;
+}
+
+/* fix/dissolve the selected pair's bond, above the litter form */
+.br-bond-bar {
+  margin-bottom: 12px;
+  flex-direction: row;
 }
 
 .br-form-col .panel {

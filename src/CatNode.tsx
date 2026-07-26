@@ -16,6 +16,8 @@ export interface CatNodeData {
   mateSource: boolean;
   /** COI of future offspring with the selected cat; null — not a candidate (same sex / itself) */
   coi: number | null;
+  /** names of the cat's active bond partners (null — not in an active bond) */
+  bondNames: string | null;
   /** mutation-highlight mode is active (a mutation picked in the inventory panel) */
   mutMode: boolean;
   /** carries the highlighted mutation (in the highlighted slot) */
@@ -71,6 +73,12 @@ export function CatNode({ data }: NodeProps) {
       <span className="name" title={cat.name}>
         {cat.name}
       </span>
+      {/* bond marker on the card's top edge; the corners belong to other chips */}
+      {d.bondNames && (
+        <span className="bond-chip" title={t.bondWith(d.bondNames)}>
+          💞
+        </span>
+      )}
       {cat.room && (
         <span className="room-chip" title={t.rooms[cat.room]}>
           {ROOM_SHORT[cat.room]}

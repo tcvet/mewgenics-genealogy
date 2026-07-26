@@ -175,11 +175,15 @@ export function CatPanel(props: {
   father: Cat | null;
   childrenCount: number;
   inbreeding: number;
+  /** the other members of the cat's bond (empty — not bonded); gone ones included */
+  bondPartners: Cat[];
   pedigreeActive?: boolean;
   mateActive?: boolean;
   nameTaken: (name: string) => boolean;
   onUpdate: (patch: Partial<Cat>) => void;
   onDelete: () => void;
+  /** removes this cat from its bond */
+  onUnbond: () => void;
   /** tree-screen actions; each button renders only when its handler is given */
   onPedigree?: () => void;
   onMates?: () => void;
@@ -223,6 +227,26 @@ export function CatPanel(props: {
         <br />
         {t.childrenCount}: {props.childrenCount}
         <br />
+        {props.bondPartners.length > 0 && (
+          <>
+            💞 {t.bondRow}:{' '}
+            {props.bondPartners.map((p, i) => (
+              <Fragment key={p.id}>
+                {i > 0 && ', '}
+                <span className={p.gone ? 'bond-gone' : undefined}>{parentName(p)}</span>
+              </Fragment>
+            ))}{' '}
+            <button
+              type="button"
+              className="small"
+              title={t.bondRemoveTitle}
+              onClick={props.onUnbond}
+            >
+              ✕
+            </button>
+            <br />
+          </>
+        )}
         {t.inbreedingF}:{' '}
         <span className={`coi-inline ${coiTier(props.inbreeding)}`}>
           {formatCOI(props.inbreeding)}

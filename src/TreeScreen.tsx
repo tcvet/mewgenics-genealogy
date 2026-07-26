@@ -23,9 +23,9 @@ import {
 import { CAT_H, CAT_W, layoutCats, type LaidOutNode } from './layout';
 import { CatNode, UnionNode } from './CatNode';
 import { useI18n } from './i18n';
-import { assignParents, type CatsStore } from './store';
+import { activeBondPartners, assignParents, bondPartnersOf, type CatsStore } from './store';
 import { SearchBox } from './controls';
-import { MateList, type MateEntry } from './MateList';
+import { decorateBonds, MateList, type MateEntry } from './MateList';
 import { CatPanel } from './CatPanel';
 import { LitterPanel } from './forms';
 
@@ -195,10 +195,12 @@ function TreeView({
     cats,
     byId,
     children,
+    bonds,
     updateCat,
     nameTakenBy,
     createLitter,
     removeCat,
+    unbondCat,
   } = store;
   const [selection, setSelection] = useState<string[]>([]);
   const [viewRootId, setViewRootId] = useState<string | null>(null);
@@ -293,12 +295,15 @@ function TreeView({
     setMutFocus(null);
   };
 
-  const mateList = useMemo(() => {
-    if (!mateCOIMap) return null;
-    return [...mateCOIMap]
+  const mateList = useMemo<MateEntry[] | null>(() => {
+    if (!mateCOIMap || !mateModeFor) return null;
+    const source = byId.get(mateModeFor);
+    if (!source) return null;
+    const raw = [...mateCOIMap]
       .map(([id, coi]) => ({ cat: byId.get(id), coi }))
       .filter((m): m is { cat: Cat; coi: number } => m.cat !== undefined);
-  }, [mateCOIMap, byId]);
+    return decorateBonds(raw, source, bonds);
+  }, [mateCOIMap, mateModeFor, byId, bonds]);
 
   const assignChild = assigningFor && byId.has(assigningFor) ? byId.get(assigningFor)! : null;
   // cats that cannot be assigned as a parent: the child itself and all its descendants (cycle otherwise)
@@ -325,6 +330,7 @@ function TreeView({
         }
         const cat = byId.get(n.id);
         if (!cat) return []; // the layout lags for a moment after a deletion
+        const bondPartners = activeBondPartners(cat, bonds);
         return [
           {
             id: n.id,
@@ -337,6 +343,8 @@ function TreeView({
               mateMode: mateCOIMap != null,
               mateSource: n.id === mateModeFor,
               coi: mateCOIMap?.get(n.id) ?? null,
+              bondNames:
+                bondPartners.length > 0 ? bondPartners.map((p) => p.name).join(', ') : null,
               mutMode: mutHighlight != null,
               mutCarrier:
                 mutHighlight != null && cat.mutations[mutHighlight.slot] === mutHighlight.id,
@@ -356,6 +364,7 @@ function TreeView({
     [
       graph.nodes,
       byId,
+      bonds,
       selection,
       mateCOIMap,
       mateModeFor,
@@ -661,11 +670,13 @@ function TreeView({
               father={single.fatherId ? (byId.get(single.fatherId) ?? null) : null}
               childrenCount={children.get(single.id)?.length ?? 0}
               inbreeding={inbreedingCoefficient(single.id, cats)}
+              bondPartners={bondPartnersOf(single, bonds)}
               pedigreeActive={viewRootId === single.id}
               mateActive={mateModeFor === single.id}
               nameTaken={(n) => nameTakenBy(n, single.id)}
               onUpdate={(patch) => updateCat(single.id, patch)}
               onDelete={() => deleteCat(single.id)}
+              onUnbond={() => unbondCat(single.id)}
               onPedigree={() => setViewRootId(viewRootId === single.id ? null : single.id)}
               onMates={() => {
                 // the leftside panels (mates/mutations/roll call) share the slot
