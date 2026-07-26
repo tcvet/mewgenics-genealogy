@@ -1,16 +1,14 @@
 import { Fragment, useState } from 'react';
 import {
   MUTATION_SLOTS,
-  STAT_GROUPS,
   STAT_KEYS,
-  STAT_VALUES,
   type Cat,
   type MutationSlot,
   type StatKey,
 } from './types';
 import { commonId, getCommon, getNamed, mutationLabel, NAMED_BY_SLOT, otherStat } from './mutations';
 import { coiTier, formatCOI } from './genealogy';
-import { ClassSelect, OrientationToggle, RoomToggle, SexToggle } from './controls';
+import { ClassSelect, OrientationToggle, RoomToggle, SexToggle, StatsMatrix } from './controls';
 import { useI18n } from './i18n';
 
 /** Sentinel select value for "a common +2/−1 mutation" (the exact id comes from the stat pickers). */
@@ -258,66 +256,7 @@ export function CatPanel(props: {
           </>
         )}
       </div>
-      <div className="stats-matrix">
-        {/* clickable header: a digit fills every stat with that value, "–" clears all */}
-        <span />
-        <button
-          type="button"
-          className="stat-cell head"
-          title={t.statClearAll}
-          onClick={() => props.onUpdate({ stats: {} })}
-        >
-          –
-        </button>
-        {STAT_VALUES.map((v) => (
-          <button
-            key={v}
-            type="button"
-            className="stat-cell head"
-            title={t.statSetAll(v)}
-            onClick={() =>
-              props.onUpdate({
-                stats: Object.fromEntries(STAT_KEYS.map((k) => [k, v])) as Cat['stats'],
-              })
-            }
-          >
-            {v}
-          </button>
-        ))}
-        {STAT_GROUPS.map((group, gi) => (
-          <Fragment key={gi}>
-            {gi > 0 && <span className="stats-divider" />}
-            {group.map((k) => (
-              <Fragment key={k}>
-                <span className="stat-name" title={t.statNames[k]}>
-                  {k.toUpperCase()}
-                </span>
-                <button
-                  type="button"
-                  className={`stat-cell ${cat.stats[k] == null ? 'on' : ''}`}
-                  onClick={() => {
-                    const stats = { ...cat.stats };
-                    delete stats[k];
-                    props.onUpdate({ stats });
-                  }}
-                >
-                  –
-                </button>
-                {STAT_VALUES.map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    className={`stat-cell ${cat.stats[k] === v ? 'on' : ''}`}
-                    onClick={() => props.onUpdate({ stats: { ...cat.stats, [k]: v } })}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </Fragment>
-            ))}
-          </Fragment>
-        ))}
-      </div>
+      <StatsMatrix stats={cat.stats} onChange={(stats) => props.onUpdate({ stats })} />
       <MutationEditor
         mutations={cat.mutations}
         mother={props.mother}

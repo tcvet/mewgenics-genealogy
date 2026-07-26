@@ -23,7 +23,7 @@ export function BreedingScreen({
   onSourceConsumed: () => void;
 }) {
   const { t } = useI18n();
-  const { cats, byId, bonds, nameTakenBy, addFounder, createLitter, bondCats, dissolveBond } =
+  const { cats, byId, bonds, nameTakenBy, addFounder, createKitten, bondCats, dissolveBond } =
     store;
   const [q, setQ] = useState('');
   const [sourceId, setSourceId] = useState<string | null>(null);
@@ -185,7 +185,7 @@ export function BreedingScreen({
               father={pair.father}
               coi={pairCOI(pair.mother.id, pair.father.id, cats)}
               nameTaken={(n) => nameTakenBy(n)}
-              onCreate={(kittens) => createLitter(pair.mother, pair.father, kittens)}
+              onCreate={(kitten) => createKitten(pair.mother, pair.father, kitten)}
             />
           </>
         ) : source ? (

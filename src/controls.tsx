@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import {
   CLASS_COLOR,
   CLASSES,
   ORIENTATIONS,
   ROOMS,
   SEX_GLYPH,
+  STAT_GROUPS,
+  STAT_KEYS,
+  STAT_VALUES,
   type Cat,
   type ClassKey,
   type Orientation,
@@ -12,6 +15,73 @@ import {
   type Sex,
 } from './types';
 import { useI18n } from './i18n';
+
+/** Clickable stat grid (a row per stat, columns – and 3–7); shared by the
+ * cat editor and the kitten form. */
+export function StatsMatrix({
+  stats,
+  onChange,
+}: {
+  stats: Cat['stats'];
+  onChange: (stats: Cat['stats']) => void;
+}) {
+  const { t } = useI18n();
+  return (
+    <div className="stats-matrix">
+      {/* clickable header: a digit fills every stat with that value, "–" clears all */}
+      <span />
+      <button type="button" className="stat-cell head" title={t.statClearAll} onClick={() => onChange({})}>
+        –
+      </button>
+      {STAT_VALUES.map((v) => (
+        <button
+          key={v}
+          type="button"
+          className="stat-cell head"
+          title={t.statSetAll(v)}
+          onClick={() =>
+            onChange(Object.fromEntries(STAT_KEYS.map((k) => [k, v])) as Cat['stats'])
+          }
+        >
+          {v}
+        </button>
+      ))}
+      {STAT_GROUPS.map((group, gi) => (
+        <Fragment key={gi}>
+          {gi > 0 && <span className="stats-divider" />}
+          {group.map((k) => (
+            <Fragment key={k}>
+              <span className="stat-name" title={t.statNames[k]}>
+                {k.toUpperCase()}
+              </span>
+              <button
+                type="button"
+                className={`stat-cell ${stats[k] == null ? 'on' : ''}`}
+                onClick={() => {
+                  const next = { ...stats };
+                  delete next[k];
+                  onChange(next);
+                }}
+              >
+                –
+              </button>
+              {STAT_VALUES.map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={`stat-cell ${stats[k] === v ? 'on' : ''}`}
+                  onClick={() => onChange({ ...stats, [k]: v })}
+                >
+                  {v}
+                </button>
+              ))}
+            </Fragment>
+          ))}
+        </Fragment>
+      ))}
+    </div>
+  );
+}
 
 export function ClassSelect({
   value,

@@ -51,6 +51,7 @@ export function makeCat(
   cls: ClassKey | null = null,
   orientation: Orientation = 'hetero',
   mutations: Cat['mutations'] = {},
+  stats: Cat['stats'] = {},
 ): Cat {
   return {
     id: crypto.randomUUID(),
@@ -64,7 +65,7 @@ export function makeCat(
     gone: false,
     bondId: null,
     notes: '',
-    stats: {},
+    stats,
     mutations,
   };
 }
@@ -203,12 +204,14 @@ export type KittenDraft = {
   sex: Sex;
   orientation: Orientation;
   mutations: Cat['mutations'];
+  stats: Cat['stats'];
 };
 export const emptyKitten = (): KittenDraft => ({
   name: '',
   sex: 'F',
   orientation: 'hetero',
   mutations: {},
+  stats: {},
 });
 
 /**
@@ -260,12 +263,10 @@ export function useCatsStore() {
     setCats((cs) => [...cs, makeCat(name, sex, null, null, room, cls, orientation)]);
   };
 
-  const createLitter = (mother: Cat, father: Cat, kittens: KittenDraft[]) => {
+  const createKitten = (mother: Cat, father: Cat, k: KittenDraft) => {
     setCats((cs) => [
       ...cs,
-      ...kittens.map((k) =>
-        makeCat(k.name, k.sex, mother.id, father.id, null, null, k.orientation, k.mutations),
-      ),
+      makeCat(k.name, k.sex, mother.id, father.id, null, null, k.orientation, k.mutations, k.stats),
     ]);
   };
 
@@ -336,7 +337,7 @@ export function useCatsStore() {
     updateCat,
     nameTakenBy,
     addFounder,
-    createLitter,
+    createKitten,
     removeCat,
     bondCats,
     unbondCat,

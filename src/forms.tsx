@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import {
   MUTATION_SLOTS,
   SEX_GLYPH,
@@ -11,8 +11,15 @@ import {
 } from './types';
 import { mutationLabel } from './mutations';
 import { coiTier, formatCOI } from './genealogy';
-import { emptyKitten, normName, type KittenDraft } from './store';
-import { ClassSelect, OrientationCycle, OrientationToggle, RoomToggle, SexToggle } from './controls';
+import { emptyKitten, type KittenDraft } from './store';
+import {
+  ClassSelect,
+  OrientationCycle,
+  OrientationToggle,
+  RoomToggle,
+  SexToggle,
+  StatsMatrix,
+} from './controls';
 import { useI18n } from './i18n';
 
 export function AddCatForm({
@@ -81,28 +88,19 @@ export function LitterPanel({
   father: Cat;
   coi: number;
   nameTaken: (name: string) => boolean;
-  onCreate: (kittens: KittenDraft[]) => void;
+  onCreate: (kitten: KittenDraft) => void;
 }) {
   const { t } = useI18n();
-  const [rows, setRows] = useState<KittenDraft[]>([emptyKitten()]);
-  const setRow = (i: number, patch: Partial<KittenDraft>) =>
-    setRows((rs) => rs.map((r, j) => (j === i ? { ...r, ...patch } : r)));
-  const filled = rows.filter((r) => r.name.trim());
-  // duplicate: matches an existing cat OR another kitten of this same litter
-  const dupRow = (i: number) => {
-    const key = normName(rows[i].name);
-    if (!key) return false;
-    if (nameTaken(rows[i].name)) return true;
-    return rows.some((r, j) => j !== i && normName(r.name) === key);
-  };
-  const anyDup = rows.some((_, i) => dupRow(i));
+  const [draft, setDraft] = useState<KittenDraft>(emptyKitten());
+  const patch = (p: Partial<KittenDraft>) => setDraft((d) => ({ ...d, ...p }));
+  const dup = draft.name.trim() !== '' && nameTaken(draft.name);
   const submit = () => {
-    if (!filled.length || anyDup) return;
-    onCreate(filled);
-    setRows([emptyKitten()]);
+    if (!draft.name.trim() || dup) return;
+    onCreate(draft);
+    setDraft(emptyKitten());
   };
   const tier = coiTier(coi);
-  // parents' mutations a kitten can inherit; one entry per (slot, id),
+  // parents' mutations the kitten can inherit; one entry per (slot, id),
   // a mutation both parents share becomes a single ♀♂ chip
   const heritable = MUTATION_SLOTS.flatMap((slot) => {
     const m = mother.mutations[slot];
@@ -112,11 +110,11 @@ export function LitterPanel({
     if (f && f !== m) chips.push({ slot, id: f, glyphs: '♂' });
     return chips;
   });
-  const toggleMut = (i: number, slot: MutationSlot, id: string) => {
-    const next = { ...rows[i].mutations };
+  const toggleMut = (slot: MutationSlot, id: string) => {
+    const next = { ...draft.mutations };
     if (next[slot] === id) delete next[slot];
     else next[slot] = id;
-    setRow(i, { mutations: next });
+    patch({ mutations: next });
   };
   return (
     <div className="panel">
@@ -128,58 +126,44 @@ export function LitterPanel({
         {t.offspringInbreeding} <b>{formatCOI(coi)}</b>
         {t.coiNotes[tier]}
       </div>
-      {heritable.length > 0 && <div className="meta">{t.litterMutHint}</div>}
-      {rows.map((r, i) => (
-        <Fragment key={i}>
-          <div className="row">
-            <SexToggle value={r.sex} onChange={(sex) => setRow(i, { sex })} />
-            <OrientationCycle
-              value={r.orientation}
-              onChange={(orientation) => setRow(i, { orientation })}
-            />
-            <input
-              type="text"
-              className={dupRow(i) ? 'dup' : ''}
-              placeholder={t.kittenPlaceholder}
-              value={r.name}
-              autoFocus={i === rows.length - 1}
-              onChange={(e) => setRow(i, { name: e.target.value })}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && r.name.trim() && !anyDup) {
-                  setRows((rs) => [...rs, emptyKitten()]);
-                }
-              }}
-            />
-            {rows.length > 1 && (
-              <button
-                className="small"
-                onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}
-              >
-                ✕
-              </button>
-            )}
-          </div>
-          {heritable.length > 0 && (
-            <div className="kitten-muts">
-              {heritable.map((h) => (
-                <button
-                  key={`${h.slot}|${h.id}`}
-                  type="button"
-                  className={`mut-inherit${r.mutations[h.slot] === h.id ? ' on' : ''}`}
-                  title={`${t.mutationSlots[h.slot]}: ${mutationLabel(h.id)}`}
-                  onClick={() => toggleMut(i, h.slot, h.id)}
-                >
-                  {h.glyphs} {mutationLabel(h.id)}
-                </button>
-              ))}
-            </div>
-          )}
-        </Fragment>
-      ))}
-      {anyDup && <div className="warn">{t.litterDupWarn}</div>}
       <div className="row">
-        <button onClick={() => setRows((rs) => [...rs, emptyKitten()])}>{t.addKitten}</button>
-        <button className="accent" disabled={!filled.length || anyDup} onClick={submit}>
+        <SexToggle value={draft.sex} onChange={(sex) => patch({ sex })} />
+        <OrientationCycle
+          value={draft.orientation}
+          onChange={(orientation) => patch({ orientation })}
+        />
+        <input
+          type="text"
+          className={dup ? 'dup' : ''}
+          placeholder={t.kittenPlaceholder}
+          value={draft.name}
+          autoFocus
+          onChange={(e) => patch({ name: e.target.value })}
+          onKeyDown={(e) => e.key === 'Enter' && submit()}
+        />
+      </div>
+      {dup && <div className="warn">{t.nameExists(draft.name.trim())}</div>}
+      {heritable.length > 0 && (
+        <>
+          <div className="meta">{t.litterMutHint}</div>
+          <div className="kitten-muts">
+            {heritable.map((h) => (
+              <button
+                key={`${h.slot}|${h.id}`}
+                type="button"
+                className={`mut-inherit${draft.mutations[h.slot] === h.id ? ' on' : ''}`}
+                title={`${t.mutationSlots[h.slot]}: ${mutationLabel(h.id)}`}
+                onClick={() => toggleMut(h.slot, h.id)}
+              >
+                {h.glyphs} {mutationLabel(h.id)}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      <StatsMatrix stats={draft.stats} onChange={(stats) => patch({ stats })} />
+      <div className="row">
+        <button className="accent" disabled={!draft.name.trim() || dup} onClick={submit}>
           {t.create}
         </button>
       </div>

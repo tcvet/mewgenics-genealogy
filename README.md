@@ -60,11 +60,11 @@ Three columns, left to right:
    tiers: green — below 10% (not inbred), yellow — 10–25% (slightly),
    orange — 25–50% (moderately), red — 50–80% (highly), maroon — above 80%
    (extremely inbred). Sortable by COI (default), name or stat total.
-3. **The litter form** — the pair's offspring COI, a name row per kitten
-   (Enter adds the next one), a sex toggle and a compact orientation-flag
-   button per kitten, and the parents' mutations as one-click chips under
-   every kitten row, so you can record what each newborn inherited right as
-   the litter is born.
+3. **The kitten form** — the pair's offspring COI, the kitten's name (Enter
+   creates it), a sex toggle and a compact orientation-flag button, the
+   parents' mutations as one-click inherit chips, and the full stat matrix,
+   so a newborn can be recorded completely — stats included — the moment it
+   is born. The form resets after each kitten, ready for the next one.
 
 Compatibility follows the game: same-sex pairs can never have a litter,
 straight cats breed only with opposite-sex straight cats, bi cats only with

@@ -198,7 +198,7 @@ function TreeView({
     bonds,
     updateCat,
     nameTakenBy,
-    createLitter,
+    createKitten,
     removeCat,
     unbondCat,
   } = store;
@@ -659,7 +659,7 @@ function TreeView({
               father={pair.father}
               coi={pairCOI(pair.mother.id, pair.father.id, cats)}
               nameTaken={(n) => nameTakenBy(n)}
-              onCreate={(kittens) => createLitter(pair.mother, pair.father, kittens)}
+              onCreate={(kitten) => createKitten(pair.mother, pair.father, kitten)}
             />
           ) : selectedCats.length === 2 ? (
             <div className="panel hint">{t.samePairHint}</div>
