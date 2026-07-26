@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   CLASS_COLOR,
   CLASSES,
@@ -65,10 +65,15 @@ export function OverviewScreen({
   store,
   onShowInTree,
   onOpenBreeding,
+  focusId,
+  onFocusDone,
 }: {
   store: CatsStore;
   onShowInTree: (id: string) => void;
   onOpenBreeding: (id: string) => void;
+  /** a cat pushed in from another screen (statistics carriers) */
+  focusId: string | null;
+  onFocusDone: () => void;
 }) {
   const { t } = useI18n();
   const { cats, byId, children, updateCat, nameTakenBy, removeCat } = store;
@@ -79,6 +84,13 @@ export function OverviewScreen({
   const [room, setRoom] = useState<RoomId | ''>('');
   const [sort, setSort] = useState<OvSort>('name');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!focusId) return;
+    setSelectedId(focusId);
+    onFocusDone();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusId]);
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();

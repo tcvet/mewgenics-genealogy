@@ -11,14 +11,7 @@ import {
   type NodeMouseHandler,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import {
-  canMate,
-  CLASS_COLOR,
-  SEX_GLYPH,
-  STAT_KEYS,
-  type Cat,
-  type MutationSlot,
-} from './types';
+import { canMate, CLASS_COLOR, SEX_GLYPH, type Cat, type MutationSlot } from './types';
 import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
 import {
   descendantIds,
@@ -188,52 +181,6 @@ function MutationPanel(props: {
   );
 }
 
-/** Floating house statistics: sex breakdown, totals and perfect-stat cats. */
-function StatsPanel(props: { cats: Cat[]; onClose: () => void }) {
-  const { t } = useI18n();
-  const s = useMemo(() => {
-    const acc = { f: 0, m: 0, any: 0, home: 0, perfect: 0 };
-    for (const c of props.cats) {
-      if (c.gone) continue; // only cats currently in the house are of interest
-      acc.home++;
-      if (c.sex === 'F') acc.f++;
-      else if (c.sex === 'M') acc.m++;
-      else acc.any++;
-      if (STAT_KEYS.every((k) => c.stats[k] === 7)) acc.perfect++;
-    }
-    return acc;
-  }, [props.cats]);
-  const rows: { label: string; n: number; sub?: boolean; sep?: boolean }[] = [
-    { label: t.statsAtHome, n: s.home },
-    { label: t.statsFemales, n: s.f, sub: true },
-    { label: t.statsMales, n: s.m, sub: true },
-    { label: t.statsAnySex, n: s.any, sub: true },
-    { label: t.statsPerfect, n: s.perfect },
-    { label: t.statsTotal, n: props.cats.length, sep: true },
-  ];
-  return (
-    <div className="panel mate-panel">
-      <div className="hint-head">
-        <b>{t.statsPanelTitle}</b>
-        <button className="small" title={t.collapseTitle} onClick={props.onClose}>
-          ✕
-        </button>
-      </div>
-      <div className="stats-list">
-        {rows.map((row) => (
-          <div
-            key={row.label}
-            className={`stats-row${row.sub ? ' sub' : ''}${row.sep ? ' sep' : ''}`}
-          >
-            <span>{row.label}</span>
-            <span className="stats-val">{row.n}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function TreeView({
   store,
   focusId,
@@ -261,7 +208,6 @@ function TreeView({
   const [assigningFor, setAssigningFor] = useState<string | null>(null);
   const [mutsOpen, setMutsOpen] = useState(false);
   const [mutFocus, setMutFocus] = useState<MutFocus | null>(null);
-  const [statsOpen, setStatsOpen] = useState(false);
   const [addingFounder, setAddingFounder] = useState(false);
   const [helpOpen, setHelpOpen] = useState(() => localStorage.getItem(HELP_KEY) !== 'closed');
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -367,17 +313,6 @@ function TreeView({
   const closeMutPanel = () => {
     setMutsOpen(false);
     setMutFocus(null);
-  };
-
-  /** Toolbar button: toggles the statistics panel (leftside panels are exclusive). */
-  const toggleStats = () => {
-    if (statsOpen) {
-      setStatsOpen(false);
-      return;
-    }
-    setStatsOpen(true);
-    setMateModeFor(null);
-    closeMutPanel();
   };
 
   const mateList = useMemo(() => {
@@ -605,7 +540,6 @@ function TreeView({
     setSelection([]);
     setMateModeFor(null);
     closeMutPanel();
-    setStatsOpen(false);
     setViewRootId(null); // full tree — so all candidates are visible, including new ones
     setAddingFounder(false);
   };
@@ -744,7 +678,6 @@ function TreeView({
               else {
                 setMutsOpen(true);
                 setMateModeFor(null); // the leftside panels are exclusive
-                setStatsOpen(false);
               }
             }}
           >
@@ -752,9 +685,6 @@ function TreeView({
           </button>
           {/* stays outside the menu so it survives the menu unmounting while the file dialog is open */}
           <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importJson} />
-          <button className={statsOpen ? 'accent' : ''} onClick={toggleStats}>
-            📊 {t.catCount(cats.length)}
-          </button>
           {viewRootId && byId.has(viewRootId) && (
             <button className="accent" onClick={() => setViewRootId(null)}>
               {t.backToFullTree(byId.get(viewRootId)!.name)}
@@ -782,7 +712,6 @@ function TreeView({
             onClose={closeMutPanel}
           />
         )}
-        {statsOpen && <StatsPanel cats={cats} onClose={() => setStatsOpen(false)} />}
       </div>
 
       <div className="side">
@@ -896,7 +825,6 @@ function TreeView({
                 setMateModeFor(next);
                 if (next) {
                   closeMutPanel();
-                  setStatsOpen(false);
                 }
               }}
               onAssignParents={() => startAssignParents(single.id)}

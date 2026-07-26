@@ -5,6 +5,7 @@ import { TreeScreen } from './TreeScreen';
 import { OverviewScreen } from './OverviewScreen';
 import { BreedingScreen } from './BreedingScreen';
 import { RollCallScreen } from './RollCallScreen';
+import { StatsScreen } from './StatsScreen';
 
 const SCREEN_KEY = 'mewgenics-screen';
 
@@ -13,6 +14,7 @@ const NAV: { key: string; icon: string; label: keyof Dict }[] = [
   { key: 'cats', icon: '🐈', label: 'navCats' },
   { key: 'breeding', icon: '💕', label: 'navBreeding' },
   { key: 'rollcall', icon: '📋', label: 'navRollcall' },
+  { key: 'stats', icon: '📊', label: 'navStats' },
   { key: 'tree', icon: '🌳', label: 'navTree' },
 ];
 type Screen = (typeof NAV)[number]['key'];
@@ -30,6 +32,8 @@ function Shell() {
   const [treeFocus, setTreeFocus] = useState<string | null>(null);
   // A cat to preselect as the first parent when arriving at the breeding screen.
   const [breedFocus, setBreedFocus] = useState<string | null>(null);
+  // A cat to open in the browser when arriving from the statistics screen.
+  const [catsFocus, setCatsFocus] = useState<string | null>(null);
   // Screens stay mounted once visited (hidden via CSS) so the tree keeps its
   // layout/viewport and list screens keep their filters across tab switches.
   const visited = useRef(new Set<Screen>());
@@ -47,6 +51,11 @@ function Shell() {
   const openBreeding = (id: string) => {
     setBreedFocus(id);
     setScreen('breeding');
+  };
+
+  const openCat = (id: string) => {
+    setCatsFocus(id);
+    setScreen('cats');
   };
 
   const fill = (key: Screen, node: React.ReactNode) =>
@@ -76,7 +85,13 @@ function Shell() {
       <main className="screen">
         {fill(
           'cats',
-          <OverviewScreen store={store} onShowInTree={showInTree} onOpenBreeding={openBreeding} />,
+          <OverviewScreen
+            store={store}
+            onShowInTree={showInTree}
+            onOpenBreeding={openBreeding}
+            focusId={catsFocus}
+            onFocusDone={() => setCatsFocus(null)}
+          />,
         )}
         {fill(
           'breeding',
@@ -87,6 +102,7 @@ function Shell() {
           />,
         )}
         {fill('rollcall', <RollCallScreen store={store} />)}
+        {fill('stats', <StatsScreen store={store} onOpenCat={openCat} />)}
         {fill(
           'tree',
           <TreeScreen store={store} focusId={treeFocus} onFocusDone={() => setTreeFocus(null)} />,
