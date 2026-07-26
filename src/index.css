@@ -37,8 +37,59 @@ body {
   color: var(--text);
 }
 
-.app {
+/* --- shell: top navigation bar + the active screen below it --- */
+
+.shell {
   position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 12px;
+  background: #241d2e;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.nav-brand {
+  font-weight: 700;
+  margin-right: 12px;
+}
+
+.topnav .nav-tab {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 7px 12px;
+  border-radius: 8px;
+}
+
+.topnav .nav-tab:hover {
+  background: var(--btn-hover);
+  color: var(--text);
+}
+
+.topnav .nav-tab.on {
+  background: var(--btn-bg);
+  border-color: var(--control-border);
+  color: var(--text);
+}
+
+/* the active screen fills the rest of the viewport; screens position
+   their own overlays (the tree's floating panels) against this box */
+.screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.app {
+  position: absolute;
   inset: 0;
 }
 
@@ -118,14 +169,6 @@ body {
   color: #c3b9cf;
   line-height: 1.6;
   display: block;
-}
-
-.title {
-  font-weight: 700;
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: 10px;
-  padding: 8px 12px;
 }
 
 .badge {
