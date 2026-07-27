@@ -93,7 +93,7 @@ export function MateList({
               key={cat.id}
               className={`mate-row${pickedIds.includes(cat.id) ? ' picked' : ''}${
                 bond && !bond.own ? ' engaged' : ''
-              }`}
+              }${cat.gone ? ' gone' : ''}`}
               onClick={() => onPick(cat.id)}
             >
               <span className="mate-sex">{SEX_GLYPH[cat.sex]}</span>

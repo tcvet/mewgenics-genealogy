@@ -318,6 +318,15 @@ body {
   opacity: 0.55;
 }
 
+/* a cat that left home (revealed by the breeding screen's gone toggle) */
+.mate-row.gone {
+  opacity: 0.55;
+}
+
+.mate-row.gone .mate-name {
+  text-decoration: line-through;
+}
+
 .bond-toggle {
   align-self: flex-start;
   flex-shrink: 0;

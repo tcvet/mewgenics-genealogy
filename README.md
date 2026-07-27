@@ -54,7 +54,10 @@ Three columns, left to right:
 
 1. **First parent** — a searchable list of the cats in the house. The
    “＋ Founder” button on top adds a parentless cat (stray cats usually enter
-   the tree together with their first litter).
+   the tree together with their first litter). The “✕ Gone cats” toggle
+   reveals cats that left home — in both columns, struck through — so a
+   forgotten litter can be recorded after the fact even when its parents are
+   long gone.
 2. **Partners** — every compatible partner for the picked cat with the COI of
    their potential offspring, color-coded with the game's five inbreeding
    tiers: green — below 10% (not inbred), yellow — 10–25% (slightly),

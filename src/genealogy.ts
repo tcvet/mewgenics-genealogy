@@ -156,7 +156,11 @@ export function pairCOI(aId: string, bId: string, cats: Cat[]): number {
  * (inbreeding) of its would-be offspring with the given cat.
  * One shared memo across all pairs — fast.
  */
-export function mateCOIs(catId: string, cats: Cat[]): Map<string, number> {
+export function mateCOIs(
+  catId: string,
+  cats: Cat[],
+  opts?: { includeGone?: boolean },
+): Map<string, number> {
   const byId = indexCats(cats);
   const cat = byId.get(catId);
   const result = new Map<string, number>();
@@ -164,8 +168,10 @@ export function mateCOIs(catId: string, cats: Cat[]): Map<string, number> {
   const gen = generations(cats, byId);
   const memo = new Map<string, number>();
   for (const other of cats) {
-    // cats that left home are not shown as candidates (but still count as ancestors for COI)
-    if (other.id === catId || other.gone || !canMate(cat, other)) continue;
+    // cats that left home are not candidates (but still count as ancestors for
+    // COI) — unless includeGone, used to record a litter after the fact
+    if (other.id === catId || (other.gone && !opts?.includeGone) || !canMate(cat, other))
+      continue;
     result.set(other.id, kinshipRec(catId, other.id, byId, gen, memo));
   }
   return result;

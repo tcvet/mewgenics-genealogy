@@ -29,6 +29,9 @@ export function BreedingScreen({
   const [sourceId, setSourceId] = useState<string | null>(null);
   const [partnerId, setPartnerId] = useState<string | null>(null);
   const [addingFounder, setAddingFounder] = useState(false);
+  // reveal cats that left home — to record a forgotten litter after the fact;
+  // deliberately not persisted (a one-off "fixing history" mode)
+  const [showGone, setShowGone] = useState(false);
 
   /** A bonded cat's only compatible partner gets preselected — one-click litters. */
   const defaultPartnerId = (cat: Cat | undefined) => {
@@ -42,26 +45,30 @@ export function BreedingScreen({
     setSourceId(externalSource);
     setPartnerId(defaultPartnerId(byId.get(externalSource)));
     setAddingFounder(false);
+    // a gone cat pushed in from the browser must be visible in the list
+    if (byId.get(externalSource)?.gone) setShowGone(true);
     onSourceConsumed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [externalSource]);
 
-  // breeding concerns the cats in the house, alphabetical
-  const living = useMemo(
-    () => cats.filter((c) => !c.gone).sort((a, b) => a.name.localeCompare(b.name)),
-    [cats],
+  // breeding concerns the cats in the house, alphabetical; the gone toggle
+  // reveals the rest for recording litters after the fact
+  const roster = useMemo(
+    () =>
+      cats.filter((c) => showGone || !c.gone).sort((a, b) => a.name.localeCompare(b.name)),
+    [cats, showGone],
   );
   const query = q.trim().toLowerCase();
-  const listed = query ? living.filter((c) => c.name.toLowerCase().includes(query)) : living;
+  const listed = query ? roster.filter((c) => c.name.toLowerCase().includes(query)) : roster;
 
   const source = sourceId ? (byId.get(sourceId) ?? null) : null;
   const mates = useMemo<MateEntry[]>(() => {
     if (!source) return [];
-    const raw = [...mateCOIs(source.id, cats)]
+    const raw = [...mateCOIs(source.id, cats, { includeGone: showGone })]
       .map(([id, coi]) => ({ cat: byId.get(id), coi }))
       .filter((m): m is { cat: Cat; coi: number } => m.cat !== undefined);
     return decorateBonds(raw, source, bonds);
-  }, [source, cats, byId, bonds]);
+  }, [source, cats, byId, bonds, showGone]);
 
   const partner = partnerId ? (byId.get(partnerId) ?? null) : null;
   const pair = source && partner ? assignParents(source, partner) : null;
@@ -70,6 +77,19 @@ export function BreedingScreen({
     const next = id === sourceId ? null : id;
     setSourceId(next);
     setPartnerId(next ? defaultPartnerId(byId.get(next)) : null);
+  };
+
+  const toggleGone = () => {
+    if (showGone) {
+      // hiding gone cats again — drop them from the selection too
+      if (source?.gone) {
+        setSourceId(null);
+        setPartnerId(null);
+      } else if (partner?.gone) {
+        setPartnerId(null);
+      }
+    }
+    setShowGone(!showGone);
   };
 
   // bond controls for the selected pair: fix the pair / grow the collective / dissolve
@@ -97,6 +117,14 @@ export function BreedingScreen({
           >
             {t.brFounderBtn}
           </button>
+          <button
+            type="button"
+            className={showGone ? 'accent' : ''}
+            title={t.brGoneTitle}
+            onClick={toggleGone}
+          >
+            {t.brGoneToggle}
+          </button>
         </div>
         <div className="br-rows">
           {listed.map((c) => {
@@ -104,7 +132,7 @@ export function BreedingScreen({
             return (
               <button
                 key={c.id}
-                className={`mate-row${c.id === sourceId ? ' picked' : ''}`}
+                className={`mate-row${c.id === sourceId ? ' picked' : ''}${c.gone ? ' gone' : ''}`}
                 onClick={() => pickSource(c.id)}
               >
                 <span className="mate-sex">{SEX_GLYPH[c.sex]}</span>
