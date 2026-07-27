@@ -7,7 +7,7 @@ import {
   type StatKey,
 } from './types';
 import { commonId, getCommon, getNamed, mutationLabel, NAMED_BY_SLOT, otherStat } from './mutations';
-import { coiTier, formatCOI } from './genealogy';
+import { coiTier, formatCOI, type MateAvg } from './genealogy';
 import { ClassSelect, OrientationToggle, RoomToggle, SexToggle, StatsMatrix } from './controls';
 import { useI18n } from './i18n';
 
@@ -173,6 +173,9 @@ export function CatPanel(props: {
   father: Cat | null;
   childrenCount: number;
   inbreeding: number;
+  /** average COI over all compatible partners (null — no candidates at all,
+   * undefined — the screen does not show this row) */
+  mateAvg?: MateAvg | null;
   /** the other members of the cat's bond (empty — not bonded); gone ones included */
   bondPartners: Cat[];
   pedigreeActive?: boolean;
@@ -249,6 +252,22 @@ export function CatPanel(props: {
         <span className={`coi-inline ${coiTier(props.inbreeding)}`}>
           {formatCOI(props.inbreeding)}
         </span>
+        {props.mateAvg !== undefined && (
+          <>
+            <br />
+            <span title={t.mateAvgCOITitle}>{t.mateAvgCOI}</span>:{' '}
+            {props.mateAvg ? (
+              <>
+                <span className={`coi-inline ${coiTier(props.mateAvg.avg)}`}>
+                  {formatCOI(props.mateAvg.avg)}
+                </span>{' '}
+                ({t.mateAvgCount(props.mateAvg.count)})
+              </>
+            ) : (
+              '—'
+            )}
+          </>
+        )}
         {cat.gone && (
           <>
             <br />

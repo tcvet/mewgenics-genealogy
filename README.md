@@ -32,17 +32,21 @@ The everyday view: a filter bar over a card grid, with the full cat editor in
 a column on the right.
 
 - **Filters**: name search, “In the house” (on by default — cats that left
-  home are hidden), sex, class, room; sort by name, stat total (Σ) or most
-  recently added.
+  home are hidden), sex, class, room; sort by name, stat total (Σ), number of
+  children, average COI with all compatible partners (least related to the
+  house first — that's who to breed next) or most recently added.
 - **Cards** speak the same visual language as the map: the class color fills
   the card, sex is a colored ♀/♂/? chip, non-straight cats carry a pride-flag
   chip, and small chips show the stat total, the mutation count, the room and
   a 💞 for cats in an established bond (hover it to see the partners).
 - **Click a card** to open the editor: name, sex, orientation, room, class,
-  base stats, mutations, notes, plus the cat's own F (inbreeding coefficient)
-  and its parents — parent names are links, so you can walk up a pedigree
-  with clicks. “Show in the tree” jumps to the map centered on the cat;
-  “Show mate COI” opens the breeding screen with the cat preselected.
+  base stats, mutations, notes, plus the cat's own F (inbreeding coefficient),
+  its number of children and its parents — parent names are links, so you can
+  walk up a pedigree with clicks. The panel also averages the COI over every
+  compatible partner at home: a low average means fresh blood, a high one means
+  every litter of this cat will be inbred. “Show in the tree” jumps to the map
+  centered on the cat; “Show mate COI” opens the breeding screen with the cat
+  preselected.
 - **“Left home”** marks a cat that no longer lives in the house
   (died/sold/left): the card is dimmed and struck through, the cat drops out
   of the default browser view and of breeding candidates, but stays in the

@@ -177,6 +177,38 @@ export function mateCOIs(
   return result;
 }
 
+export type MateAvg = { avg: number; count: number };
+
+/**
+ * Average COI over every compatible partner at home (see `mateCOIs`) — how
+ * related a cat is to the house as a whole: a low value means fresh blood, a
+ * high one means every litter of its will be inbred. Computed for all cats at
+ * once (one shared memo), so the browser can sort the whole house by it.
+ * A cat with no candidates at all maps to null.
+ */
+export function avgMateCOIs(
+  cats: Cat[],
+  opts?: { includeGone?: boolean },
+): Map<string, MateAvg | null> {
+  const byId = indexCats(cats);
+  const gen = generations(cats, byId);
+  const memo = new Map<string, number>();
+  const result = new Map<string, MateAvg | null>();
+  for (const cat of cats) {
+    let sum = 0;
+    let count = 0;
+    for (const other of cats) {
+      // the candidate filter of `mateCOIs`, kept in sync with it
+      if (other.id === cat.id || (other.gone && !opts?.includeGone) || !canMate(cat, other))
+        continue;
+      sum += kinshipRec(cat.id, other.id, byId, gen, memo);
+      count++;
+    }
+    result.set(cat.id, count === 0 ? null : { avg: sum / count, count });
+  }
+  return result;
+}
+
 export type COITier = 'none' | 'slight' | 'moderate' | 'high' | 'extreme';
 
 /**

@@ -11,14 +11,14 @@ import {
   type RoomId,
   type Sex,
 } from './types';
-import { inbreedingCoefficient } from './genealogy';
+import { avgMateCOIs, inbreedingCoefficient } from './genealogy';
 import { activeBondPartners, bondPartnersOf, statSum, type CatsStore } from './store';
 import { CatPanel } from './CatPanel';
 import { useI18n } from './i18n';
 
 const SEX_CLASS: Record<Sex, string> = { F: 'female', M: 'male', '?': 'any' };
 
-type OvSort = 'name' | 'stats' | 'recent';
+type OvSort = 'name' | 'stats' | 'children' | 'mateCOI' | 'recent';
 
 /** Compact list card speaking the map card's visual language:
  * fill = class color, sex chip, room/mutation/stat-total/bond chips. */
@@ -108,6 +108,9 @@ export function OverviewScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusId]);
 
+  // one pass over the whole house: feeds both the mate-COI sort and the panel
+  const mateAvgs = useMemo(() => avgMateCOIs(cats), [cats]);
+
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
     const list = cats.filter(
@@ -118,12 +121,19 @@ export function OverviewScreen({
         (!room || c.room === room) &&
         (!query || c.name.toLowerCase().includes(query)),
     );
+    const kids = (c: Cat) => children.get(c.id)?.length ?? 0;
+    // cats with no compatible partner at all sink to the bottom
+    const mateCOI = (c: Cat) => mateAvgs.get(c.id)?.avg ?? Infinity;
     if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
     else if (sort === 'stats')
       list.sort((a, b) => statSum(b) - statSum(a) || a.name.localeCompare(b.name));
+    else if (sort === 'children')
+      list.sort((a, b) => kids(b) - kids(a) || a.name.localeCompare(b.name));
+    else if (sort === 'mateCOI')
+      list.sort((a, b) => mateCOI(a) - mateCOI(b) || a.name.localeCompare(b.name));
     else list.reverse(); // recent: cats are stored in insertion order
     return list;
-  }, [cats, q, atHome, sex, cls, room, sort]);
+  }, [cats, children, mateAvgs, q, atHome, sex, cls, room, sort]);
 
   const selected = selectedId ? (byId.get(selectedId) ?? null) : null;
 
@@ -143,9 +153,11 @@ export function OverviewScreen({
     { value: 'M', glyph: SEX_GLYPH.M, title: t.sexM, cls: 'male' },
     { value: '?', glyph: SEX_GLYPH['?'], title: t.sexAny, cls: 'any' },
   ];
-  const sorts: { key: OvSort; label: string }[] = [
+  const sorts: { key: OvSort; label: string; title?: string }[] = [
     { key: 'name', label: t.mateSortName },
     { key: 'stats', label: t.mateSortStats },
+    { key: 'children', label: t.ovSortChildren, title: t.ovSortChildrenTitle },
+    { key: 'mateCOI', label: t.ovSortMateCOI, title: t.ovSortMateCOITitle },
     { key: 'recent', label: t.ovSortRecent },
   ];
 
@@ -208,6 +220,7 @@ export function OverviewScreen({
               <button
                 key={s.key}
                 type="button"
+                title={s.title}
                 className={`small${sort === s.key ? ' accent' : ''}`}
                 onClick={() => setSort(s.key)}
               >
@@ -246,6 +259,7 @@ export function OverviewScreen({
             father={selected.fatherId ? (byId.get(selected.fatherId) ?? null) : null}
             childrenCount={children.get(selected.id)?.length ?? 0}
             inbreeding={inbreedingCoefficient(selected.id, cats)}
+            mateAvg={mateAvgs.get(selected.id) ?? null}
             bondPartners={bondPartnersOf(selected, bonds)}
             nameTaken={(n) => nameTakenBy(n, selected.id)}
             onUpdate={(patch) => updateCat(selected.id, patch)}
