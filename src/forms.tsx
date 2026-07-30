@@ -12,7 +12,9 @@ import {
 import { mutationLabel } from './mutations';
 import { coiTier, formatCOI } from './genealogy';
 import { emptyKitten, type KittenDraft } from './store';
+import type { CategoryDef } from './roster';
 import {
+  CategorySelect,
   ClassSelect,
   OrientationCycle,
   OrientationToggle,
@@ -26,6 +28,7 @@ export function AddCatForm({
   onAdd,
   onCancel,
   nameTaken,
+  categories,
 }: {
   onAdd: (
     name: string,
@@ -33,9 +36,12 @@ export function AddCatForm({
     room: RoomId | null,
     cls: ClassKey | null,
     orientation: Orientation,
+    category: string | null,
   ) => void;
   onCancel: () => void;
   nameTaken: (name: string) => boolean;
+  /** roster categories — a cat from outside usually joins one right away */
+  categories: CategoryDef[];
 }) {
   const { t } = useI18n();
   const [name, setName] = useState('');
@@ -43,9 +49,10 @@ export function AddCatForm({
   const [ori, setOri] = useState<Orientation>('hetero');
   const [room, setRoom] = useState<RoomId | null>(null);
   const [cls, setCls] = useState<ClassKey | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
   const dup = name.trim() !== '' && nameTaken(name);
   const submit = () => {
-    if (name.trim() && !dup) onAdd(name, sex, room, cls, ori);
+    if (name.trim() && !dup) onAdd(name, sex, room, cls, ori, category);
   };
   return (
     <div className="panel">
@@ -67,6 +74,9 @@ export function AddCatForm({
       <OrientationToggle value={ori} onChange={setOri} />
       <RoomToggle value={room} onChange={setRoom} />
       <ClassSelect value={cls} onChange={setCls} />
+      {categories.length > 0 && (
+        <CategorySelect value={category} categories={categories} onChange={setCategory} />
+      )}
       <div className="row">
         <button className="accent" disabled={!name.trim() || dup} onClick={submit}>
           {t.add}
@@ -83,12 +93,15 @@ export function LitterPanel({
   coi,
   nameTaken,
   onCreate,
+  categories,
 }: {
   mother: Cat;
   father: Cat;
   coi: number;
   nameTaken: (name: string) => boolean;
   onCreate: (kitten: KittenDraft) => void;
+  /** roster categories — a kitten can be given its role right away */
+  categories: CategoryDef[];
 }) {
   const { t } = useI18n();
   const [draft, setDraft] = useState<KittenDraft>(emptyKitten());
@@ -162,6 +175,14 @@ export function LitterPanel({
         </>
       )}
       <StatsMatrix stats={draft.stats} onChange={(stats) => patch({ stats })} />
+      <RoomToggle value={draft.room} onChange={(room) => patch({ room })} />
+      {categories.length > 0 && (
+        <CategorySelect
+          value={draft.category}
+          categories={categories}
+          onChange={(category) => patch({ category })}
+        />
+      )}
       <div className="row">
         <button className="accent" disabled={!draft.name.trim() || dup} onClick={submit}>
           {t.create}

@@ -4,6 +4,7 @@ import { useCatsStore } from './store';
 import { TreeScreen } from './TreeScreen';
 import { OverviewScreen } from './OverviewScreen';
 import { BreedingScreen } from './BreedingScreen';
+import { RosterScreen } from './RosterScreen';
 import { RollCallScreen } from './RollCallScreen';
 import { StatsScreen } from './StatsScreen';
 import { LegacyScreen } from './LegacyScreen';
@@ -15,6 +16,7 @@ const SCREEN_KEY = 'mewgenics-screen';
 const NAV: { key: string; icon: string; label: keyof Dict }[] = [
   { key: 'cats', icon: '🐈', label: 'navCats' },
   { key: 'breeding', icon: '💕', label: 'navBreeding' },
+  { key: 'roster', icon: '⚖️', label: 'navRoster' },
   { key: 'rollcall', icon: '📋', label: 'navRollcall' },
   { key: 'stats', icon: '📊', label: 'navStats' },
   { key: 'legacy', icon: '🧬', label: 'navLegacy' },
@@ -107,6 +109,7 @@ function Shell() {
             onSourceConsumed={() => setBreedFocus(null)}
           />,
         )}
+        {fill('roster', <RosterScreen store={store} onOpenCat={openCat} />)}
         {fill('rollcall', <RollCallScreen store={store} />)}
         {fill('stats', <StatsScreen store={store} onOpenCat={openCat} />)}
         {fill(

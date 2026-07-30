@@ -5,10 +5,11 @@ No backend: everything runs in the browser, data lives in localStorage with
 JSON export/import.
 
 The app is organized into screens, switched with the tabs in the top bar:
-a cat browser, a breeding planner, a roll call, statistics, a legacy report
-(which bonded pairs keep each mutation in the house), the interactive
-family tree (actually a DAG — inbreeding is handled correctly, and the map
-lays itself out automatically) and settings.
+a cat browser, a breeding planner, a roster screen (per-room quotas and a
+scorecard that answers “a better cat arrived — who leaves?”), a roll call,
+statistics, a legacy report (which bonded pairs keep each mutation in the
+house), the interactive family tree (actually a DAG — inbreeding is handled
+correctly, and the map lays itself out automatically) and settings.
 
 The UI is in English by default; Русский, Deutsch, Français, Español,
 Português (BR), 简体中文, 日本語 and 한국어 can be selected on the ⚙️ Settings
@@ -69,9 +70,10 @@ Three columns, left to right:
    (extremely inbred). Sortable by COI (default), name or stat total.
 3. **The kitten form** — the pair's offspring COI, the kitten's name (Enter
    creates it), a sex toggle and a compact orientation-flag button, the
-   parents' mutations as one-click inherit chips, and the full stat matrix,
-   so a newborn can be recorded completely — stats included — the moment it
-   is born. The form resets after each kitten, ready for the next one.
+   parents' mutations as one-click inherit chips, the full stat matrix, and
+   the room and roster category the kitten goes to, so a newborn can be
+   recorded completely — stats and placement included — the moment it is
+   born. The form resets after each kitten, ready for the next one.
 
 Compatibility follows the game: same-sex pairs can never have a litter,
 straight cats breed only with opposite-sex straight cats, bi cats only with
@@ -88,6 +90,55 @@ dissolved from the same spot (💔); a single cat can also be removed from its
 bond in the cat editor. The exclusion is soft — bonded candidates stay
 clickable once revealed — and a cat whose partners all left home counts as
 free again automatically.
+
+### ⚖️ Roster — room quotas and who to replace
+
+Rooms hold more cats than you have room for, so each one gets a plan: a
+capacity, a set of **categories** (roles) with slot quotas, and a scorecard
+that ranks the cats of one role against each other. When a better cat shows
+up, the screen names the one it should replace.
+
+Categories are assigned **by hand** (in the cat editor, in the founder and
+kitten forms, or right on this screen) — the app never guesses a cat's role.
+The list of categories is house-wide, so a cat keeps its role when it moves
+rooms; the quotas, the scoring columns and the wanted-mutation list belong to
+the room. “✨ Set up the typical roster” creates the arrangement the screen
+was built around in one click: 14 slots for mutation carriers, 6 reserved for
+fresh blood from outside (with a ♀3/♂3 split — a “?” cat fills either), 4 for
+special cats.
+
+The table has **one column per criterion**, and the weight of a column is
+edited right in its header — change it and the ranking follows, so the
+scorecard can be tuned by watching who floats to the top. The “＋ Column”
+picker at the end of the header row adds a criterion, the ✕ next to a
+column's name drops it:
+
+- **Mutations** — the wanted mutations the cat carries, each worth the points
+  set for it in the room's wishlist.
+- **Only carrier** — how many of those nobody else in the room carries. Worth
+  a large bonus: a pure score would happily evict the last carrier of a rare
+  mutation over a few stat points.
+- **Sevens** and **Σ stats** — base-stat quality.
+- **Room COI** — the average offspring COI with the compatible partners *in
+  this room*, in percent (ancestors still come from the whole tree). Give it
+  a negative weight: it measures how related the cat already is to the room.
+- **Children** — how many the cat already has; negative weight where fresh
+  blood is the point.
+
+The weakest cat of each role is flagged in red, rows past the quota are
+marked, and the quota strip on top shows every role's fill (and the missing
+♀/♂ for the split ones). Clicking a cat opens **“why this score”** — every
+criterion with its raw value and its points — plus the warnings that no
+number should override: ⚠ the room's only carrier of a mutation, 💞 leaving
+would widow a bonded partner.
+
+**“＋ Candidate from outside the room”** is the whole point: pick a cat from
+another room, give it a role, and it appears in the table where it would land
+— scored as if it already lived there, so a mutation it duplicates stops
+counting as unique for the current holder. Then either move it in, or
+“⇄ Replace *X*”, which moves it in and marks the weakest of that role as
+having left home. Nothing happens automatically; the screen only ranks and
+suggests.
 
 ### 📋 Roll call — syncing with the game
 
@@ -158,7 +209,10 @@ right on the map.
 ### ⚙️ Settings
 
 The UI language, **Export/Import** (a JSON file — export regularly as a
-backup) and **Reset**. Data is autosaved to the browser's localStorage.
+backup) and **Reset**. Data is autosaved to the browser's localStorage. The
+export holds both the cats and the roster rules (`{ cats, roster }`); files
+exported before the roster screen — a bare array of cats — still import, and
+leave the current rules alone.
 
 ## Cat properties
 
@@ -169,6 +223,9 @@ backup) and **Reset**. Data is autosaved to the browser's localStorage.
 - **Room** (floor 1/2 left/right, attic) and **class** (the game's 12
   classes, Fighter to Monk) — optional attributes; the class color becomes
   the card background.
+- **Category** — the cat's role in its room (carrier, fresh blood, special,
+  or whatever you define), assigned by hand and used by the ⚖️ Roster screen.
+  It is also a filter in the browser.
 - **Base stats** (STR/DEX/CON and INT/SPD/CHA/LCK, grouped as in the game)
   are set in a click matrix: pick 3–7 in a stat's row or “–” for unset;
   clicking a value in the header row fills every stat with it at once.
@@ -197,12 +254,15 @@ identical by descent. Full siblings or parent×child → 25%, half siblings →
 - `src/genealogy.ts` — ancestors/descendants/kinship (pure functions).
 - `src/mutations.ts` + `src/data/mutations.json` — the game's mutation catalog
   (764 entries scraped from the wiki; raw scrape and notes in `data/`).
+- `src/roster.ts` — the roster rules: categories, per-room quotas and the
+  scoring (pure functions, no React).
 - `src/store.ts` — the cats store: state, localStorage persistence and data
   operations, shared by every screen.
 - `src/App.tsx` — the shell: the top tab bar and the screens
-  (`OverviewScreen`, `BreedingScreen`, `RollCallScreen`, `StatsScreen`,
-  `LegacyScreen`, `TreeScreen`, `SettingsScreen`); shared widgets live in `controls.tsx`,
-  `CatPanel.tsx`, `forms.tsx` and `MateList.tsx`.
+  (`OverviewScreen`, `BreedingScreen`, `RosterScreen`, `RollCallScreen`,
+  `StatsScreen`, `LegacyScreen`, `TreeScreen`, `SettingsScreen`); shared
+  widgets live in `controls.tsx`, `CatPanel.tsx`, `forms.tsx` and
+  `MateList.tsx`.
 - `src/layout.ts` — auto-layout of the map via ELK (layered): every parent
   pair gets a “union node” (the heart) from which edges go to the litter's
   kittens; the tree screen renders it with React Flow (@xyflow/react).

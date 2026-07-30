@@ -156,6 +156,9 @@ export interface Cat {
   /** cats sharing a bondId form an established pair/collective: they are hidden
    * from the default mate lists (null — not bonded); never affects the structure */
   bondId: string | null;
+  /** roster category id (see `roster.ts`) — the role the cat fills in its room;
+   * assigned by hand, null — unsorted; never affects the structure */
+  category: string | null;
   notes: string;
   /** base stats; a missing key means "not set" */
   stats: Partial<Record<StatKey, number>>;

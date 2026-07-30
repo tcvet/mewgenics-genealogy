@@ -8,7 +8,15 @@ import {
 } from './types';
 import { commonId, getCommon, getNamed, mutationLabel, NAMED_BY_SLOT, otherStat } from './mutations';
 import { coiTier, formatCOI, type MateAvg } from './genealogy';
-import { ClassSelect, OrientationToggle, RoomToggle, SexToggle, StatsMatrix } from './controls';
+import type { CategoryDef } from './roster';
+import {
+  CategorySelect,
+  ClassSelect,
+  OrientationToggle,
+  RoomToggle,
+  SexToggle,
+  StatsMatrix,
+} from './controls';
 import { useI18n } from './i18n';
 
 /** Sentinel select value for "a common +2/−1 mutation" (the exact id comes from the stat pickers). */
@@ -178,6 +186,8 @@ export function CatPanel(props: {
   mateAvg?: MateAvg | null;
   /** the other members of the cat's bond (empty — not bonded); gone ones included */
   bondPartners: Cat[];
+  /** roster categories; omitted — the screen does not show the category row */
+  categories?: CategoryDef[];
   pedigreeActive?: boolean;
   mateActive?: boolean;
   nameTaken: (name: string) => boolean;
@@ -223,6 +233,13 @@ export function CatPanel(props: {
       />
       <RoomToggle value={cat.room} onChange={(room) => props.onUpdate({ room })} />
       <ClassSelect value={cat.class} onChange={(cls) => props.onUpdate({ class: cls })} />
+      {props.categories && props.categories.length > 0 && (
+        <CategorySelect
+          value={cat.category}
+          categories={props.categories}
+          onChange={(category) => props.onUpdate({ category })}
+        />
+      )}
       <div className="meta">
         {t.parents}: {parentName(props.mother)} × {parentName(props.father)}
         <br />

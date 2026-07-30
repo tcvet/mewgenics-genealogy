@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   canMate,
+  ROOMS,
   STAT_KEYS,
   type Cat,
   type ClassKey,
@@ -10,9 +11,11 @@ import {
 } from './types';
 import { normMutations } from './mutations';
 import { childrenIndex, indexCats } from './genealogy';
+import { defaultRoster, normRoster, type RosterConfig } from './roster';
 
 export const STORAGE_KEY = 'mewgenics-genealogy';
 export const ROLLCALL_KEY = 'mewgenics-rollcall';
+export const ROSTER_KEY = 'mewgenics-roster';
 
 /** Name normalization for duplicate checks: trimmed, case-insensitive. */
 export const normName = (s: string) => s.trim().toLowerCase();
@@ -36,6 +39,7 @@ function normCat(c: Partial<Cat>): Cat {
     class: c.class ?? null,
     gone: c.gone ?? false,
     bondId: typeof c.bondId === 'string' ? c.bondId : null,
+    category: typeof c.category === 'string' ? c.category : null,
     notes: c.notes ?? '',
     stats: c.stats ?? {},
     mutations: normMutations(c.mutations),
@@ -52,6 +56,7 @@ export function makeCat(
   orientation: Orientation = 'hetero',
   mutations: Cat['mutations'] = {},
   stats: Cat['stats'] = {},
+  category: string | null = null,
 ): Cat {
   return {
     id: crypto.randomUUID(),
@@ -64,6 +69,7 @@ export function makeCat(
     class: cls,
     gone: false,
     bondId: null,
+    category,
     notes: '',
     stats,
     mutations,
@@ -92,6 +98,7 @@ function seedCats(): Cat[] {
       class: cls,
       gone: false,
       bondId: null,
+      category: null,
       notes: '',
       stats: {},
       mutations,
@@ -133,6 +140,17 @@ function loadRollcall(): Set<string> | null {
     // corrupted data — no session
   }
   return null;
+}
+
+/** Roster rules (rooms, quotas, scoring) — settings, kept apart from the cat data. */
+function loadRoster(): RosterConfig {
+  try {
+    const raw = localStorage.getItem(ROSTER_KEY);
+    if (raw !== null) return normRoster(JSON.parse(raw));
+  } catch {
+    // corrupted data — start unconfigured
+  }
+  return defaultRoster();
 }
 
 /**
@@ -205,6 +223,10 @@ export type KittenDraft = {
   orientation: Orientation;
   mutations: Cat['mutations'];
   stats: Cat['stats'];
+  /** roster category, pickable right in the litter form (null — unsorted) */
+  category: string | null;
+  /** the room the kitten goes to (null — not set) */
+  room: RoomId | null;
 };
 export const emptyKitten = (): KittenDraft => ({
   name: '',
@@ -212,6 +234,8 @@ export const emptyKitten = (): KittenDraft => ({
   orientation: 'hetero',
   mutations: {},
   stats: {},
+  category: null,
+  room: null,
 });
 
 /**
@@ -224,6 +248,8 @@ export function useCatsStore() {
   const [cats, setCats] = useState<Cat[]>(loadCats);
   // roll-call session: the ticked ids (null — no session); survives reloads
   const [rollChecked, setRollChecked] = useState<Set<string> | null>(loadRollcall);
+  // roster rules (categories + per-room quotas and scoring); settings, not cat data
+  const [roster, setRoster] = useState<RosterConfig>(loadRoster);
   // bumped when the whole dataset is replaced (import/reset); the shell keys
   // the screens on it, so every screen's local state (selections, modes,
   // filters) is dropped instead of pointing at dead cat ids
@@ -237,6 +263,10 @@ export function useCatsStore() {
     if (rollChecked) localStorage.setItem(ROLLCALL_KEY, JSON.stringify([...rollChecked]));
     else localStorage.removeItem(ROLLCALL_KEY);
   }, [rollChecked]);
+
+  useEffect(() => {
+    localStorage.setItem(ROSTER_KEY, JSON.stringify(roster));
+  }, [roster]);
 
   const byId = useMemo(() => indexCats(cats), [cats]);
   const children = useMemo(() => childrenIndex(cats), [cats]);
@@ -259,14 +289,26 @@ export function useCatsStore() {
     room: RoomId | null,
     cls: ClassKey | null,
     orientation: Orientation,
+    category: string | null = null,
   ) => {
-    setCats((cs) => [...cs, makeCat(name, sex, null, null, room, cls, orientation)]);
+    setCats((cs) => [...cs, makeCat(name, sex, null, null, room, cls, orientation, {}, {}, category)]);
   };
 
   const createKitten = (mother: Cat, father: Cat, k: KittenDraft) => {
     setCats((cs) => [
       ...cs,
-      makeCat(k.name, k.sex, mother.id, father.id, null, null, k.orientation, k.mutations, k.stats),
+      makeCat(
+        k.name,
+        k.sex,
+        mother.id,
+        father.id,
+        k.room,
+        null,
+        k.orientation,
+        k.mutations,
+        k.stats,
+        k.category,
+      ),
     ]);
   };
 
@@ -289,10 +331,31 @@ export function useCatsStore() {
     setCats((cs) => cs.map((c) => (c.bondId === bondId ? { ...c, bondId: null } : c)));
   };
 
+  /**
+   * Delete a roster category: drop it from every room's rules and unassign the
+   * cats holding it, so no cat is left pointing at a category that is gone.
+   */
+  const deleteCategory = (id: string) => {
+    setRoster((r) => {
+      const rooms: RosterConfig['rooms'] = {};
+      for (const room of ROOMS) {
+        const policy = r.rooms[room.id];
+        if (!policy) continue;
+        const { [id]: _dropped, ...rest } = policy.categories;
+        rooms[room.id] = { ...policy, categories: rest };
+      }
+      return { categories: r.categories.filter((c) => c.id !== id), rooms };
+    });
+    setCats((cs) => cs.map((c) => (c.category === id ? { ...c, category: null } : c)));
+  };
+
   /** Replace everything with imported data (already validated; fields get normalized here).
-   * Kills the roll-call session — its ticks reference the replaced cats' ids. */
-  const importCats = (data: Partial<Cat>[]) => {
+   * Kills the roll-call session — its ticks reference the replaced cats' ids.
+   * A file without roster rules (an export from before this screen) leaves the
+   * current rules alone rather than wiping a carefully tuned scorecard. */
+  const importCats = (data: Partial<Cat>[], rosterData?: unknown) => {
     setCats(data.map(normCat));
+    if (rosterData !== undefined) setRoster(normRoster(rosterData));
     setRollChecked(null);
     setEpoch((e) => e + 1);
   };
@@ -300,6 +363,7 @@ export function useCatsStore() {
   /** Wipe all data (the confirmation lives in the UI). */
   const resetAll = () => {
     setCats([]);
+    setRoster(defaultRoster());
     setRollChecked(null);
     setEpoch((e) => e + 1);
   };
@@ -342,6 +406,9 @@ export function useCatsStore() {
     bondCats,
     unbondCat,
     dissolveBond,
+    roster,
+    setRoster,
+    deleteCategory,
     importCats,
     resetAll,
     rollChecked,

@@ -659,6 +659,7 @@ function TreeView({
               father={pair.father}
               coi={pairCOI(pair.mother.id, pair.father.id, cats)}
               nameTaken={(n) => nameTakenBy(n)}
+              categories={store.roster.categories}
               onCreate={(kitten) => createKitten(pair.mother, pair.father, kitten)}
             />
           ) : selectedCats.length === 2 ? (

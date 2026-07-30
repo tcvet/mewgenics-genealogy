@@ -185,10 +185,15 @@ export type MateAvg = { avg: number; count: number };
  * high one means every litter of its will be inbred. Computed for all cats at
  * once (one shared memo), so the browser can sort the whole house by it.
  * A cat with no candidates at all maps to null.
+ *
+ * `pool` narrows the *partners* being averaged over (the roster screen passes
+ * "lives in this room" — relatedness to one room rather than to the house).
+ * Ancestors always come from the whole `cats` array, gone ones included, or
+ * the inbreeding itself would come out wrong.
  */
 export function avgMateCOIs(
   cats: Cat[],
-  opts?: { includeGone?: boolean },
+  opts?: { includeGone?: boolean; pool?: (cat: Cat) => boolean },
 ): Map<string, MateAvg | null> {
   const byId = indexCats(cats);
   const gen = generations(cats, byId);
@@ -201,6 +206,7 @@ export function avgMateCOIs(
       // the candidate filter of `mateCOIs`, kept in sync with it
       if (other.id === cat.id || (other.gone && !opts?.includeGone) || !canMate(cat, other))
         continue;
+      if (opts?.pool && !opts.pool(other)) continue;
       sum += kinshipRec(cat.id, other.id, byId, gen, memo);
       count++;
     }

@@ -98,6 +98,7 @@ export function OverviewScreen({
   const [sex, setSex] = useState<Sex | null>(null);
   const [cls, setCls] = useState<ClassKey | ''>('');
   const [room, setRoom] = useState<RoomId | ''>('');
+  const [category, setCategory] = useState<string | ''>('');
   const [sort, setSort] = useState<OvSort>('name');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -119,6 +120,7 @@ export function OverviewScreen({
         (!sex || c.sex === sex) &&
         (!cls || c.class === cls) &&
         (!room || c.room === room) &&
+        (!category || c.category === category) &&
         (!query || c.name.toLowerCase().includes(query)),
     );
     const kids = (c: Cat) => children.get(c.id)?.length ?? 0;
@@ -133,7 +135,7 @@ export function OverviewScreen({
       list.sort((a, b) => mateCOI(a) - mateCOI(b) || a.name.localeCompare(b.name));
     else list.reverse(); // recent: cats are stored in insertion order
     return list;
-  }, [cats, children, mateAvgs, q, atHome, sex, cls, room, sort]);
+  }, [cats, children, mateAvgs, q, atHome, sex, cls, room, category, sort]);
 
   const selected = selectedId ? (byId.get(selectedId) ?? null) : null;
 
@@ -215,6 +217,20 @@ export function OverviewScreen({
               </option>
             ))}
           </select>
+          {store.roster.categories.length > 0 && (
+            <select
+              className="class-select"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="">{t.rsAnyCategory}</option>
+              {store.roster.categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          )}
           <div className="row">
             {sorts.map((s) => (
               <button
@@ -261,6 +277,7 @@ export function OverviewScreen({
             inbreeding={inbreedingCoefficient(selected.id, cats)}
             mateAvg={mateAvgs.get(selected.id) ?? null}
             bondPartners={bondPartnersOf(selected, bonds)}
+            categories={store.roster.categories}
             nameTaken={(n) => nameTakenBy(n, selected.id)}
             onUpdate={(patch) => updateCat(selected.id, patch)}
             onDelete={() => deleteCat(selected)}

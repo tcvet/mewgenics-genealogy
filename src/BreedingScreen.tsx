@@ -184,8 +184,9 @@ export function BreedingScreen({
         {addingFounder ? (
           <AddCatForm
             nameTaken={(n) => nameTakenBy(n)}
-            onAdd={(name, sex, room, cls, orientation) => {
-              addFounder(name, sex, room, cls, orientation);
+            categories={store.roster.categories}
+            onAdd={(name, sex, room, cls, orientation, category) => {
+              addFounder(name, sex, room, cls, orientation, category);
               setAddingFounder(false);
             }}
             onCancel={() => setAddingFounder(false)}
@@ -213,6 +214,7 @@ export function BreedingScreen({
               father={pair.father}
               coi={pairCOI(pair.mother.id, pair.father.id, cats)}
               nameTaken={(n) => nameTakenBy(n)}
+              categories={store.roster.categories}
               onCreate={(kitten) => createKitten(pair.mother, pair.father, kitten)}
             />
           </>

@@ -14,6 +14,7 @@ import {
   type RoomId,
   type Sex,
 } from './types';
+import type { CategoryDef } from './roster';
 import { useI18n } from './i18n';
 
 /** Clickable stat grid (a row per stat, columns – and 3–7); shared by the
@@ -106,6 +107,43 @@ export function ClassSelect({
         {CLASSES.map((c) => (
           <option key={c.id} value={c.id}>
             {t.classes[c.id]}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+/** Roster category picker; the empty option means "unsorted" (or a filter's "any"). */
+export function CategorySelect({
+  value,
+  categories,
+  onChange,
+  emptyLabel,
+}: {
+  value: string | null;
+  categories: CategoryDef[];
+  onChange: (id: string | null) => void;
+  /** label of the empty option (defaults to "no category") */
+  emptyLabel?: string;
+}) {
+  const { t } = useI18n();
+  const current = categories.find((c) => c.id === value) ?? null;
+  return (
+    <div className="row">
+      <span
+        className={`class-dot ${current ? '' : 'none'}`}
+        style={current ? { background: current.color } : undefined}
+      />
+      <select
+        className="class-select"
+        value={value ?? ''}
+        onChange={(e) => onChange(e.target.value === '' ? null : e.target.value)}
+      >
+        <option value="">{emptyLabel ?? t.rsNoCategory}</option>
+        {categories.map((c) => (
+          <option key={c.id} value={c.id}>
+            {c.name}
           </option>
         ))}
       </select>

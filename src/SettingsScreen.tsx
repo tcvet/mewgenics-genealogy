@@ -6,11 +6,14 @@ import { LANGS, useI18n, type Lang } from './i18n';
 /** The settings screen: UI language and the data tools (export / import / reset). */
 export function SettingsScreen({ store }: { store: CatsStore }) {
   const { t, lang, setLang } = useI18n();
-  const { cats, importCats, resetAll } = store;
+  const { cats, roster, importCats, resetAll } = store;
   const fileRef = useRef<HTMLInputElement>(null);
 
   const exportJson = () => {
-    const blob = new Blob([JSON.stringify(cats, null, 2)], { type: 'application/json' });
+    // { cats, roster } since the roster screen; a bare array is the older shape
+    const blob = new Blob([JSON.stringify({ cats, roster }, null, 2)], {
+      type: 'application/json',
+    });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'mewgenics-genealogy.json';
@@ -24,7 +27,11 @@ export function SettingsScreen({ store }: { store: CatsStore }) {
     if (!file) return;
     file.text().then((text) => {
       try {
-        const data: unknown = JSON.parse(text);
+        const parsed: unknown = JSON.parse(text);
+        // exports made before the roster screen are a bare array of cats
+        const bare = Array.isArray(parsed);
+        const data = bare ? parsed : (parsed as { cats?: unknown })?.cats;
+        const rosterData = bare ? undefined : (parsed as { roster?: unknown })?.roster;
         if (
           !Array.isArray(data) ||
           !data.every(
@@ -40,7 +47,7 @@ export function SettingsScreen({ store }: { store: CatsStore }) {
         if (!confirm(t.importConfirm(cats.length, data.length))) {
           return;
         }
-        importCats(data as Partial<Cat>[]);
+        importCats(data as Partial<Cat>[], rosterData);
       } catch {
         alert(t.importError);
       }
