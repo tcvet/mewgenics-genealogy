@@ -33,20 +33,23 @@ export function decorateBonds(
 type MateSort = 'coi' | 'name' | 'stats';
 
 /** Sortable list of breeding candidates with their offspring COI; shared by
- * the tree's floating mate panel and the breeding screen's partner column.
+ * the tree's floating mate panel and the breeding screen's partner column
+ * (which prefers the name order — its list is the whole living house).
  * The source's own bond partners are pinned on top; cats bonded elsewhere
  * are hidden behind the "show bonded" toggle. */
 export function MateList({
   mates,
   pickedIds,
   onPick,
+  defaultSort = 'coi',
 }: {
   mates: MateEntry[];
   pickedIds: string[];
   onPick: (id: string) => void;
+  defaultSort?: MateSort;
 }) {
   const { t } = useI18n();
-  const [sort, setSort] = useState<MateSort>('coi');
+  const [sort, setSort] = useState<MateSort>(defaultSort);
   const [showTaken, setShowTaken] = useState(false);
   const sorted = useMemo(() => {
     const byName = (a: { cat: Cat }, b: { cat: Cat }) => a.cat.name.localeCompare(b.cat.name);

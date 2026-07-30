@@ -172,6 +172,7 @@ export function BreedingScreen({
                 mates={mates}
                 pickedIds={partnerId ? [partnerId] : []}
                 onPick={(id) => setPartnerId(id === partnerId ? null : id)}
+                defaultSort="name"
               />
             </div>
             <div className="meta br-legend">{t.mateLegend}</div>
