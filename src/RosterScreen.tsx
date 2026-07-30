@@ -630,7 +630,7 @@ export function RosterScreen({
               <div className="rs-rulerow">
                 <span>{t.rsWishAbilities}</span>
                 {policy.wishAbilities.length === 0 && (
-                  <span className="meta">{t.rsWishEmpty}</span>
+                  <span className="meta">{t.rsWishAbilitiesEmpty}</span>
                 )}
               </div>
               {policy.wishAbilities.map((w) => {
