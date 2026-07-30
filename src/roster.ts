@@ -22,11 +22,21 @@ import {
  */
 
 /** The scoring criteria; each is one column of the roster table. */
-export type CriterionKey = 'wish' | 'unique' | 'sevens' | 'statSum' | 'roomCOI' | 'children';
+export type CriterionKey =
+  | 'wish'
+  | 'unique'
+  | 'wishAbility'
+  | 'uniqueAbility'
+  | 'sevens'
+  | 'statSum'
+  | 'roomCOI'
+  | 'children';
 
 export const CRITERION_KEYS: CriterionKey[] = [
   'wish',
   'unique',
+  'wishAbility',
+  'uniqueAbility',
   'sevens',
   'statSum',
   'roomCOI',
@@ -37,6 +47,8 @@ export const CRITERION_KEYS: CriterionKey[] = [
 export const DEFAULT_WEIGHT: Record<CriterionKey, number> = {
   wish: 1,
   unique: 20,
+  wishAbility: 1,
+  uniqueAbility: 20,
   sevens: 5,
   statSum: 0.5,
   roomCOI: -0.5,
@@ -52,6 +64,12 @@ export interface Criterion {
 /** A mutation the room exists to keep, and what carrying it is worth. */
 export interface WishMutation {
   slot: MutationSlot;
+  id: string;
+  weight: number;
+}
+
+/** A skill the room exists to keep (catalog id, see `abilities.ts`). */
+export interface WishAbility {
   id: string;
   weight: number;
 }
@@ -76,6 +94,7 @@ export interface CategoryPolicy {
 
 export interface RoomPolicy {
   wishlist: WishMutation[];
+  wishAbilities: WishAbility[];
   /** category id → policy; a category absent here is simply not used in this room */
   categories: Record<string, CategoryPolicy>;
 }
@@ -105,6 +124,7 @@ export const defaultRoster = (): RosterConfig => ({ categories: [], rooms: {} })
 
 export const defaultRoomPolicy = (): RoomPolicy => ({
   wishlist: [],
+  wishAbilities: [],
   categories: {},
 });
 
@@ -164,11 +184,29 @@ export function wishCarriers(roomCats: Cat[], wishlist: WishMutation[]): Map<str
   return map;
 }
 
+/** Who in the room carries each wanted skill (ability id → carriers). */
+export function wishAbilityCarriers(
+  roomCats: Cat[],
+  wishAbilities: WishAbility[],
+): Map<string, Cat[]> {
+  const map = new Map<string, Cat[]>();
+  for (const w of wishAbilities) {
+    map.set(
+      w.id,
+      roomCats.filter((c) => c.abilities.includes(w.id)),
+    );
+  }
+  return map;
+}
+
 /** Everything a score needs beyond the cat itself; built once per room render. */
 export interface ScoreCtx {
   wishlist: WishMutation[];
   /** wanted mutation key → its carriers in the room (see `wishCarriers`) */
   carriers: Map<string, Cat[]>;
+  wishAbilities: WishAbility[];
+  /** wanted ability id → its carriers in the room (see `wishAbilityCarriers`) */
+  abilityCarriers: Map<string, Cat[]>;
   /** cat id → average COI with the room's compatible partners (0..1); null — no partners */
   roomCOI: Map<string, number | null>;
   /** cat id → how many children it has (house-wide, gone ones included) */
@@ -190,6 +228,10 @@ export interface CatScore {
   hits: WishMutation[];
   /** …of those, the ones nobody else in the room carries */
   sole: WishMutation[];
+  /** the wanted skills the cat carries */
+  abilityHits: WishAbility[];
+  /** …of those, the ones nobody else in the room carries */
+  abilitySole: WishAbility[];
 }
 
 const sevens = (cat: Cat) => STAT_KEYS.filter((k) => cat.stats[k] === 7).length;
@@ -207,12 +249,21 @@ export function scoreCat(cat: Cat, criteria: Criterion[], ctx: ScoreCtx): CatSco
     const carriers = ctx.carriers.get(wishKey(w)) ?? [];
     return carriers.length === 1 && carriers[0].id === cat.id;
   });
+  const abilityHits = ctx.wishAbilities.filter((w) => cat.abilities.includes(w.id));
+  const abilitySole = abilityHits.filter((w) => {
+    const carriers = ctx.abilityCarriers.get(w.id) ?? [];
+    return carriers.length === 1 && carriers[0].id === cat.id;
+  });
   const value = (key: CriterionKey): number => {
     switch (key) {
       case 'wish':
         return hits.reduce((sum, w) => sum + w.weight, 0);
       case 'unique':
         return sole.length;
+      case 'wishAbility':
+        return abilityHits.reduce((sum, w) => sum + w.weight, 0);
+      case 'uniqueAbility':
+        return abilitySole.length;
       case 'sevens':
         return sevens(cat);
       case 'statSum':
@@ -233,6 +284,8 @@ export function scoreCat(cat: Cat, criteria: Criterion[], ctx: ScoreCtx): CatSco
     parts,
     hits,
     sole,
+    abilityHits,
+    abilitySole,
   };
 }
 
@@ -298,6 +351,19 @@ function normQuota(cp: unknown): Quota {
   return num(raw.quota, 0);
 }
 
+function normWishAbilities(raw: unknown): WishAbility[] {
+  if (!Array.isArray(raw)) return [];
+  const out: WishAbility[] = [];
+  const seen = new Set<string>();
+  for (const w of raw) {
+    const id = (w as WishAbility)?.id;
+    if (typeof id !== 'string' || seen.has(id)) continue;
+    seen.add(id);
+    out.push({ id, weight: num((w as WishAbility).weight, 10) });
+  }
+  return out;
+}
+
 function normWishlist(raw: unknown): WishMutation[] {
   if (!Array.isArray(raw)) return [];
   const out: WishMutation[] = [];
@@ -345,6 +411,7 @@ export function normRoster(raw: unknown): RosterConfig {
     // an old save's `capacity` is dropped here: the room's size is the quotas summed
     rooms[id] = {
       wishlist: normWishlist(policy.wishlist),
+      wishAbilities: normWishAbilities(policy.wishAbilities),
       categories: cats,
     };
   }

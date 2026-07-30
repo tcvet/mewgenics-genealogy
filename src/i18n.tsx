@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import type { ClassKey, MutationSlot, RoomId, StatKey } from './types';
 import type { COITier } from './genealogy';
 import type { CriterionKey, SeedKey } from './roster';
+import type { AbilityType } from './abilities';
 
 /**
  * Dependency-free i18n: plain dictionary objects + React context.
@@ -127,6 +128,29 @@ const en = {
   mutationFromMother: 'from mother',
   mutationFromFather: 'from father',
   litterMutHint: 'Mutations of the parents — click to choose what the kitten inherits:',
+  // skills (ability names come from the game and are not translated)
+  abilitiesTitle: 'Skills',
+  abilityClasses: {
+    collarless: 'Collarless',
+    jester: 'Jester',
+  } satisfies Record<'collarless' | 'jester', string>,
+  abilityTypes: {
+    active: 'Active',
+    passive: 'Passive',
+    basic: 'Basic attack',
+  } satisfies Record<AbilityType, string>,
+  abilitySearchPlaceholder: '🔍 Find a skill',
+  abilityNoMatches: 'No skill with that name.',
+  litterAbilityHint: 'Skills of the parents — click to choose what the kitten inherits:',
+  abPanelTitle: 'Skills in the house',
+  abPanelEmpty: 'The cats in the house have no recorded skills.',
+  lgBySkill: 'By skill',
+  lgSkillEmpty: 'The house has no recorded skills.',
+  rsWishAbilities: '⚡ Wanted skills',
+  rsWishAbilitiesTip:
+    'The skills this room exists to keep. Carrying one earns its points in the “skills” column; the picker offers the skills recorded on the cats of the house.',
+  rsWishAbilityAdd: '＋ Skill',
+  rsWishAbilityNoOptions: 'No recorded skills in the house that are not already listed',
   edgesLabel: 'Edges:',
   edgeYellow: 'yellow',
   edgeToParents: 'to parents',
@@ -296,6 +320,8 @@ const en = {
   rsCrits: {
     wish: 'Mutations',
     unique: 'Only carrier',
+    wishAbility: 'Skills',
+    uniqueAbility: 'Only skill',
     sevens: 'Sevens',
     statSum: 'Σ stats',
     roomCOI: 'Room COI',
@@ -304,6 +330,8 @@ const en = {
   rsCritTips: {
     wish: 'The wanted mutations this cat carries, each worth the points set in the wishlist.',
     unique: 'Wanted mutations nobody else in the room carries — they leave with this cat.',
+    wishAbility: 'The wanted skills this cat carries, each worth the points set in the wishlist.',
+    uniqueAbility: 'Wanted skills nobody else in the room carries — they leave with this cat.',
     sevens: 'How many base stats sit at 7.',
     statSum: 'Total of the base stats.',
     roomCOI:
@@ -441,6 +469,28 @@ const ru: Dict = {
   mutationFromMother: 'от матери',
   mutationFromFather: 'от отца',
   litterMutHint: 'Мутации родителей — кликайте, чтобы выбрать, что унаследует котёнок:',
+  abilitiesTitle: 'Скиллы',
+  abilityClasses: {
+    collarless: 'Без ошейника',
+    jester: 'Шут',
+  },
+  abilityTypes: {
+    active: 'Активный',
+    passive: 'Пассивный',
+    basic: 'Базовая атака',
+  },
+  abilitySearchPlaceholder: '🔍 Найти скилл',
+  abilityNoMatches: 'Скилла с таким названием нет.',
+  litterAbilityHint: 'Скиллы родителей — кликайте, чтобы выбрать, что унаследует котёнок:',
+  abPanelTitle: 'Скиллы в доме',
+  abPanelEmpty: 'У котов в доме нет записанных скиллов.',
+  lgBySkill: 'По скиллам',
+  lgSkillEmpty: 'В доме нет записанных скиллов.',
+  rsWishAbilities: '⚡ Нужные скиллы',
+  rsWishAbilitiesTip:
+    'Скиллы, ради которых существует комната. Носитель получает их очки в колонке «скиллы»; на выбор — только скиллы, записанные у котов дома.',
+  rsWishAbilityAdd: '＋ Скилл',
+  rsWishAbilityNoOptions: 'В доме нет записанных скиллов, которых ещё нет в списке',
   edgesLabel: 'Рёбра:',
   edgeYellow: 'жёлтые',
   edgeToParents: 'к родителям',
@@ -597,6 +647,8 @@ const ru: Dict = {
   rsCrits: {
     wish: 'Мутации',
     unique: 'Единственный',
+    wishAbility: 'Скиллы',
+    uniqueAbility: 'Единств. скилл',
     sevens: 'Семёрки',
     statSum: 'Σ статов',
     roomCOI: 'COI комнаты',
@@ -605,6 +657,8 @@ const ru: Dict = {
   rsCritTips: {
     wish: 'Нужные мутации, которые несёт кот; у каждой свой вес из списка нужных мутаций.',
     unique: 'Нужные мутации, которых нет больше ни у кого в комнате — уйдут вместе с котом.',
+    wishAbility: 'Нужные скиллы, которые несёт кот; у каждого свой вес из списка нужных скиллов.',
+    uniqueAbility: 'Нужные скиллы, которых нет больше ни у кого в комнате — уйдут вместе с котом.',
     sevens: 'Сколько базовых статов равны 7.',
     statSum: 'Сумма базовых статов.',
     roomCOI:
@@ -740,6 +794,28 @@ const de: Dict = {
   mutationFromMother: 'von der Mutter',
   mutationFromFather: 'vom Vater',
   litterMutHint: 'Mutationen der Eltern — anklicken, um das Erbe des Kätzchens zu wählen:',
+  abilitiesTitle: 'Skills',
+  abilityClasses: {
+    collarless: 'Ohne Halsband',
+    jester: 'Narr',
+  },
+  abilityTypes: {
+    active: 'Aktiv',
+    passive: 'Passiv',
+    basic: 'Standardangriff',
+  },
+  abilitySearchPlaceholder: '🔍 Skill finden',
+  abilityNoMatches: 'Kein Skill mit diesem Namen.',
+  litterAbilityHint: 'Skills der Eltern — anklicken, um das Erbe des Kätzchens zu wählen:',
+  abPanelTitle: 'Skills im Haus',
+  abPanelEmpty: 'Die Katzen im Haus haben keine erfassten Skills.',
+  lgBySkill: 'Nach Skill',
+  lgSkillEmpty: 'Keine erfassten Skills im Haus.',
+  rsWishAbilities: '⚡ Gewünschte Skills',
+  rsWishAbilitiesTip:
+    'Die Skills, für die dieser Raum existiert. Wer einen trägt, bekommt dessen Punkte in der Spalte „Skills“; zur Auswahl stehen nur die bei den Hauskatzen erfassten Skills.',
+  rsWishAbilityAdd: '＋ Skill',
+  rsWishAbilityNoOptions: 'Im Haus gibt es keine erfassten Skills, die nicht schon gelistet sind',
   edgesLabel: 'Kanten:',
   edgeYellow: 'gelb',
   edgeToParents: 'zu den Eltern',
@@ -897,6 +973,8 @@ const de: Dict = {
   rsCrits: {
     wish: 'Mutationen',
     unique: 'Einzige Trägerin',
+    wishAbility: 'Skills',
+    uniqueAbility: 'Einziger Skill',
     sevens: 'Siebenen',
     statSum: 'Σ Werte',
     roomCOI: 'Raum-COI',
@@ -905,6 +983,8 @@ const de: Dict = {
   rsCritTips: {
     wish: 'Die gewünschten Mutationen dieser Katze; jede zählt mit ihren Punkten aus der Wunschliste.',
     unique: 'Gewünschte Mutationen, die sonst niemand im Raum trägt — sie gehen mit dieser Katze.',
+    wishAbility: 'Die gewünschten Skills dieser Katze; jeder zählt mit seinen Punkten aus der Wunschliste.',
+    uniqueAbility: 'Gewünschte Skills, die sonst niemand im Raum trägt — sie gehen mit dieser Katze.',
     sevens: 'Wie viele Grundwerte auf 7 stehen.',
     statSum: 'Summe der Grundwerte.',
     roomCOI:
@@ -1040,6 +1120,28 @@ const fr: Dict = {
   mutationFromMother: 'de la mère',
   mutationFromFather: 'du père',
   litterMutHint: 'Mutations des parents — cliquez pour choisir l’héritage du chaton :',
+  abilitiesTitle: 'Compétences',
+  abilityClasses: {
+    collarless: 'Sans collier',
+    jester: 'Bouffon',
+  },
+  abilityTypes: {
+    active: 'Active',
+    passive: 'Passive',
+    basic: 'Attaque de base',
+  },
+  abilitySearchPlaceholder: '🔍 Trouver une compétence',
+  abilityNoMatches: 'Aucune compétence de ce nom.',
+  litterAbilityHint: 'Compétences des parents — cliquez pour choisir l’héritage du chaton :',
+  abPanelTitle: 'Compétences dans la maison',
+  abPanelEmpty: 'Les chats de la maison n’ont aucune compétence enregistrée.',
+  lgBySkill: 'Par compétence',
+  lgSkillEmpty: 'Aucune compétence enregistrée dans la maison.',
+  rsWishAbilities: '⚡ Compétences voulues',
+  rsWishAbilitiesTip:
+    'Les compétences pour lesquelles cette pièce existe. En porter une rapporte ses points dans la colonne « compétences » ; le sélecteur ne propose que les compétences enregistrées sur les chats de la maison.',
+  rsWishAbilityAdd: '＋ Compétence',
+  rsWishAbilityNoOptions: 'Aucune compétence enregistrée dans la maison qui ne soit déjà listée',
   edgesLabel: 'Liens :',
   edgeYellow: 'jaunes',
   edgeToParents: 'vers les parents',
@@ -1198,6 +1300,8 @@ const fr: Dict = {
   rsCrits: {
     wish: 'Mutations',
     unique: 'Seul porteur',
+    wishAbility: 'Compétences',
+    uniqueAbility: 'Seule compét.',
     sevens: 'Sept',
     statSum: 'Σ stats',
     roomCOI: 'COI de la pièce',
@@ -1206,6 +1310,8 @@ const fr: Dict = {
   rsCritTips: {
     wish: 'Les mutations voulues que porte ce chat, chacune avec ses points de la liste.',
     unique: 'Mutations voulues que personne d’autre ne porte dans la pièce — elles partent avec lui.',
+    wishAbility: 'Les compétences voulues que porte ce chat, chacune avec ses points de la liste.',
+    uniqueAbility: 'Compétences voulues que personne d’autre ne porte dans la pièce — elles partent avec lui.',
     sevens: 'Combien de stats de base valent 7.',
     statSum: 'Somme des stats de base.',
     roomCOI:
@@ -1341,6 +1447,28 @@ const es: Dict = {
   mutationFromMother: 'de la madre',
   mutationFromFather: 'del padre',
   litterMutHint: 'Mutaciones de los padres — haz clic para elegir qué hereda el gatito:',
+  abilitiesTitle: 'Habilidades',
+  abilityClasses: {
+    collarless: 'Sin collar',
+    jester: 'Bufón',
+  },
+  abilityTypes: {
+    active: 'Activa',
+    passive: 'Pasiva',
+    basic: 'Ataque básico',
+  },
+  abilitySearchPlaceholder: '🔍 Buscar habilidad',
+  abilityNoMatches: 'No hay ninguna habilidad con ese nombre.',
+  litterAbilityHint: 'Habilidades de los padres — haz clic para elegir qué hereda el gatito:',
+  abPanelTitle: 'Habilidades en la casa',
+  abPanelEmpty: 'Los gatos de la casa no tienen habilidades registradas.',
+  lgBySkill: 'Por habilidad',
+  lgSkillEmpty: 'No hay habilidades registradas en la casa.',
+  rsWishAbilities: '⚡ Habilidades buscadas',
+  rsWishAbilitiesTip:
+    'Las habilidades por las que existe esta habitación. Portar una da sus puntos en la columna «habilidades»; el selector solo ofrece las habilidades registradas en los gatos de la casa.',
+  rsWishAbilityAdd: '＋ Habilidad',
+  rsWishAbilityNoOptions: 'No hay habilidades registradas en la casa que no estén ya en la lista',
   edgesLabel: 'Líneas:',
   edgeYellow: 'amarillas',
   edgeToParents: 'a los padres',
@@ -1498,6 +1626,8 @@ const es: Dict = {
   rsCrits: {
     wish: 'Mutaciones',
     unique: 'Único portador',
+    wishAbility: 'Habilidades',
+    uniqueAbility: 'Única habilidad',
     sevens: 'Sietes',
     statSum: 'Σ stats',
     roomCOI: 'COI de la sala',
@@ -1506,6 +1636,8 @@ const es: Dict = {
   rsCritTips: {
     wish: 'Las mutaciones buscadas que porta este gato, cada una con sus puntos de la lista.',
     unique: 'Mutaciones buscadas que nadie más porta en la habitación: se van con este gato.',
+    wishAbility: 'Las habilidades buscadas que porta este gato, cada una con sus puntos de la lista.',
+    uniqueAbility: 'Habilidades buscadas que nadie más porta en la habitación: se van con este gato.',
     sevens: 'Cuántas stats base están en 7.',
     statSum: 'Suma de las stats base.',
     roomCOI:
@@ -1641,6 +1773,28 @@ const pt: Dict = {
   mutationFromMother: 'da mãe',
   mutationFromFather: 'do pai',
   litterMutHint: 'Mutações dos pais — clique para escolher o que o filhote herda:',
+  abilitiesTitle: 'Habilidades',
+  abilityClasses: {
+    collarless: 'Sem coleira',
+    jester: 'Bobo da corte',
+  },
+  abilityTypes: {
+    active: 'Ativa',
+    passive: 'Passiva',
+    basic: 'Ataque básico',
+  },
+  abilitySearchPlaceholder: '🔍 Buscar habilidade',
+  abilityNoMatches: 'Nenhuma habilidade com esse nome.',
+  litterAbilityHint: 'Habilidades dos pais — clique para escolher o que o filhote herda:',
+  abPanelTitle: 'Habilidades na casa',
+  abPanelEmpty: 'Os gatos da casa não têm habilidades registradas.',
+  lgBySkill: 'Por habilidade',
+  lgSkillEmpty: 'Não há habilidades registradas na casa.',
+  rsWishAbilities: '⚡ Habilidades desejadas',
+  rsWishAbilitiesTip:
+    'As habilidades pelas quais este cômodo existe. Carregar uma rende os seus pontos na coluna “habilidades”; o seletor só oferece as habilidades registradas nos gatos da casa.',
+  rsWishAbilityAdd: '＋ Habilidade',
+  rsWishAbilityNoOptions: 'Não há habilidades registradas na casa que já não estejam na lista',
   edgesLabel: 'Linhas:',
   edgeYellow: 'amarelas',
   edgeToParents: 'para os pais',
@@ -1797,6 +1951,8 @@ const pt: Dict = {
   rsCrits: {
     wish: 'Mutações',
     unique: 'Único portador',
+    wishAbility: 'Habilidades',
+    uniqueAbility: 'Única habilidade',
     sevens: 'Setes',
     statSum: 'Σ stats',
     roomCOI: 'COI do cômodo',
@@ -1805,6 +1961,8 @@ const pt: Dict = {
   rsCritTips: {
     wish: 'As mutações desejadas que este gato carrega, cada uma com os seus pontos da lista.',
     unique: 'Mutações desejadas que mais ninguém no cômodo carrega — vão embora junto com ele.',
+    wishAbility: 'As habilidades desejadas que este gato carrega, cada uma com os seus pontos da lista.',
+    uniqueAbility: 'Habilidades desejadas que mais ninguém no cômodo carrega — vão embora junto com ele.',
     sevens: 'Quantos atributos base estão em 7.',
     statSum: 'Soma dos atributos base.',
     roomCOI:
@@ -1939,6 +2097,28 @@ const zh: Dict = {
   mutationFromMother: '来自母亲',
   mutationFromFather: '来自父亲',
   litterMutHint: '父母的变异——点击选择小猫继承哪些：',
+  abilitiesTitle: '技能',
+  abilityClasses: {
+    collarless: '无项圈',
+    jester: '小丑',
+  },
+  abilityTypes: {
+    active: '主动',
+    passive: '被动',
+    basic: '普通攻击',
+  },
+  abilitySearchPlaceholder: '🔍 查找技能',
+  abilityNoMatches: '没有这个名字的技能。',
+  litterAbilityHint: '父母的技能——点击选择小猫继承哪些：',
+  abPanelTitle: '家中的技能',
+  abPanelEmpty: '家中的猫没有已记录的技能。',
+  lgBySkill: '按技能',
+  lgSkillEmpty: '家中没有已记录的技能。',
+  rsWishAbilities: '⚡ 想要的技能',
+  rsWishAbilitiesTip:
+    '这个房间为之存在的技能。携带者会在“技能”列获得相应分数；选择器只提供家中猫已记录的技能。',
+  rsWishAbilityAdd: '＋ 技能',
+  rsWishAbilityNoOptions: '家里没有尚未列出的已记录技能',
   edgesLabel: '连线：',
   edgeYellow: '黄色',
   edgeToParents: '指向父母',
@@ -2089,6 +2269,8 @@ const zh: Dict = {
   rsCrits: {
     wish: '变异',
     unique: '唯一携带者',
+    wishAbility: '技能',
+    uniqueAbility: '唯一技能',
     sevens: '七点数',
     statSum: 'Σ 属性',
     roomCOI: '房间 COI',
@@ -2097,6 +2279,8 @@ const zh: Dict = {
   rsCritTips: {
     wish: '该猫携带的想要变异，每个按清单中的分值计算。',
     unique: '房间里没有第二只猫携带的想要变异——它们会随这只猫一起离开。',
+    wishAbility: '该猫携带的想要技能，每个按清单中的分值计算。',
+    uniqueAbility: '房间里没有第二只猫携带的想要技能——它们会随这只猫一起离开。',
     sevens: '有多少基础属性达到 7。',
     statSum: '基础属性之和。',
     roomCOI: '与本房间所有可配对伙伴的后代平均 COI（百分比）——该猫与房间的亲缘程度。权重请设为负数。',
@@ -2228,6 +2412,28 @@ const ja: Dict = {
   mutationFromMother: '母から',
   mutationFromFather: '父から',
   litterMutHint: '両親のミューテーション——クリックして子猫が受け継ぐものを選択：',
+  abilitiesTitle: 'スキル',
+  abilityClasses: {
+    collarless: '首輪なし',
+    jester: 'ジェスター',
+  },
+  abilityTypes: {
+    active: 'アクティブ',
+    passive: 'パッシブ',
+    basic: '基本攻撃',
+  },
+  abilitySearchPlaceholder: '🔍 スキルを探す',
+  abilityNoMatches: 'その名前のスキルはありません。',
+  litterAbilityHint: '両親のスキル——クリックして子猫が受け継ぐものを選択：',
+  abPanelTitle: '家にあるスキル',
+  abPanelEmpty: '家の猫に記録されたスキルはありません。',
+  lgBySkill: 'スキル別',
+  lgSkillEmpty: '家に記録されたスキルはありません。',
+  rsWishAbilities: '⚡ 欲しいスキル',
+  rsWishAbilitiesTip:
+    'この部屋が存在する目的のスキル。保有者は「スキル」列でその点数を得ます。選択肢は家の猫に記録されたスキルだけです。',
+  rsWishAbilityAdd: '＋ スキル',
+  rsWishAbilityNoOptions: '家にはまだリストにない記録済みスキルがありません',
   edgesLabel: '線：',
   edgeYellow: '黄色',
   edgeToParents: '両親へ',
@@ -2385,6 +2591,8 @@ const ja: Dict = {
   rsCrits: {
     wish: 'ミューテーション',
     unique: '唯一の保有',
+    wishAbility: 'スキル',
+    uniqueAbility: '唯一のスキル',
     sevens: '7 の数',
     statSum: 'Σ ステータス',
     roomCOI: '部屋の COI',
@@ -2393,6 +2601,8 @@ const ja: Dict = {
   rsCritTips: {
     wish: 'この猫が持つ欲しいミューテーション。各自リストで設定した点数で数えます。',
     unique: '部屋で他の誰も持っていない欲しいミューテーション——この猫と一緒に失われます。',
+    wishAbility: 'この猫が持つ欲しいスキル。各自リストで設定した点数で数えます。',
+    uniqueAbility: '部屋で他の誰も持っていない欲しいスキル——この猫と一緒に失われます。',
     sevens: '基礎ステータスのうち 7 の数。',
     statSum: '基礎ステータスの合計。',
     roomCOI:
@@ -2525,6 +2735,28 @@ const ko: Dict = {
   mutationFromMother: '어머니에게서',
   mutationFromFather: '아버지에게서',
   litterMutHint: '부모의 돌연변이 — 클릭해서 각 새끼가 물려받을 것을 고르세요:',
+  abilitiesTitle: '스킬',
+  abilityClasses: {
+    collarless: '목걸이 없음',
+    jester: '광대',
+  },
+  abilityTypes: {
+    active: '액티브',
+    passive: '패시브',
+    basic: '기본 공격',
+  },
+  abilitySearchPlaceholder: '🔍 스킬 찾기',
+  abilityNoMatches: '그 이름의 스킬이 없습니다.',
+  litterAbilityHint: '부모의 스킬 — 클릭해서 새끼가 물려받을 것을 고르세요:',
+  abPanelTitle: '집안의 스킬',
+  abPanelEmpty: '집에 있는 고양이에게 기록된 스킬이 없습니다.',
+  lgBySkill: '스킬별',
+  lgSkillEmpty: '집에 기록된 스킬이 없습니다.',
+  rsWishAbilities: '⚡ 원하는 스킬',
+  rsWishAbilitiesTip:
+    '이 방이 존재하는 이유가 되는 스킬. 보유한 고양이는 “스킬” 열에서 해당 점수를 받습니다. 선택지는 집 고양이에게 기록된 스킬뿐입니다.',
+  rsWishAbilityAdd: '＋ 스킬',
+  rsWishAbilityNoOptions: '집에 아직 목록에 없는 기록된 스킬이 없습니다',
   edgesLabel: '연결선:',
   edgeYellow: '노란색',
   edgeToParents: '부모 방향',
@@ -2680,6 +2912,8 @@ const ko: Dict = {
   rsCrits: {
     wish: '돌연변이',
     unique: '유일 보유',
+    wishAbility: '스킬',
+    uniqueAbility: '유일 스킬',
     sevens: '7의 수',
     statSum: 'Σ 능력치',
     roomCOI: '방 COI',
@@ -2688,6 +2922,8 @@ const ko: Dict = {
   rsCritTips: {
     wish: '이 고양이가 지닌 원하는 돌연변이. 각각 목록에 정한 점수만큼 계산됩니다.',
     unique: '방에서 아무도 지니지 않은 원하는 돌연변이 — 이 고양이와 함께 사라집니다.',
+    wishAbility: '이 고양이가 지닌 원하는 스킬. 각각 목록에 정한 점수만큼 계산됩니다.',
+    uniqueAbility: '방에서 아무도 지니지 않은 원하는 스킬 — 이 고양이와 함께 사라집니다.',
     sevens: '기본 능력치 중 7인 개수.',
     statSum: '기본 능력치의 합.',
     roomCOI:

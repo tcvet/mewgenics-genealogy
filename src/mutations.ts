@@ -173,7 +173,13 @@ export interface LegacyRow {
   gone: Cat[];
 }
 
-const STATUS_ORDER: Record<LegacyStatus, number> = { last: 0, loose: 1, secured: 2, lost: 3 };
+/** Problems-first ordering; shared with the ability legacy report. */
+export const LEGACY_STATUS_ORDER: Record<LegacyStatus, number> = {
+  last: 0,
+  loose: 1,
+  secured: 2,
+  lost: 3,
+};
 
 /**
  * The preservation report over the named mutations the house has seen
@@ -221,30 +227,34 @@ export function legacyReport(cats: Cat[], bonds: Map<string, Cat[]>): LegacyRow[
   }
   return rows.sort(
     (a, b) =>
-      STATUS_ORDER[a.status] - STATUS_ORDER[b.status] ||
+      LEGACY_STATUS_ORDER[a.status] - LEGACY_STATUS_ORDER[b.status] ||
       MUTATION_SLOTS.indexOf(a.slot) - MUTATION_SLOTS.indexOf(b.slot) ||
       mutationLabel(a.id).localeCompare(mutationLabel(b.id)),
   );
 }
 
 /** One bond of the by-bond view: what it keeps and where it is irreplaceable. */
-export interface LegacyBondRow {
+export interface LegacyBondRow<R extends { bonds: LegacyBond[] } = LegacyRow> {
   bondId: string;
   /** living members */
   members: Cat[];
   /** report rows this bond keeps */
-  holds: LegacyRow[];
+  holds: R[];
   /** the subset of `holds` where no other bond keeps the mutation */
-  sole: LegacyRow[];
+  sole: R[];
 }
 
 /**
- * The report pivoted to bonds: every active bond with the mutations it keeps.
+ * The report pivoted to bonds: every active bond with what it keeps. Generic
+ * over the row type, so mutation and ability rows can be pivoted together.
  * Bonds keeping nothing are listed too — a preservation pair that lost its
  * point is worth noticing. Sorted: irreplaceable bonds first, then by load.
  */
-export function legacyBondRows(rows: LegacyRow[], bonds: Map<string, Cat[]>): LegacyBondRow[] {
-  const out: LegacyBondRow[] = [];
+export function legacyBondRows<R extends { bonds: LegacyBond[] }>(
+  rows: R[],
+  bonds: Map<string, Cat[]>,
+): LegacyBondRow<R>[] {
+  const out: LegacyBondRow<R>[] = [];
   for (const [bondId, all] of bonds) {
     const members = all.filter((c) => !c.gone);
     if (members.length < 2) continue;

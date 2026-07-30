@@ -9,8 +9,18 @@ import {
   type LegacyRow,
   type LegacyStatus,
 } from './mutations';
+import {
+  abilityLegacyReport,
+  getAbility,
+  type AbilityLegacyRow,
+} from './abilities';
+import { abilityClassLabel, abilityTip } from './controls';
 import { type CatsStore } from './store';
 import { useI18n } from './i18n';
+
+/** The by-bond pivot mixes both kinds; a mutation row is the one with a slot. */
+type AnyRow = LegacyRow | AbilityLegacyRow;
+const isMut = (r: AnyRow): r is LegacyRow => 'slot' in r;
 
 /**
  * The legacy screen: which established bonds keep each named mutation in the
@@ -30,12 +40,18 @@ export function LegacyScreen({
 }) {
   const { t } = useI18n();
   const { cats, bonds } = store;
-  const [view, setView] = useState<'mut' | 'bond'>('mut');
+  const [view, setView] = useState<'mut' | 'ability' | 'bond'>('mut');
 
   const rows = useMemo(() => legacyReport(cats, bonds), [cats, bonds]);
-  const bondRows = useMemo(() => legacyBondRows(rows, bonds), [rows, bonds]);
+  const abilityRows = useMemo(() => abilityLegacyReport(cats, bonds), [cats, bonds]);
+  const bondRows = useMemo(
+    () => legacyBondRows<AnyRow>([...rows, ...abilityRows], bonds),
+    [rows, abilityRows, bonds],
+  );
   const live = rows.filter((r) => r.status !== 'lost');
   const lost = rows.filter((r) => r.status === 'lost');
+  const abLive = abilityRows.filter((r) => r.status !== 'lost');
+  const abLost = abilityRows.filter((r) => r.status === 'lost');
 
   const statusLabel: Record<LegacyStatus, string> = {
     secured: t.lgSecured,
@@ -61,6 +77,42 @@ export function LegacyScreen({
     </button>
   );
 
+  /** The keepers line works on the shared row shape — both kinds render alike. */
+  const keepers = (row: AnyRow) => (
+    <div className="lg-keepers">
+      {row.bonds.map((b) => (
+        <span
+          key={b.bondId}
+          className="lg-bond"
+          title={b.others.length === 0 ? t.lgFullBondTip : undefined}
+        >
+          💞 {b.carriers.map((c) => catBtn(c))}
+          {b.others.map((c) => catBtn(c, true))}
+          {b.others.length === 0 && <span className="lg-full">✓✓</span>}
+        </span>
+      ))}
+      {row.loose.length > 0 && (
+        <span className="lg-loose">
+          <span className="lg-label">
+            {row.bonds.length > 0 ? t.lgOutside : t.lgCarriers}
+          </span>
+          {row.loose.map((c) => catBtn(c))}
+        </span>
+      )}
+      {(row.status === 'loose' || row.status === 'last') && (
+        <button
+          type="button"
+          className="lg-pairup"
+          title={t.lgPairUpTip(row.loose[0].name)}
+          onClick={() => onOpenBreeding(row.loose[0].id)}
+        >
+          {t.lgPairUp}
+        </button>
+      )}
+      {row.status === 'lost' && row.gone.map((c) => catBtn(c))}
+    </div>
+  );
+
   const mutRow = (row: LegacyRow) => {
     const named = getNamed(row.id);
     return (
@@ -79,43 +131,27 @@ export function LegacyScreen({
           </span>
           <span className="lg-slot">{t.mutationSlots[row.slot]}</span>
         </div>
-        <div className="lg-keepers">
-          {row.bonds.map((b) => (
-            <span
-              key={b.bondId}
-              className="lg-bond"
-              title={b.others.length === 0 ? t.lgFullBondTip : undefined}
-            >
-              💞 {b.carriers.map((c) => catBtn(c))}
-              {b.others.map((c) => catBtn(c, true))}
-              {b.others.length === 0 && <span className="lg-full">✓✓</span>}
-            </span>
-          ))}
-          {row.loose.length > 0 && (
-            <span className="lg-loose">
-              <span className="lg-label">
-                {row.bonds.length > 0 ? t.lgOutside : t.lgCarriers}
-              </span>
-              {row.loose.map((c) => catBtn(c))}
-            </span>
-          )}
-          {(row.status === 'loose' || row.status === 'last') && (
-            <button
-              type="button"
-              className="lg-pairup"
-              title={t.lgPairUpTip(row.loose[0].name)}
-              onClick={() => onOpenBreeding(row.loose[0].id)}
-            >
-              {t.lgPairUp}
-            </button>
-          )}
-          {row.status === 'lost' && row.gone.map((c) => catBtn(c))}
-        </div>
+        {keepers(row)}
       </div>
     );
   };
 
-  const bondRow = (b: LegacyBondRow) => (
+  const abilityRow = (row: AbilityLegacyRow) => (
+    <div className="lg-row" key={`ab|${row.id}`}>
+      <div className="lg-line">
+        <span className={`lg-status ${row.status}`} title={statusTip[row.status]}>
+          {statusLabel[row.status]}
+        </span>
+        <span className="lg-mut" title={abilityTip(t, row.id)}>
+          ⚡ {getAbility(row.id)!.name}
+        </span>
+        <span className="lg-slot">{abilityClassLabel(t, getAbility(row.id)!.class)}</span>
+      </div>
+      {keepers(row)}
+    </div>
+  );
+
+  const bondRow = (b: LegacyBondRow<AnyRow>) => (
     <div className="lg-row" key={b.bondId}>
       <div className="lg-line">
         <span className="lg-bondhead">💞 {b.members.map((c) => catBtn(c))}</span>
@@ -126,21 +162,29 @@ export function LegacyScreen({
         ) : (
           <>
             <span className="lg-label">{t.lgKeeps}</span>
-            {b.holds.map((r) => (
-              <span
-                key={`${r.slot}|${r.id}`}
-                className="lg-mutchip"
-                title={getNamed(r.id)?.desc || undefined}
-              >
-                {mutationLabel(r.id)} <span className="lg-slot">{t.mutationSlots[r.slot]}</span>
-              </span>
-            ))}
+            {b.holds.map((r) =>
+              isMut(r) ? (
+                <span
+                  key={`${r.slot}|${r.id}`}
+                  className="lg-mutchip"
+                  title={getNamed(r.id)?.desc || undefined}
+                >
+                  {mutationLabel(r.id)} <span className="lg-slot">{t.mutationSlots[r.slot]}</span>
+                </span>
+              ) : (
+                <span key={`ab|${r.id}`} className="lg-mutchip" title={abilityTip(t, r.id)}>
+                  ⚡ {getAbility(r.id)!.name}
+                </span>
+              ),
+            )}
           </>
         )}
       </div>
       {b.sole.length > 0 && (
         <div className="lg-warn">
-          {t.lgSoleKeeper(b.sole.map((r) => mutationLabel(r.id)).join(', '))}
+          {t.lgSoleKeeper(
+            b.sole.map((r) => (isMut(r) ? mutationLabel(r.id) : getAbility(r.id)!.name)).join(', '),
+          )}
         </div>
       )}
     </div>
@@ -157,6 +201,13 @@ export function LegacyScreen({
             onClick={() => setView('mut')}
           >
             {t.lgByMut}
+          </button>
+          <button
+            type="button"
+            className={view === 'ability' ? 'on' : ''}
+            onClick={() => setView('ability')}
+          >
+            {t.lgBySkill}
           </button>
           <button
             type="button"
@@ -177,6 +228,17 @@ export function LegacyScreen({
               <>
                 <div className="lg-sep">{t.lgLostTitle}</div>
                 {lost.map(mutRow)}
+              </>
+            )}
+          </>
+        ) : view === 'ability' ? (
+          <>
+            {abLive.length === 0 && <div className="ov-empty">{t.lgSkillEmpty}</div>}
+            {abLive.map(abilityRow)}
+            {abLost.length > 0 && (
+              <>
+                <div className="lg-sep">{t.lgLostTitle}</div>
+                {abLost.map(abilityRow)}
               </>
             )}
           </>

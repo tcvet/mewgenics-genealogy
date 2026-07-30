@@ -10,6 +10,7 @@ import {
   type Sex,
 } from './types';
 import { normMutations } from './mutations';
+import { normAbilities } from './abilities';
 import { childrenIndex, indexCats } from './genealogy';
 import { defaultRoster, normRoster, type RosterConfig } from './roster';
 
@@ -43,6 +44,7 @@ function normCat(c: Partial<Cat>): Cat {
     notes: c.notes ?? '',
     stats: c.stats ?? {},
     mutations: normMutations(c.mutations),
+    abilities: normAbilities(c.abilities),
   };
 }
 
@@ -57,6 +59,7 @@ export function makeCat(
   mutations: Cat['mutations'] = {},
   stats: Cat['stats'] = {},
   category: string | null = null,
+  abilities: string[] = [],
 ): Cat {
   return {
     id: crypto.randomUUID(),
@@ -73,6 +76,7 @@ export function makeCat(
     notes: '',
     stats,
     mutations,
+    abilities,
   };
 }
 
@@ -86,6 +90,7 @@ function seedCats(): Cat[] {
     fatherId: string | null = null,
     cls: ClassKey | null = null,
     mutations: Cat['mutations'] = {},
+    abilities: string[] = [],
   ) => {
     const cat: Cat = {
       id: `seed-${cats.length}`,
@@ -102,15 +107,17 @@ function seedCats(): Cat[] {
       notes: '',
       stats: {},
       mutations,
+      abilities,
     };
     cats.push(cat);
     return cat.id;
   };
   // example mutations: Luna inherits one from each parent (body.301 Cactus Bod, eyes.301 Demon Eyes)
-  const misty = add('Misty', 'F', null, null, 'monk', { body: 'body.301' });
+  // and Misty's Purr skill along the way
+  const misty = add('Misty', 'F', null, null, 'monk', { body: 'body.301' }, ['purr']);
   const shadow = add('Shadow', 'M', null, null, 'necromancer', { eyes: 'eyes.301' });
   const tom = add('Tom', 'M', null, null, 'tank');
-  const luna = add('Luna', 'F', misty, shadow, 'mage', { body: 'body.301', eyes: 'eyes.301' });
+  const luna = add('Luna', 'F', misty, shadow, 'mage', { body: 'body.301', eyes: 'eyes.301' }, ['purr']);
   add('Ginger', 'M', misty, shadow, 'fighter');
   add('Toffee', 'F', luna, tom, 'thief');
   add('Cosmo', 'M', luna, tom, 'tinkerer');
@@ -222,6 +229,7 @@ export type KittenDraft = {
   sex: Sex;
   orientation: Orientation;
   mutations: Cat['mutations'];
+  abilities: string[];
   stats: Cat['stats'];
   /** roster category, pickable right in the litter form (null — unsorted) */
   category: string | null;
@@ -233,6 +241,7 @@ export const emptyKitten = (): KittenDraft => ({
   sex: 'F',
   orientation: 'hetero',
   mutations: {},
+  abilities: [],
   stats: {},
   category: null,
   room: null,
@@ -308,6 +317,7 @@ export function useCatsStore() {
         k.mutations,
         k.stats,
         k.category,
+        k.abilities,
       ),
     ]);
   };

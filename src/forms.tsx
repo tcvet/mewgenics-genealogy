@@ -10,10 +10,12 @@ import {
   type Sex,
 } from './types';
 import { mutationLabel } from './mutations';
+import { abilityLabel } from './abilities';
 import { coiTier, formatCOI } from './genealogy';
 import { emptyKitten, type KittenDraft } from './store';
 import type { CategoryDef } from './roster';
 import {
+  abilityTip,
   CategorySelect,
   ClassSelect,
   OrientationCycle,
@@ -129,6 +131,19 @@ export function LitterPanel({
     else next[slot] = id;
     patch({ mutations: next });
   };
+  // parents' skills the kitten can inherit; a shared one becomes a single ♀♂ chip
+  const heritableAbilities = [
+    ...new Set([...mother.abilities, ...father.abilities]),
+  ].map((id) => {
+    const fromM = mother.abilities.includes(id);
+    return { id, glyphs: fromM && father.abilities.includes(id) ? '♀♂' : fromM ? '♀' : '♂' };
+  });
+  const toggleAbility = (id: string) =>
+    patch({
+      abilities: draft.abilities.includes(id)
+        ? draft.abilities.filter((x) => x !== id)
+        : [...draft.abilities, id],
+    });
   return (
     <div className="panel">
       <h3>{t.litterTitle}</h3>
@@ -169,6 +184,24 @@ export function LitterPanel({
                 onClick={() => toggleMut(h.slot, h.id)}
               >
                 {h.glyphs} {mutationLabel(h.id)}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      {heritableAbilities.length > 0 && (
+        <>
+          <div className="meta">{t.litterAbilityHint}</div>
+          <div className="kitten-muts">
+            {heritableAbilities.map((h) => (
+              <button
+                key={h.id}
+                type="button"
+                className={`mut-inherit${draft.abilities.includes(h.id) ? ' on' : ''}`}
+                title={abilityTip(t, h.id)}
+                onClick={() => toggleAbility(h.id)}
+              >
+                {h.glyphs} ⚡ {abilityLabel(h.id)}
               </button>
             ))}
           </div>

@@ -7,8 +7,8 @@ JSON export/import.
 The app is organized into screens, switched with the tabs in the top bar:
 a cat browser, a breeding planner, a roster screen (per-room quotas and a
 scorecard that answers “a better cat arrived — who leaves?”), a roll call,
-statistics, a legacy report (which bonded pairs keep each mutation in the
-house), the interactive family tree (actually a DAG — inbreeding is handled
+statistics, a legacy report (which bonded pairs keep each mutation and skill
+in the house), the interactive family tree (actually a DAG — inbreeding is handled
 correctly, and the map lays itself out automatically) and settings.
 
 The UI is in English by default; Русский, Deutsch, Français, Español,
@@ -38,10 +38,11 @@ a column on the right.
   house first — that's who to breed next) or most recently added.
 - **Cards** speak the same visual language as the map: the class color fills
   the card, sex is a colored ♀/♂/? chip, non-straight cats carry a pride-flag
-  chip, and small chips show the stat total, the mutation count, the room and
-  a 💞 for cats in an established bond (hover it to see the partners).
+  chip, and small chips show the stat total, the mutation count, the skill
+  count, the room and a 💞 for cats in an established bond (hover a chip to
+  see the details).
 - **Click a card** to open the editor: name, sex, orientation, room, class,
-  base stats, mutations, notes, plus the cat's own F (inbreeding coefficient),
+  base stats, mutations, skills, notes, plus the cat's own F (inbreeding coefficient),
   its number of children and its parents — parent names are links, so you can
   walk up a pedigree with clicks. The panel also averages the COI over every
   compatible partner at home: a low average means fresh blood, a high one means
@@ -70,7 +71,7 @@ Three columns, left to right:
    (extremely inbred). Sortable by COI (default), name or stat total.
 3. **The kitten form** — the pair's offspring COI, the kitten's name (Enter
    creates it), a sex toggle and a compact orientation-flag button, the
-   parents' mutations as one-click inherit chips, the full stat matrix, and
+   parents' mutations and skills as one-click inherit chips, the full stat matrix, and
    the room and roster category the kitten goes to, so a newborn can be
    recorded completely — stats and placement included — the moment it is
    born. The form resets after each kitten, ready for the next one.
@@ -103,9 +104,11 @@ screen names the one it should replace.
 Categories are assigned **by hand** (in the cat editor, in the founder and
 kitten forms, or right on this screen) — the app never guesses a cat's role.
 The list of categories is house-wide, so a cat keeps its role when it moves
-rooms; the quotas, the scoring columns and the wanted-mutation list belong to
-the room. The wanted-mutation picker offers only the named mutations the
-house actually carries (with carrier counts), and each wanted row shows how
+rooms; the quotas, the scoring columns and the wanted-mutation and
+wanted-skill lists belong to the room. The wanted-mutation picker offers only
+the named mutations the house actually carries, the wanted-skill picker only
+the skills recorded on the cats of the house (both with carrier counts), and
+each wanted row shows how
 many cats *in this room* carry it — zero lights up red. “✨ Set up the
 typical roster” creates the arrangement the screen was built around in one
 click: 14 slots for mutation carriers, 6 reserved for fresh blood from
@@ -122,6 +125,8 @@ name drops it:
 - **Only carrier** — how many of those nobody else in the room carries. Worth
   a large bonus: a pure score would happily evict the last carrier of a rare
   mutation over a few stat points.
+- **Skills** and **Only skill** — the same pair of criteria over the room's
+  wanted-skill list.
 - **Sevens** and **Σ stats** — base-stat quality.
 - **Room COI** — the average offspring COI with the compatible partners *in
   this room*, in percent (ancestors still come from the whole tree). Give it
@@ -161,17 +166,18 @@ House statistics — how many cats are in the house, the breakdown into
 females, males and “?”-sex cats, how many have every base stat at 7, and the
 overall total in the tree — next to the **mutation inventory**: every
 mutation carried by the cats currently in the house, grouped by body part
-with carrier counts. Click a mutation to unfold its carriers (gone carriers
-are struck through, so you can trace where a line's mutation came from);
-click a carrier to open it in the browser.
+with carrier counts, and the **skill inventory**: every recorded skill,
+grouped by class the same way. Click a row to unfold its carriers (gone
+carriers are struck through, so you can trace where a line's mutation came
+from); click a carrier to open it in the browser.
 
-### 🧬 Legacy — mutation preservation
+### 🧬 Legacy — mutation and skill preservation
 
-If you keep bonded pairs specifically so that a mutation stays in the house,
-this screen replaces the spreadsheet: everything is derived from the cats'
-mutations and bonds, nothing to maintain by hand. A named mutation counts as
-**kept** while an active bond (two or more members still in the house) has a
-carrier — the pair can always breed the mutation back.
+If you keep bonded pairs specifically so that a mutation or a skill stays in
+the house, this screen replaces the spreadsheet: everything is derived from
+the cats' mutations, skills and bonds, nothing to maintain by hand. A trait
+counts as **kept** while an active bond (two or more members still in the
+house) has a carrier — the pair can always breed it back.
 
 - **By mutation** (default): every named mutation the house has seen, worst
   first, with a status pill — red “last carrier” (a single carrier and no
@@ -182,10 +188,11 @@ carrier — the pair can always breed the mutation back.
   with the carrier preselected. A grey “Lost” section at the bottom lists
   mutations that left the house entirely — carried only by cats that are
   gone.
-- **By bond**: the same report pivoted — every active bond with the mutations
-  it keeps, and a ⚠ “sole keeper” warning where no other bond has the
-  mutation (dissolve that pair and the mutation hangs by a thread). Bonds
-  that keep nothing are listed too.
+- **By skill**: the same report over the recorded skills.
+- **By bond**: the report pivoted — every active bond with the mutations and
+  skills it keeps, and a ⚠ “sole keeper” warning where no other bond has the
+  trait (dissolve that pair and it hangs by a thread). Bonds that keep
+  nothing are listed too.
 
 Common +2/−1 mutations are deliberately ignored here — they are day-to-day
 noise, not something to preserve. Cat names jump to the browser everywhere.
@@ -244,6 +251,13 @@ leave the current rules alone.
   picker. Arms and legs draw from the game's shared “Limbs” pool (only the
   “No left/right arm/leg” removals are side-specific). If the cat's parents
   have mutations, the matching slots show one-click “inherit from ♀/♂” chips.
+- **Skills** — the collapsible ⚡ section holds the skills worth tracking on
+  the cat: a free hand-curated list (no slots, record only what matters to
+  you), picked by name from the game's full ability catalog scraped from the
+  [wiki](https://mewgenics.wiki.gg/wiki/Abilities) — 1162 actives, passives
+  and basic attacks across all classes, searched as you type. The parents'
+  skills show up as one-click “inherit from ♀/♂” chips, here and in the
+  kitten form.
 
 ## Inbreeding coefficient (COI)
 
@@ -260,6 +274,9 @@ identical by descent. Full siblings or parent×child → 25%, half siblings →
 - `src/genealogy.ts` — ancestors/descendants/kinship (pure functions).
 - `src/mutations.ts` + `src/data/mutations.json` — the game's mutation catalog
   (764 entries scraped from the wiki; raw scrape and notes in `data/`).
+- `src/abilities.ts` + `src/data/abilities.json` — the game's ability catalog
+  (1162 entries scraped from the wiki; raw scrape in `data/`), the skill
+  inventory and the skill legacy report.
 - `src/roster.ts` — the roster rules: categories, per-room quotas and the
   scoring (pure functions, no React).
 - `src/store.ts` — the cats store: state, localStorage persistence and data

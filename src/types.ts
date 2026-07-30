@@ -164,4 +164,7 @@ export interface Cat {
   stats: Partial<Record<StatKey, number>>;
   /** mutation per body-part slot (game ids, see `mutations.ts`); a missing key means "no mutation" */
   mutations: Partial<Record<MutationSlot, string>>;
+  /** the skills worth tracking on this cat (catalog ids, see `abilities.ts`);
+   * a hand-curated list, no slot structure — order is insertion order */
+  abilities: string[];
 }

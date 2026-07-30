@@ -7,9 +7,12 @@ import {
   type StatKey,
 } from './types';
 import { commonId, getCommon, getNamed, mutationLabel, NAMED_BY_SLOT, otherStat } from './mutations';
+import { ABILITIES, abilityLabel } from './abilities';
 import { coiTier, formatCOI, type MateAvg } from './genealogy';
 import type { CategoryDef } from './roster';
 import {
+  abilityClassLabel,
+  abilityTip,
   CategorySelect,
   ClassSelect,
   OrientationToggle,
@@ -175,6 +178,119 @@ export function MutationEditor({
   );
 }
 
+/** Collapsible skill-list editor for the cat panel: the recorded skills with
+ * remove buttons, inherit-from-parent chips and a search over the catalog. */
+export function AbilityEditor({
+  abilities,
+  mother,
+  father,
+  onChange,
+}: {
+  abilities: string[];
+  mother: Cat | null;
+  father: Cat | null;
+  onChange: (next: string[]) => void;
+}) {
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState('');
+  const query = q.trim().toLowerCase();
+  const matches = query
+    ? ABILITIES.filter(
+        (a) => a.name.toLowerCase().includes(query) && !abilities.includes(a.id),
+      ).slice(0, 12)
+    : [];
+  const add = (id: string) => {
+    onChange([...abilities, id]);
+    setQ('');
+  };
+  // parents' skills the cat does not have yet; a shared one becomes a ♀♂ chip
+  const inheritIds = [
+    ...new Set([...(mother?.abilities ?? []), ...(father?.abilities ?? [])]),
+  ].filter((id) => !abilities.includes(id));
+  const inherit = inheritIds.map((id) => {
+    const fromM = mother?.abilities.includes(id);
+    return {
+      id,
+      glyphs: fromM && father?.abilities.includes(id) ? '♀♂' : fromM ? '♀' : '♂',
+      from: fromM ? mother! : father!,
+      label: fromM ? t.mutationFromMother : t.mutationFromFather,
+    };
+  });
+  return (
+    <div className="mut-editor">
+      <button type="button" className="mut-head" onClick={() => setOpen((o) => !o)}>
+        <span>
+          ⚡ {t.abilitiesTitle}
+          {abilities.length > 0 && ` (${abilities.length})`}
+        </span>
+        <span>{open ? '▾' : '▸'}</span>
+      </button>
+      {open && (
+        <>
+          {abilities.map((id) => (
+            <div className="row ab-row" key={id}>
+              <span className="ab-name" title={abilityTip(t, id)}>
+                {abilityLabel(id)}
+              </span>
+              <button
+                type="button"
+                className="small"
+                onClick={() => onChange(abilities.filter((x) => x !== id))}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          {inherit.length > 0 && (
+            <div className="row mut-inherit-row">
+              {inherit.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  className="mut-inherit"
+                  title={`${p.label}: ${p.from.name}`}
+                  onClick={() => add(p.id)}
+                >
+                  {p.glyphs} {abilityLabel(p.id)}
+                </button>
+              ))}
+            </div>
+          )}
+          <input
+            type="text"
+            placeholder={t.abilitySearchPlaceholder}
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && matches[0]) add(matches[0].id);
+              else if (e.key === 'Escape') setQ('');
+            }}
+          />
+          {matches.length > 0 && (
+            <div className="ab-suggest">
+              {matches.map((a) => (
+                <button
+                  key={a.id}
+                  type="button"
+                  className="mut-inherit"
+                  title={abilityTip(t, a.id)}
+                  onClick={() => add(a.id)}
+                >
+                  {a.name} <span className="ab-tag">{abilityClassLabel(t, a.class)}</span>
+                </button>
+              ))}
+            </div>
+          )}
+          {query !== '' && matches.length === 0 && (
+            <div className="meta">{t.abilityNoMatches}</div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 export function CatPanel(props: {
   cat: Cat;
   mother: Cat | null;
@@ -298,6 +414,12 @@ export function CatPanel(props: {
         mother={props.mother}
         father={props.father}
         onChange={(mutations) => props.onUpdate({ mutations })}
+      />
+      <AbilityEditor
+        abilities={cat.abilities}
+        mother={props.mother}
+        father={props.father}
+        onChange={(abilities) => props.onUpdate({ abilities })}
       />
       <textarea
         placeholder={t.notesPlaceholder}

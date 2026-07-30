@@ -15,7 +15,22 @@ import {
   type Sex,
 } from './types';
 import type { CategoryDef } from './roster';
-import { useI18n } from './i18n';
+import { getAbility, type AbilityClass } from './abilities';
+import { useI18n, type Dict } from './i18n';
+
+/** Label of an ability's class: the game classes + the two wiki-only pools. */
+export const abilityClassLabel = (t: Dict, c: AbilityClass): string =>
+  c === 'collarless' || c === 'jester' ? t.abilityClasses[c] : t.classes[c];
+
+/** Tooltip for an ability chip: class · type · cost, then the description. */
+export function abilityTip(t: Dict, id: string): string | undefined {
+  const a = getAbility(id);
+  if (!a) return undefined;
+  const head = [abilityClassLabel(t, a.class), t.abilityTypes[a.type], a.cost]
+    .filter(Boolean)
+    .join(' · ');
+  return a.desc ? `${head}\n${a.desc}` : head;
+}
 
 /** Clickable stat grid (a row per stat, columns – and 3–7); shared by the
  * cat editor and the kitten form. */

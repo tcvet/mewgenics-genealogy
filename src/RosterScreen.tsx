@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ROOMS, SEX_GLYPH, type Cat, type RoomId } from './types';
 import { avgMateCOIs } from './genealogy';
 import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
+import { getAbility, houseAbilities, type HouseAbility } from './abilities';
 import {
   CRITERION_KEYS,
   DEFAULT_WEIGHT,
@@ -13,6 +14,7 @@ import {
   roomSlots,
   scoreCat,
   SEED_PRESETS,
+  wishAbilityCarriers,
   wishCarriers,
   wishKey,
   type CategoryDef,
@@ -21,10 +23,11 @@ import {
   type CriterionKey,
   type RoomPolicy,
   type ScoreCtx,
+  type WishAbility,
   type WishMutation,
 } from './roster';
 import { activeBondPartners, normName, type CatsStore } from './store';
-import { CategorySelect, SearchBox } from './controls';
+import { abilityClassLabel, abilityTip, CategorySelect, SearchBox } from './controls';
 import { useI18n } from './i18n';
 
 const fmt = (n: number) => {
@@ -127,10 +130,12 @@ export function RosterScreen({
     () => ({
       wishlist: policy.wishlist,
       carriers: wishCarriers(pool, policy.wishlist),
+      wishAbilities: policy.wishAbilities,
+      abilityCarriers: wishAbilityCarriers(pool, policy.wishAbilities),
       roomCOI,
       childCount: new Map(cats.map((c) => [c.id, children.get(c.id)?.length ?? 0])),
     }),
-    [policy.wishlist, pool, roomCOI, cats, children],
+    [policy.wishlist, policy.wishAbilities, pool, roomCOI, cats, children],
   );
 
   const sections: Section[] = useMemo(
@@ -255,12 +260,19 @@ export function RosterScreen({
     });
 
   const setWish = (next: WishMutation[]) => patchRoom({ wishlist: next });
+  const setWishAbilities = (next: WishAbility[]) => patchRoom({ wishAbilities: next });
 
   // what the wishlist picker offers: named mutations the house actually carries
   const wishOptions = useMemo(() => {
     const taken = new Set(policy.wishlist.map(wishKey));
     return houseMutations(cats).filter((r) => getNamed(r.id) && !taken.has(wishKey(r)));
   }, [cats, policy.wishlist]);
+
+  // same for skills: only what is recorded on the cats of the house
+  const wishAbilityOptions = useMemo(() => {
+    const taken = new Set(policy.wishAbilities.map((w) => w.id));
+    return houseAbilities(cats).filter((r) => !taken.has(r.id));
+  }, [cats, policy.wishAbilities]);
 
   // ——— the candidate flow ———
 
@@ -514,9 +526,14 @@ export function RosterScreen({
         ) : (
           <div className="meta">{def ? t.rsNoRules : t.rsNoCategoryHint}</div>
         )}
-        {score && score.sole.length > 0 && (
+        {score && (score.sole.length > 0 || score.abilitySole.length > 0) && (
           <div className="rs-warn">
-            {t.rsSole(score.sole.map((w) => mutationLabel(w.id)).join(', '))}
+            {t.rsSole(
+              [
+                ...score.sole.map((w) => mutationLabel(w.id)),
+                ...score.abilitySole.map((w) => getAbility(w.id)?.name ?? w.id),
+              ].join(', '),
+            )}
           </div>
         )}
         {widowed.length > 0 && (
@@ -607,6 +624,54 @@ export function RosterScreen({
                 );
               })}
               <WishAdder options={wishOptions} onAdd={(w) => setWish([...policy.wishlist, w])} />
+            </div>
+
+            <div className="rs-wishlist" title={t.rsWishAbilitiesTip}>
+              <div className="rs-rulerow">
+                <span>{t.rsWishAbilities}</span>
+                {policy.wishAbilities.length === 0 && (
+                  <span className="meta">{t.rsWishEmpty}</span>
+                )}
+              </div>
+              {policy.wishAbilities.map((w) => {
+                const inRoom = ctx.abilityCarriers.get(w.id)?.length ?? 0;
+                return (
+                  <div key={w.id} className="rs-wishrow">
+                    <span className="rs-wishname" title={abilityTip(t, w.id)}>
+                      {getAbility(w.id)?.name ?? w.id}
+                    </span>
+                    <span className="meta">
+                      {getAbility(w.id) ? abilityClassLabel(t, getAbility(w.id)!.class) : ''}
+                    </span>
+                    <span className={`rs-wishcount${inRoom === 0 ? ' none' : ''}`}>
+                      {t.rsWishInRoom(inRoom)}
+                    </span>
+                    <NumInput
+                      className="rs-weight"
+                      title={t.rsWeightTip}
+                      value={w.weight}
+                      onChange={(weight) =>
+                        setWishAbilities(
+                          policy.wishAbilities.map((x) => (x === w ? { ...x, weight } : x)),
+                        )
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="rs-drop"
+                      onClick={() =>
+                        setWishAbilities(policy.wishAbilities.filter((x) => x !== w))
+                      }
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              })}
+              <AbilityWishAdder
+                options={wishAbilityOptions}
+                onAdd={(w) => setWishAbilities([...policy.wishAbilities, w])}
+              />
             </div>
 
             {roster.categories.map((def) => {
@@ -808,6 +873,55 @@ function WishAdder({
             {list.map((o) => (
               <option key={wishKey(o)} value={wishKey(o)}>
                 {mutationLabel(o.id)} · {o.living}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+/**
+ * One picker over the skills recorded on the cats of the house (grouped by
+ * ability class, with the house-wide carrier count) — not the whole catalog.
+ */
+function AbilityWishAdder({
+  options,
+  onAdd,
+}: {
+  options: HouseAbility[];
+  onAdd: (w: WishAbility) => void;
+}) {
+  const { t } = useI18n();
+  const byClass = new Map<string, HouseAbility[]>();
+  for (const o of options) {
+    const cls = getAbility(o.id)!.class;
+    const list = byClass.get(cls);
+    if (list) list.push(o);
+    else byClass.set(cls, [o]);
+  }
+  return (
+    <div className="rs-rulerow">
+      <select
+        className="class-select"
+        disabled={options.length === 0}
+        title={options.length === 0 ? t.rsWishAbilityNoOptions : undefined}
+        value=""
+        onChange={(e) => {
+          const picked = options.find((o) => o.id === e.target.value);
+          if (picked) onAdd({ id: picked.id, weight: 10 });
+        }}
+      >
+        <option value="">{t.rsWishAbilityAdd}</option>
+        {[...byClass.entries()].map(([cls, list]) => (
+          <optgroup
+            key={cls}
+            label={abilityClassLabel(t, getAbility(list[0].id)!.class)}
+          >
+            {list.map((o) => (
+              <option key={o.id} value={o.id}>
+                {getAbility(o.id)!.name} · {o.living}
               </option>
             ))}
           </optgroup>

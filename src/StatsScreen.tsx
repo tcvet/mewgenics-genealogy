@@ -1,6 +1,8 @@
 import { Fragment, useMemo, useState } from 'react';
 import { SEX_GLYPH, STAT_KEYS, type MutationSlot } from './types';
 import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
+import { getAbility, houseAbilities, type AbilityClass, type HouseAbility } from './abilities';
+import { abilityClassLabel, abilityTip } from './controls';
 import { type CatsStore } from './store';
 import { useI18n } from './i18n';
 
@@ -22,6 +24,7 @@ export function StatsScreen({
   const { t } = useI18n();
   const { cats } = store;
   const [focus, setFocus] = useState<MutFocus | null>(null);
+  const [abFocus, setAbFocus] = useState<string | null>(null);
 
   const s = useMemo(() => {
     const acc = { f: 0, m: 0, any: 0, home: 0, perfect: 0 };
@@ -55,6 +58,18 @@ export function StatsScreen({
     }
     return gs;
   }, [houseMuts]);
+
+  // same for skills, grouped by ability class (houseAbilities sorts by it)
+  const abGroups = useMemo(() => {
+    const gs: { cls: AbilityClass; rows: HouseAbility[] }[] = [];
+    for (const row of houseAbilities(cats)) {
+      const cls = getAbility(row.id)!.class;
+      const last = gs[gs.length - 1];
+      if (last && last.cls === cls) last.rows.push(row);
+      else gs.push({ cls, rows: [row] });
+    }
+    return gs;
+  }, [cats]);
 
   return (
     <div className="st-screen">
@@ -104,6 +119,49 @@ export function StatsScreen({
                           )}
                           {mutationLabel(row.id)}
                         </span>
+                        <span className="mut-count">×{row.living}</span>
+                      </button>
+                      {active && (
+                        <div className="mut-carriers">
+                          {row.carriers.map((c) => (
+                            <button
+                              key={c.id}
+                              type="button"
+                              className={`mut-inherit${c.gone ? ' gone' : ''}`}
+                              onClick={() => onOpenCat(c.id)}
+                            >
+                              {SEX_GLYPH[c.sex]} {c.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </Fragment>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="st-head">
+          <b>⚡ {t.abPanelTitle}</b>
+        </div>
+        {abGroups.length === 0 ? (
+          <div className="ov-empty">{t.abPanelEmpty}</div>
+        ) : (
+          <div className="st-groups">
+            {abGroups.map((g) => (
+              <div className="st-group" key={g.cls}>
+                <div className="mut-group">{abilityClassLabel(t, g.cls)}</div>
+                {g.rows.map((row) => {
+                  const active = abFocus === row.id;
+                  return (
+                    <Fragment key={row.id}>
+                      <button
+                        className={`mate-row${active ? ' picked' : ''}`}
+                        title={abilityTip(t, row.id)}
+                        onClick={() => setAbFocus(active ? null : row.id)}
+                      >
+                        <span className="mate-name">{getAbility(row.id)!.name}</span>
                         <span className="mut-count">×{row.living}</span>
                       </button>
                       {active && (

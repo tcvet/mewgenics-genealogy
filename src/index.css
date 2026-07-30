@@ -729,6 +729,40 @@ select.mut-select {
   margin: -4px 0 0 8px;
 }
 
+/* --- skill editor (cat panel) --- */
+
+/* one recorded skill: name + remove button */
+.ab-row {
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.ab-row .ab-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* search matches under the skill search field */
+.ab-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* dim class label inside a skill chip */
+.ab-tag {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.mut-inherit .ab-tag {
+  color: inherit;
+  opacity: 0.6;
+}
+
 textarea {
   resize: vertical;
   min-height: 64px;
@@ -1061,6 +1095,21 @@ input[type='text'].dup {
   position: absolute;
   bottom: -9px;
   left: 8px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 5px;
+  background: #3a3048;
+  border: 1px solid #574a68;
+  border-radius: 6px;
+  color: #ddd5e8;
+}
+
+/* skill count on the card's bottom edge, centered (the corners are taken) */
+.cat-node .ab-chip {
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 11px;
   line-height: 1;
   padding: 2px 5px;

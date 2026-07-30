@@ -12,6 +12,7 @@ import {
   type Sex,
 } from './types';
 import { avgMateCOIs, inbreedingCoefficient } from './genealogy';
+import { abilityLabel } from './abilities';
 import { activeBondPartners, bondPartnersOf, statSum, type CatsStore } from './store';
 import { CatPanel } from './CatPanel';
 import { useI18n } from './i18n';
@@ -62,6 +63,11 @@ function CatCard({
         </span>
       )}
       {mutCount > 0 && <span className="ov-chip">🧬{mutCount}</span>}
+      {cat.abilities.length > 0 && (
+        <span className="ov-chip" title={cat.abilities.map(abilityLabel).join('\n')}>
+          ⚡{cat.abilities.length}
+        </span>
+      )}
       {bondNames && (
         <span className="ov-chip" title={t.bondWith(bondNames)}>
           💞

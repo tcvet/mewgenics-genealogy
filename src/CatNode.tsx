@@ -2,6 +2,7 @@ import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { coiTier, formatCOI } from './genealogy';
 import { useI18n } from './i18n';
 import { mutationLabel } from './mutations';
+import { abilityLabel } from './abilities';
 import { CLASS_COLOR, MUTATION_SLOTS, ROOM_SHORT, SEX_GLYPH, textColorOn, type Cat } from './types';
 
 const SEX_CLASS: Record<Cat['sex'], string> = { F: 'female', M: 'male', '?': 'any' };
@@ -92,6 +93,12 @@ export function CatNode({ data }: NodeProps) {
           ).join('\n')}
         >
           🧬{mutCount}
+        </span>
+      )}
+      {/* skill count on the bottom edge; the corners belong to the other chips */}
+      {cat.abilities.length > 0 && (
+        <span className="ab-chip" title={cat.abilities.map(abilityLabel).join('\n')}>
+          ⚡{cat.abilities.length}
         </span>
       )}
       {d.mateMode && !d.mateSource && d.coi !== null && (
