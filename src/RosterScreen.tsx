@@ -1,21 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import {
-  MUTATION_SLOTS,
-  ROOMS,
-  SEX_GLYPH,
-  type Cat,
-  type MutationSlot,
-  type RoomId,
-} from './types';
+import { ROOMS, SEX_GLYPH, type Cat, type RoomId } from './types';
 import { avgMateCOIs } from './genealogy';
-import { mutationLabel, NAMED_BY_SLOT } from './mutations';
+import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
 import {
   CRITERION_KEYS,
   DEFAULT_WEIGHT,
   defaultCriteria,
   makeCategory,
   quotaFill,
+  quotaTotal,
   roomPolicy,
+  roomSlots,
   scoreCat,
   SEED_PRESETS,
   wishCarriers,
@@ -197,7 +192,7 @@ export function RosterScreen({
   const patchCategory = (id: string, patch: Partial<CategoryPolicy>) =>
     setRoster((r) => {
       const p = roomPolicy(r, room);
-      const cur = p.categories[id] ?? { quota: 0, sexQuota: null, criteria: [] };
+      const cur = p.categories[id] ?? { quota: 0, criteria: [] };
       return {
         ...r,
         rooms: {
@@ -211,8 +206,7 @@ export function RosterScreen({
     setRoster((r) => {
       const p = roomPolicy(r, room);
       const categories = { ...p.categories };
-      if (on)
-        categories[id] = { quota: 4, sexQuota: null, criteria: defaultCriteria(['statSum']) };
+      if (on) categories[id] = { quota: 4, criteria: defaultCriteria(['statSum']) };
       else delete categories[id];
       return { ...r, rooms: { ...r.rooms, [room]: { ...p, categories } } };
     });
@@ -230,7 +224,7 @@ export function RosterScreen({
             ...p,
             categories: {
               ...p.categories,
-              [def.id]: { quota: 4, sexQuota: null, criteria: defaultCriteria(['statSum']) },
+              [def.id]: { quota: 4, criteria: defaultCriteria(['statSum']) },
             },
           },
         },
@@ -254,35 +248,19 @@ export function RosterScreen({
         }
         categories[def.id] = {
           quota: preset.quota,
-          sexQuota: preset.sexQuota,
           criteria: defaultCriteria(preset.criteria),
         };
       }
       return { categories: defs, rooms: { ...r.rooms, [room]: { ...p, categories } } };
     });
 
-  const copyFrom = (src: RoomId) =>
-    setRoster((r) => {
-      const from = roomPolicy(r, src);
-      return {
-        ...r,
-        rooms: {
-          ...r.rooms,
-          [room]: {
-            capacity: from.capacity,
-            wishlist: from.wishlist.map((w) => ({ ...w })),
-            categories: Object.fromEntries(
-              Object.entries(from.categories).map(([id, cp]) => [
-                id,
-                { ...cp, sexQuota: cp.sexQuota ? { ...cp.sexQuota } : null, criteria: cp.criteria.map((c) => ({ ...c })) },
-              ]),
-            ),
-          },
-        },
-      };
-    });
-
   const setWish = (next: WishMutation[]) => patchRoom({ wishlist: next });
+
+  // what the wishlist picker offers: named mutations the house actually carries
+  const wishOptions = useMemo(() => {
+    const taken = new Set(policy.wishlist.map(wishKey));
+    return houseMutations(cats).filter((r) => getNamed(r.id) && !taken.has(wishKey(r)));
+  }, [cats, policy.wishlist]);
 
   // ——— the candidate flow ———
 
@@ -325,9 +303,14 @@ export function RosterScreen({
       >
         <span className="rs-dot" style={{ background: s.def.color }} />
         {s.def.name} {fill.total}/{fill.quota}
-        {fill.sexes && s.policy.sexQuota && (
+        {fill.sexes && (
           <span className="rs-sexq">
-            ♀{fill.sexes.F}/{s.policy.sexQuota.F} ♂{fill.sexes.M}/{s.policy.sexQuota.M}
+            <span className={fill.sexes.F > fill.sexes.slotsF ? 'over' : undefined}>
+              ♀{fill.sexes.F}/{fill.sexes.slotsF}
+            </span>{' '}
+            <span className={fill.sexes.M > fill.sexes.slotsM ? 'over' : undefined}>
+              ♂{fill.sexes.M}/{fill.sexes.slotsM}
+            </span>
             {fill.sexes.any > 0 && ` ?${fill.sexes.any}`}
           </span>
         )}
@@ -351,10 +334,11 @@ export function RosterScreen({
     const cols = s.policy.criteria;
     const worst = s.rows.length > 1 ? s.rows[s.rows.length - 1] : null;
     const unused = CRITERION_KEYS.filter((k) => !cols.some((c) => c.key === k));
-    // the trailing track carries the "add a column" picker; the data rows leave it
-    // empty so their grid stays identical to the header's and the numbers line up
+    // a scaled room COI reads as opaque points; show the raw percent alongside
+    const coiWeight = cols.find((c) => c.key === 'roomCOI')?.weight;
+    const rawCOI = coiWeight !== undefined && Math.abs(coiWeight) !== 1;
     const grid = {
-      gridTemplateColumns: `minmax(150px, 1fr) repeat(${cols.length + 1}, 5.2rem) 7rem`,
+      gridTemplateColumns: `minmax(150px, 1fr) repeat(${cols.length + 1}, 5.2rem)`,
     };
     return (
       <div className="rs-section" key={s.def.id}>
@@ -362,8 +346,31 @@ export function RosterScreen({
           <span className="rs-dot" style={{ background: s.def.color }} />
           <b>{s.def.name}</b>
           <span className="meta">
-            {s.rows.length}/{s.policy.quota}
+            {s.rows.length}/{quotaTotal(s.policy.quota)}
           </span>
+          {/* the picker never disappears once every criterion is used — a control
+              that vanishes reads as a glitch */}
+          <select
+            className="rs-addcol"
+            disabled={unused.length === 0}
+            title={unused.length === 0 ? t.rsAllColumns : t.rsAddColumn}
+            value=""
+            onChange={(e) => {
+              const key = e.target.value as CriterionKey;
+              // the placeholder must never turn into a criterion of its own
+              if (!CRITERION_KEYS.includes(key)) return;
+              patchCategory(s.def.id, {
+                criteria: [...cols, { key, weight: DEFAULT_WEIGHT[key] }],
+              });
+            }}
+          >
+            <option value="">＋ {t.rsColumn}</option>
+            {unused.map((k) => (
+              <option key={k} value={k}>
+                {t.rsCrits[k]}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="rs-table">
           <div className="rs-hrow" style={grid}>
@@ -397,29 +404,6 @@ export function RosterScreen({
               </span>
             ))}
             <span className="rs-col rs-total">{t.rsTotal}</span>
-            {/* sits with the columns it creates, never disappears: a control that
-                vanishes once every criterion is used reads as a glitch */}
-            <select
-              className="rs-addcol"
-              disabled={unused.length === 0}
-              title={unused.length === 0 ? t.rsAllColumns : t.rsAddColumn}
-              value=""
-              onChange={(e) => {
-                const key = e.target.value as CriterionKey;
-                // the placeholder must never turn into a criterion of its own
-                if (!CRITERION_KEYS.includes(key)) return;
-                patchCategory(s.def.id, {
-                  criteria: [...cols, { key, weight: DEFAULT_WEIGHT[key] }],
-                });
-              }}
-            >
-              <option value="">＋ {t.rsColumn}</option>
-              {unused.map((k) => (
-                <option key={k} value={k}>
-                  {t.rsCrits[k]}
-                </option>
-              ))}
-            </select>
           </div>
           {s.rows.map((c, i) => {
             const score = scores.get(c.id);
@@ -430,7 +414,7 @@ export function RosterScreen({
                 style={grid}
                 className={`rs-row${c.id === selectedId ? ' picked' : ''}${
                   c.id === candidateId ? ' cand' : ''
-                }${c === worst ? ' worst' : ''}${i >= s.policy.quota ? ' over' : ''}`}
+                }${c === worst ? ' worst' : ''}${i >= quotaTotal(s.policy.quota) ? ' over' : ''}`}
                 title={c === worst ? t.rsWorst : undefined}
                 onClick={() => setSelectedId(c.id === selectedId ? null : c.id)}
               >
@@ -438,10 +422,14 @@ export function RosterScreen({
                 {score?.parts.map((p) => (
                   <span key={p.key} className={`rs-num${p.points < 0 ? ' neg' : ''}`}>
                     {p.points === 0 ? '·' : signed(p.points)}
+                    {p.key === 'roomCOI' && rawCOI && p.points !== 0 && (
+                      <span className="rs-raw" title={t.rsCOIRawTip}>
+                        {fmt(p.value)}%
+                      </span>
+                    )}
                   </span>
                 ))}
                 <span className="rs-num rs-total">{fmt(score?.total ?? 0)}</span>
-                <span />
               </button>
             );
           })}
@@ -509,7 +497,10 @@ export function RosterScreen({
               {score.parts.map((p) => (
                 <div key={p.key} className="rs-part" title={t.rsCritTips[p.key]}>
                   <span>{t.rsCrits[p.key]}</span>
-                  <span className="meta">{fmt(p.value)}</span>
+                  <span className="meta">
+                    {fmt(p.value)}
+                    {p.key === 'roomCOI' && '%'}
+                  </span>
                   <span className={p.points < 0 ? 'neg' : ''}>{signed(p.points)}</span>
                 </div>
               ))}
@@ -546,7 +537,8 @@ export function RosterScreen({
   };
 
   const outsiders = cats.filter((c) => !c.gone && c.room !== room);
-  const capacityOver = residents.length > policy.capacity;
+  // the room's size is not stored anywhere — it is every role's slots summed
+  const slots = roomSlots(policy);
 
   return (
     <div className="rs-screen">
@@ -566,9 +558,14 @@ export function RosterScreen({
               </button>
             ))}
           </div>
-          <span className={`rs-cap${capacityOver ? ' over' : ''}`}>
-            {t.rsInRoom(residents.length, policy.capacity)}
-          </span>
+          {slots > 0 && (
+            <span
+              className={`rs-cap${residents.length > slots ? ' over' : ''}`}
+              title={t.rsInRoomTip}
+            >
+              {t.rsInRoom(residents.length, slots)}
+            </span>
+          )}
           <button type="button" className="small" onClick={() => setRulesOpen((o) => !o)}>
             {t.rsRules} {rulesOpen ? '▾' : '▸'}
           </button>
@@ -577,52 +574,39 @@ export function RosterScreen({
 
         {rulesOpen && (
           <div className="rs-rules">
-            <div className="rs-rulerow">
-              <label>
-                {t.rsCapacity}{' '}
-                <NumInput
-                  className="rs-weight"
-                  value={policy.capacity}
-                  onChange={(capacity) => patchRoom({ capacity })}
-                />
-              </label>
-              <select
-                className="class-select"
-                value=""
-                onChange={(e) => e.target.value && copyFrom(e.target.value as RoomId)}
-              >
-                <option value="">{t.rsCopyFrom}…</option>
-                {ROOMS.filter((r) => r.id !== room).map((r) => (
-                  <option key={r.id} value={r.id}>
-                    {r.short} {t.rooms[r.id]}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="rs-rulerow rs-wishlist" title={t.rsWishlistTip}>
-              <span>{t.rsWishlist}</span>
-              {policy.wishlist.length === 0 && <span className="meta">{t.rsWishEmpty}</span>}
-              {policy.wishlist.map((w) => (
-                <span key={wishKey(w)} className="rs-wish">
-                  <span title={t.mutationSlots[w.slot]}>{mutationLabel(w.id)}</span>
-                  <NumInput
-                    className="rs-weight"
-                    value={w.weight}
-                    onChange={(weight) =>
-                      setWish(policy.wishlist.map((x) => (x === w ? { ...x, weight } : x)))
-                    }
-                  />
-                  <button
-                    type="button"
-                    className="rs-drop"
-                    onClick={() => setWish(policy.wishlist.filter((x) => x !== w))}
-                  >
-                    ✕
-                  </button>
-                </span>
-              ))}
-              <WishAdder wishlist={policy.wishlist} onAdd={(w) => setWish([...policy.wishlist, w])} />
+            <div className="rs-wishlist" title={t.rsWishlistTip}>
+              <div className="rs-rulerow">
+                <span>{t.rsWishlist}</span>
+                {policy.wishlist.length === 0 && <span className="meta">{t.rsWishEmpty}</span>}
+              </div>
+              {policy.wishlist.map((w) => {
+                const inRoom = ctx.carriers.get(wishKey(w))?.length ?? 0;
+                return (
+                  <div key={wishKey(w)} className="rs-wishrow">
+                    <span className="rs-wishname">{mutationLabel(w.id)}</span>
+                    <span className="meta">{t.mutationSlots[w.slot]}</span>
+                    <span className={`rs-wishcount${inRoom === 0 ? ' none' : ''}`}>
+                      {t.rsWishInRoom(inRoom)}
+                    </span>
+                    <NumInput
+                      className="rs-weight"
+                      title={t.rsWeightTip}
+                      value={w.weight}
+                      onChange={(weight) =>
+                        setWish(policy.wishlist.map((x) => (x === w ? { ...x, weight } : x)))
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="rs-drop"
+                      onClick={() => setWish(policy.wishlist.filter((x) => x !== w))}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              })}
+              <WishAdder options={wishOptions} onAdd={(w) => setWish([...policy.wishlist, w])} />
             </div>
 
             {roster.categories.map((def) => {
@@ -650,8 +634,8 @@ export function RosterScreen({
                     />
                     {t.rsUseHere}
                   </label>
-                  {cp && (
-                    <>
+                  {cp &&
+                    (typeof cp.quota === 'number' ? (
                       <label>
                         {t.rsQuota}{' '}
                         <NumInput
@@ -660,45 +644,51 @@ export function RosterScreen({
                           onChange={(quota) => patchCategory(def.id, { quota })}
                         />
                       </label>
-                      <label className="rs-check" title={t.rsSexQuotaTip}>
-                        <input
-                          type="checkbox"
-                          checked={!!cp.sexQuota}
-                          onChange={(e) =>
-                            patchCategory(def.id, {
-                              sexQuota: e.target.checked
-                                ? { F: Math.floor(cp.quota / 2), M: Math.floor(cp.quota / 2) }
-                                : null,
-                            })
-                          }
-                        />
-                        {t.rsSexQuota}
-                      </label>
-                      {cp.sexQuota && (
-                        <>
-                          <label title={t.sexF}>
-                            ♀
-                            <NumInput
-                              className="rs-weight"
-                              value={cp.sexQuota.F}
-                              onChange={(F) =>
-                                patchCategory(def.id, { sexQuota: { ...cp.sexQuota!, F } })
-                              }
-                            />
-                          </label>
-                          <label title={t.sexM}>
-                            ♂
-                            <NumInput
-                              className="rs-weight"
-                              value={cp.sexQuota.M}
-                              onChange={(M) =>
-                                patchCategory(def.id, { sexQuota: { ...cp.sexQuota!, M } })
-                              }
-                            />
-                          </label>
-                        </>
-                      )}
-                    </>
+                    ) : (
+                      <>
+                        <label title={t.sexF}>
+                          {t.rsQuota} ♀
+                          <NumInput
+                            className="rs-weight"
+                            value={cp.quota.F}
+                            onChange={(F) =>
+                              patchCategory(def.id, {
+                                quota: { ...(cp.quota as { F: number; M: number }), F },
+                              })
+                            }
+                          />
+                        </label>
+                        <label title={t.sexM}>
+                          ♂
+                          <NumInput
+                            className="rs-weight"
+                            value={cp.quota.M}
+                            onChange={(M) =>
+                              patchCategory(def.id, {
+                                quota: { ...(cp.quota as { F: number; M: number }), M },
+                              })
+                            }
+                          />
+                        </label>
+                      </>
+                    ))}
+                  {cp && (
+                    <label className="rs-check" title={t.rsSexQuotaTip}>
+                      <input
+                        type="checkbox"
+                        checked={typeof cp.quota !== 'number'}
+                        onChange={(e) => {
+                          // the total survives the toggle both ways
+                          const total = quotaTotal(cp.quota);
+                          patchCategory(def.id, {
+                            quota: e.target.checked
+                              ? { F: Math.floor(total / 2), M: Math.ceil(total / 2) }
+                              : total,
+                          });
+                        }}
+                      />
+                      {t.rsSexQuota}
+                    </label>
                   )}
                   <button
                     type="button"
@@ -782,44 +772,48 @@ export function RosterScreen({
   );
 }
 
-/** Slot picker + the slot's named mutations, appending to the room's wishlist. */
+/**
+ * One picker over the named mutations the house actually carries (grouped by
+ * slot, with the house-wide carrier count) — not the game's whole catalog.
+ */
 function WishAdder({
-  wishlist,
+  options,
   onAdd,
 }: {
-  wishlist: WishMutation[];
+  options: HouseMutation[];
   onAdd: (w: WishMutation) => void;
 }) {
   const { t } = useI18n();
-  const [slot, setSlot] = useState<MutationSlot>('head');
-  const taken = new Set(wishlist.map(wishKey));
-  const options = NAMED_BY_SLOT[slot].filter((m) => !taken.has(`${slot}|${m.id}`));
+  const bySlot = new Map<HouseMutation['slot'], HouseMutation[]>();
+  for (const o of options) {
+    const list = bySlot.get(o.slot);
+    if (list) list.push(o);
+    else bySlot.set(o.slot, [o]);
+  }
   return (
-    <span className="rs-wishadd">
+    <div className="rs-rulerow">
       <select
         className="class-select"
-        value={slot}
-        onChange={(e) => setSlot(e.target.value as MutationSlot)}
-      >
-        {MUTATION_SLOTS.map((s) => (
-          <option key={s} value={s}>
-            {t.mutationSlots[s]}
-          </option>
-        ))}
-      </select>
-      <select
-        className="class-select"
+        disabled={options.length === 0}
+        title={options.length === 0 ? t.rsWishNoOptions : undefined}
         value=""
-        onChange={(e) => e.target.value && onAdd({ slot, id: e.target.value, weight: 10 })}
+        onChange={(e) => {
+          const picked = options.find((o) => wishKey(o) === e.target.value);
+          if (picked) onAdd({ slot: picked.slot, id: picked.id, weight: 10 });
+        }}
       >
         <option value="">{t.rsWishAdd}</option>
-        {options.map((m) => (
-          <option key={m.id} value={m.id}>
-            {m.title}
-          </option>
+        {[...bySlot.entries()].map(([slot, list]) => (
+          <optgroup key={slot} label={t.mutationSlots[slot]}>
+            {list.map((o) => (
+              <option key={wishKey(o)} value={wishKey(o)}>
+                {mutationLabel(o.id)} · {o.living}
+              </option>
+            ))}
+          </optgroup>
         ))}
       </select>
-    </span>
+    </div>
   );
 }
 

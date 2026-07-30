@@ -93,25 +93,29 @@ free again automatically.
 
 ### ⚖️ Roster — room quotas and who to replace
 
-Rooms hold more cats than you have room for, so each one gets a plan: a
-capacity, a set of **categories** (roles) with slot quotas, and a scorecard
-that ranks the cats of one role against each other. When a better cat shows
-up, the screen names the one it should replace.
+Rooms hold more cats than you have room for, so each one gets a plan: a set
+of **categories** (roles) with slot quotas — one plain number, or a ♀/♂
+split (a “?” cat fills either slot) — and a scorecard that ranks the cats of
+one role against each other. The room's size is simply the quotas summed;
+there is nothing separate to maintain. When a better cat shows up, the
+screen names the one it should replace.
 
 Categories are assigned **by hand** (in the cat editor, in the founder and
 kitten forms, or right on this screen) — the app never guesses a cat's role.
 The list of categories is house-wide, so a cat keeps its role when it moves
 rooms; the quotas, the scoring columns and the wanted-mutation list belong to
-the room. “✨ Set up the typical roster” creates the arrangement the screen
-was built around in one click: 14 slots for mutation carriers, 6 reserved for
-fresh blood from outside (with a ♀3/♂3 split — a “?” cat fills either), 4 for
-special cats.
+the room. The wanted-mutation picker offers only the named mutations the
+house actually carries (with carrier counts), and each wanted row shows how
+many cats *in this room* carry it — zero lights up red. “✨ Set up the
+typical roster” creates the arrangement the screen was built around in one
+click: 14 slots for mutation carriers, 6 reserved for fresh blood from
+outside (a ♀3/♂3 split), 4 for special cats.
 
 The table has **one column per criterion**, and the weight of a column is
 edited right in its header — change it and the ranking follows, so the
 scorecard can be tuned by watching who floats to the top. The “＋ Column”
-picker at the end of the header row adds a criterion, the ✕ next to a
-column's name drops it:
+picker in the section's header adds a criterion, the ✕ next to a column's
+name drops it:
 
 - **Mutations** — the wanted mutations the cat carries, each worth the points
   set for it in the room's wishlist.
@@ -122,6 +126,8 @@ column's name drops it:
 - **Room COI** — the average offspring COI with the compatible partners *in
   this room*, in percent (ancestors still come from the whole tree). Give it
   a negative weight: it measures how related the cat already is to the room.
+  When the weight is anything other than ±1, the raw percentage stays
+  visible, dimmed next to the points.
 - **Children** — how many the cat already has; negative weight where fresh
   blood is the point.
 

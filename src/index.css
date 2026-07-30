@@ -1744,7 +1744,7 @@ input[type='text'].dup {
   min-width: 200px;
 }
 
-/* how full the room is; turns red once it is over its own capacity */
+/* how full the room is; turns red once past the roles' slots summed */
 .rs-cap {
   padding: 3px 10px;
   border-radius: 999px;
@@ -1757,7 +1757,7 @@ input[type='text'].dup {
   color: #f0a49c;
 }
 
-/* --- the rules panel (capacity, wanted mutations, categories) --- */
+/* --- the rules panel (wanted mutations, categories) --- */
 
 .rs-rules {
   display: flex;
@@ -1804,20 +1804,45 @@ input.rs-weight {
   text-align: right;
 }
 
-/* one wanted mutation with its points */
-.rs-wish {
+/* the wanted-mutations block: one row per mutation, the picker below */
+.rs-wishlist {
   display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 4px 2px 8px;
-  background: var(--control-bg);
-  border: 1px solid var(--control-border);
-  border-radius: 999px;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 620px;
 }
 
-.rs-wishadd {
-  display: flex;
-  gap: 4px;
+.rs-wishrow {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) 6.5rem 7rem 4.2rem auto;
+  gap: 8px;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.rs-wishrow:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.rs-wishname {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rs-wishrow .meta,
+.rs-wishcount {
+  font-size: 12px;
+}
+
+.rs-wishcount {
+  color: var(--text-muted);
+}
+
+/* a wanted mutation nobody in the room carries — the room is failing its job */
+.rs-wishcount.none {
+  color: #f0a49c;
 }
 
 button.rs-drop {
@@ -1837,7 +1862,7 @@ button.rs-drop {
 }
 
 .rs-col:hover .rs-drop,
-.rs-wish:hover .rs-drop {
+.rs-wishrow:hover .rs-drop {
   opacity: 1;
 }
 
@@ -1880,6 +1905,11 @@ button.rs-drop:hover {
 .rs-flag {
   color: var(--text-muted);
   font-size: 12px;
+}
+
+/* one sex spilling over its share of a split quota */
+.rs-sexq .over {
+  color: #f0a49c;
 }
 
 .rs-dot {
@@ -1937,9 +1967,10 @@ button.rs-drop:hover {
   gap: 8px;
 }
 
-/* "add a column" picker; lives in the header row, with the columns it creates */
+/* "add a column" picker; lives in the section's header, above its table */
 select.rs-addcol {
-  width: 100%;
+  width: auto;
+  margin-left: auto;
   padding: 2px 6px;
   font-size: 12px;
   cursor: pointer;
@@ -2082,6 +2113,13 @@ button.rs-catbtn.picked {
 .rs-num.neg,
 .neg {
   color: #e08b8b;
+}
+
+/* the unscaled room COI, shown when the weight makes the points opaque */
+.rs-num .rs-raw {
+  margin-left: 4px;
+  font-size: 10px;
+  color: var(--text-muted);
 }
 
 .rs-pad {

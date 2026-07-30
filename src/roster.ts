@@ -63,20 +63,26 @@ export interface CategoryDef {
   color: string;
 }
 
+/** A category's slots: one plain number, or reserved by sex ('?' fills either). */
+export type Quota = number | { F: number; M: number };
+
+export const quotaTotal = (q: Quota): number => (typeof q === 'number' ? q : q.F + q.M);
+
 /** What one category is worth in one room. */
 export interface CategoryPolicy {
-  quota: number;
-  /** per-sex sub-quota ('?' fills either slot); null — one plain quota */
-  sexQuota: { F: number; M: number } | null;
+  quota: Quota;
   criteria: Criterion[];
 }
 
 export interface RoomPolicy {
-  capacity: number;
   wishlist: WishMutation[];
   /** category id → policy; a category absent here is simply not used in this room */
   categories: Record<string, CategoryPolicy>;
 }
+
+/** The room's planned size — no stored capacity, just every role's slots summed. */
+export const roomSlots = (policy: RoomPolicy): number =>
+  Object.values(policy.categories).reduce((sum, cp) => sum + quotaTotal(cp.quota), 0);
 
 export interface RosterConfig {
   categories: CategoryDef[];
@@ -95,12 +101,9 @@ export const CATEGORY_COLORS = [
   '#e58b8b',
 ];
 
-export const DEFAULT_CAPACITY = 24;
-
 export const defaultRoster = (): RosterConfig => ({ categories: [], rooms: {} });
 
 export const defaultRoomPolicy = (): RoomPolicy => ({
-  capacity: DEFAULT_CAPACITY,
   wishlist: [],
   categories: {},
 });
@@ -130,23 +133,20 @@ export type SeedKey = 'carriers' | 'outsiders' | 'special';
 
 export const SEED_PRESETS: {
   key: SeedKey;
-  quota: number;
-  sexQuota: { F: number; M: number } | null;
+  quota: Quota;
   criteria: CriterionKey[];
 }[] = [
   {
     key: 'carriers',
     quota: 14,
-    sexQuota: null,
     criteria: ['wish', 'unique', 'sevens', 'statSum', 'roomCOI'],
   },
   {
     key: 'outsiders',
-    quota: 6,
-    sexQuota: { F: 3, M: 3 },
+    quota: { F: 3, M: 3 },
     criteria: ['roomCOI', 'children', 'sevens'],
   },
-  { key: 'special', quota: 4, sexQuota: null, criteria: ['statSum', 'sevens'] },
+  { key: 'special', quota: 4, criteria: ['statSum', 'sevens'] },
 ];
 
 /** Key of one wanted mutation — the (slot, id) pair, as in the legacy report. */
@@ -239,8 +239,9 @@ export function scoreCat(cat: Cat, criteria: Criterion[], ctx: ScoreCtx): CatSco
 /** How full a category is; `any` counts the '?' cats, which fill either sex slot. */
 export interface QuotaFill {
   total: number;
+  /** total slots (a sexed quota summed) */
   quota: number;
-  sexes: { F: number; M: number; any: number } | null;
+  sexes: { F: number; M: number; any: number; slotsF: number; slotsM: number } | null;
   /** how many cats over the quota (0 — within it) */
   over: number;
   /** how many slots still free (0 — full or over) */
@@ -249,18 +250,23 @@ export interface QuotaFill {
 
 export function quotaFill(cats: Cat[], policy: CategoryPolicy): QuotaFill {
   const total = cats.length;
+  const q = policy.quota;
+  const slots = quotaTotal(q);
   return {
     total,
-    quota: policy.quota,
-    sexes: policy.sexQuota
-      ? {
-          F: cats.filter((c) => c.sex === 'F').length,
-          M: cats.filter((c) => c.sex === 'M').length,
-          any: cats.filter((c) => c.sex === '?').length,
-        }
-      : null,
-    over: Math.max(0, total - policy.quota),
-    free: Math.max(0, policy.quota - total),
+    quota: slots,
+    sexes:
+      typeof q === 'number'
+        ? null
+        : {
+            F: cats.filter((c) => c.sex === 'F').length,
+            M: cats.filter((c) => c.sex === 'M').length,
+            any: cats.filter((c) => c.sex === '?').length,
+            slotsF: q.F,
+            slotsM: q.M,
+          },
+    over: Math.max(0, total - slots),
+    free: Math.max(0, slots - total),
   };
 }
 
@@ -279,6 +285,17 @@ function normCriteria(raw: unknown): Criterion[] {
     out.push({ key, weight: num((c as Criterion).weight, DEFAULT_WEIGHT[key]) });
   }
   return out;
+}
+
+/** number | {F,M}; migrates the old `{quota, sexQuota}` pair (the split wins). */
+function normQuota(cp: unknown): Quota {
+  const raw = cp as { quota?: unknown; sexQuota?: unknown };
+  const sq = raw.sexQuota ?? (typeof raw.quota === 'object' ? raw.quota : null);
+  if (sq && typeof sq === 'object') {
+    const { F, M } = sq as { F?: unknown; M?: unknown };
+    return { F: num(F, 0), M: num(M, 0) };
+  }
+  return num(raw.quota, 0);
 }
 
 function normWishlist(raw: unknown): WishMutation[] {
@@ -320,15 +337,13 @@ export function normRoster(raw: unknown): RosterConfig {
     for (const [catId, cp] of Object.entries(policy.categories ?? {})) {
       // a policy left over from a deleted category would render a ghost section
       if (!known.has(catId) || !cp) continue;
-      const sq = cp.sexQuota;
       cats[catId] = {
-        quota: num(cp.quota, 0),
-        sexQuota: sq ? { F: num(sq.F, 0), M: num(sq.M, 0) } : null,
+        quota: normQuota(cp),
         criteria: normCriteria(cp.criteria),
       };
     }
+    // an old save's `capacity` is dropped here: the room's size is the quotas summed
     rooms[id] = {
-      capacity: num(policy.capacity, DEFAULT_CAPACITY),
       wishlist: normWishlist(policy.wishlist),
       categories: cats,
     };
