@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ROOMS, SEX_GLYPH, type Cat, type RoomId } from './types';
+import { MUTATION_SLOTS, ROOMS, SEX_GLYPH, type Cat, type RoomId } from './types';
 import { avgMateCOIs } from './genealogy';
 import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
-import { getAbility, houseAbilities, type HouseAbility } from './abilities';
+import { abilityLabel, getAbility, houseAbilities, type HouseAbility } from './abilities';
 import {
   CRITERION_KEYS,
   DEFAULT_WEIGHT,
@@ -27,7 +27,7 @@ import {
   type WishMutation,
 } from './roster';
 import { activeBondPartners, normName, type CatsStore } from './store';
-import { abilityClassLabel, abilityTip, CategorySelect, SearchBox } from './controls';
+import { abilityClassLabel, abilityTip, CategorySelect, RoomToggle, SearchBox } from './controls';
 import { useI18n } from './i18n';
 
 const fmt = (n: number) => {
@@ -492,11 +492,30 @@ export function RosterScreen({
     const score = scores.get(selected.id);
     const def = roster.categories.find((c) => c.id === roleOf(selected)) ?? null;
     const widowed = activeBondPartners(selected, bonds).filter((p) => p.id !== selected.id);
+    const mutSlots = MUTATION_SLOTS.filter((s) => selected.mutations[s]);
     return (
       <div className="panel">
         <div className="row">
           {catCell(selected)}
         </div>
+        <RoomToggle
+          value={selected.room}
+          onChange={(next) => {
+            if (next === selected.room) return;
+            if (selected.id === candidateId) {
+              // into this room = the same as "move in" (keeps the pending role);
+              // anywhere else ends the what-if — the cat really moved
+              if (next === room) {
+                moveIn();
+                return;
+              }
+              clearCandidate();
+            }
+            updateCat(selected.id, { room: next });
+            // a cat that left this room is gone from the tables — drop the selection
+            if (next !== room) setSelectedId(null);
+          }}
+        />
         <CategorySelect
           value={selected.category}
           categories={roster.categories}
@@ -538,6 +557,40 @@ export function RosterScreen({
         )}
         {widowed.length > 0 && (
           <div className="rs-warn">{t.rsBondWarn(widowed.map((p) => p.name).join(', '))}</div>
+        )}
+        {mutSlots.length > 0 && (
+          <>
+            <div className="meta">
+              🧬 {t.mutationsTitle} ({mutSlots.length})
+            </div>
+            <div className="rs-parts">
+              {mutSlots.map((slot) => (
+                <div key={slot} className="rs-part">
+                  <span>{mutationLabel(selected.mutations[slot]!)}</span>
+                  <span className="meta">{t.mutationSlots[slot]}</span>
+                  <span />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {selected.abilities.length > 0 && (
+          <>
+            <div className="meta">
+              ⚡ {t.abilitiesTitle} ({selected.abilities.length})
+            </div>
+            <div className="rs-parts">
+              {selected.abilities.map((id) => (
+                <div key={id} className="rs-part">
+                  <span title={abilityTip(t, id)}>{abilityLabel(id)}</span>
+                  <span className="meta">
+                    {getAbility(id) ? abilityClassLabel(t, getAbility(id)!.class) : ''}
+                  </span>
+                  <span />
+                </div>
+              ))}
+            </div>
+          </>
         )}
         <button onClick={() => onOpenCat(selected.id)}>🐈 {t.navCats}</button>
         <button
