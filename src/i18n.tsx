@@ -305,6 +305,8 @@ const en = {
   rsSexQuota: '♀♂ split',
   rsSexQuotaTip: 'Reserve the slots by sex; a “?” cat fills either one.',
   rsUseHere: 'Used in this room',
+  rsMoveUp: 'Move up',
+  rsMoveDown: 'Move down',
   rsDeleteCategory: 'Delete everywhere',
   rsDeleteCategoryConfirm: (name: string) =>
     `Delete the category “${name}”? It disappears from every room and its cats become unsorted.`,
@@ -633,6 +635,8 @@ const ru: Dict = {
   rsSexQuota: '♀♂ по полу',
   rsSexQuotaTip: 'Забронировать места по полу; кот с полом «?» подходит под любое.',
   rsUseHere: 'Используется в этой комнате',
+  rsMoveUp: 'Выше',
+  rsMoveDown: 'Ниже',
   rsDeleteCategory: 'Удалить везде',
   rsDeleteCategoryConfirm: (name) =>
     `Удалить категорию «${name}»? Она исчезнет из всех комнат, а её коты останутся без категории.`,
@@ -960,6 +964,8 @@ const de: Dict = {
   rsSexQuota: '♀♂ nach Geschlecht',
   rsSexQuotaTip: 'Plätze nach Geschlecht reservieren; eine „?“-Katze passt auf jeden.',
   rsUseHere: 'In diesem Raum verwendet',
+  rsMoveUp: 'Nach oben',
+  rsMoveDown: 'Nach unten',
   rsDeleteCategory: 'Überall löschen',
   rsDeleteCategoryConfirm: (name) =>
     `Kategorie „${name}“ löschen? Sie verschwindet aus allen Räumen, ihre Katzen bleiben ohne Kategorie.`,
@@ -1288,6 +1294,8 @@ const fr: Dict = {
   rsSexQuota: '♀♂ par sexe',
   rsSexQuotaTip: 'Réserver les places par sexe ; un chat « ? » convient à n’importe laquelle.',
   rsUseHere: 'Utilisée dans cette pièce',
+  rsMoveUp: 'Monter',
+  rsMoveDown: 'Descendre',
   rsDeleteCategory: 'Supprimer partout',
   rsDeleteCategoryConfirm: (name) =>
     `Supprimer la catégorie « ${name} » ? Elle disparaît de toutes les pièces et ses chats restent sans catégorie.`,
@@ -1615,6 +1623,8 @@ const es: Dict = {
   rsSexQuota: '♀♂ por sexo',
   rsSexQuotaTip: 'Reservar las plazas por sexo; un gato «?» sirve para cualquiera.',
   rsUseHere: 'Se usa en esta habitación',
+  rsMoveUp: 'Subir',
+  rsMoveDown: 'Bajar',
   rsDeleteCategory: 'Eliminar en todas partes',
   rsDeleteCategoryConfirm: (name) =>
     `¿Eliminar la categoría «${name}»? Desaparece de todas las habitaciones y sus gatos quedan sin categoría.`,
@@ -1941,6 +1951,8 @@ const pt: Dict = {
   rsSexQuota: '♀♂ por sexo',
   rsSexQuotaTip: 'Reservar as vagas por sexo; um gato “?” serve para qualquer uma.',
   rsUseHere: 'Usada neste cômodo',
+  rsMoveUp: 'Mover para cima',
+  rsMoveDown: 'Mover para baixo',
   rsDeleteCategory: 'Excluir em todos os lugares',
   rsDeleteCategoryConfirm: (name) =>
     `Excluir a categoria “${name}”? Ela some de todos os cômodos e seus gatos ficam sem categoria.`,
@@ -2261,6 +2273,8 @@ const zh: Dict = {
   rsSexQuota: '♀♂ 按性别',
   rsSexQuotaTip: '按性别预留名额；性别为“?”的猫可占任意一个。',
   rsUseHere: '在本房间使用',
+  rsMoveUp: '上移',
+  rsMoveDown: '下移',
   rsDeleteCategory: '全局删除',
   rsDeleteCategoryConfirm: (name) => `删除类别“${name}”？它将从所有房间消失，其猫将变为无类别。`,
   rsWishlist: '🧬 想要的变异',
@@ -2583,6 +2597,8 @@ const ja: Dict = {
   rsSexQuota: '♀♂ 性別ごと',
   rsSexQuotaTip: '枠を性別で予約します。性別「?」の猫はどちらの枠にも入ります。',
   rsUseHere: 'この部屋で使う',
+  rsMoveUp: '上へ移動',
+  rsMoveDown: '下へ移動',
   rsDeleteCategory: 'すべてから削除',
   rsDeleteCategoryConfirm: (name) =>
     `カテゴリ「${name}」を削除しますか？ すべての部屋から消え、その猫たちはカテゴリなしになります。`,
@@ -2905,6 +2921,8 @@ const ko: Dict = {
   rsSexQuota: '♀♂ 성별로',
   rsSexQuotaTip: '자리를 성별로 예약합니다. 성별이 “?”인 고양이는 어느 쪽이든 채웁니다.',
   rsUseHere: '이 방에서 사용',
+  rsMoveUp: '위로 이동',
+  rsMoveDown: '아래로 이동',
   rsDeleteCategory: '모든 곳에서 삭제',
   rsDeleteCategoryConfirm: (name) =>
     `분류 “${name}”을(를) 삭제할까요? 모든 방에서 사라지고 해당 고양이는 분류 없음이 됩니다.`,

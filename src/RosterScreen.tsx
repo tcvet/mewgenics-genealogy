@@ -237,6 +237,17 @@ export function RosterScreen({
     });
   };
 
+  // reordering the house-wide list reorders the sections in every room at once
+  const moveCategory = (id: string, delta: number) =>
+    setRoster((r) => {
+      const i = r.categories.findIndex((c) => c.id === id);
+      const j = i + delta;
+      if (i < 0 || j < 0 || j >= r.categories.length) return r;
+      const categories = [...r.categories];
+      [categories[i], categories[j]] = [categories[j], categories[i]];
+      return { ...r, categories };
+    });
+
   /** The arrangement this screen was designed around, one click away. */
   const seedRoster = () =>
     setRoster((r) => {
@@ -727,10 +738,30 @@ export function RosterScreen({
               />
             </div>
 
-            {roster.categories.map((def) => {
+            {roster.categories.map((def, i) => {
               const cp = policy.categories[def.id];
               return (
                 <div className="rs-rulerow" key={def.id}>
+                  <span className="rs-movepair">
+                    <button
+                      type="button"
+                      className="rs-move"
+                      title={t.rsMoveUp}
+                      disabled={i === 0}
+                      onClick={() => moveCategory(def.id, -1)}
+                    >
+                      ▲
+                    </button>
+                    <button
+                      type="button"
+                      className="rs-move"
+                      title={t.rsMoveDown}
+                      disabled={i === roster.categories.length - 1}
+                      onClick={() => moveCategory(def.id, 1)}
+                    >
+                      ▼
+                    </button>
+                  </span>
                   <span className="rs-dot" style={{ background: def.color }} />
                   <input
                     className="rs-catname"

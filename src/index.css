@@ -1905,6 +1905,36 @@ button.rs-drop {
   opacity: 0.45;
 }
 
+/* the ▲▼ pair that reorders the categories (and with them the room sections) */
+.rs-movepair {
+  display: flex;
+  flex-direction: column;
+}
+
+button.rs-move {
+  padding: 0 3px;
+  font-size: 8px;
+  line-height: 1.2;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-radius: 3px;
+  opacity: 0.45;
+}
+
+button.rs-move:disabled {
+  opacity: 0.12;
+}
+
+.rs-rulerow:hover button.rs-move:not(:disabled) {
+  opacity: 1;
+}
+
+button.rs-move:hover:not(:disabled) {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.1);
+}
+
 /* the header lights up under the cursor, so the ✕ that drops the column is findable */
 .rs-col:hover {
   color: var(--text);
