@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MUTATION_SLOTS, ROOMS, SEX_GLYPH, type Cat, type RoomId } from './types';
+import { MUTATION_SLOTS, ROOMS, SEX_GLYPH, STAT_KEYS, type Cat, type RoomId } from './types';
 import { avgMateCOIs } from './genealogy';
 import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
 import { abilityLabel, getAbility, houseAbilities, type HouseAbility } from './abilities';
@@ -26,7 +26,7 @@ import {
   type WishAbility,
   type WishMutation,
 } from './roster';
-import { activeBondPartners, normName, type CatsStore } from './store';
+import { activeBondPartners, normName, statSum, type CatsStore } from './store';
 import { abilityClassLabel, abilityTip, CategorySelect, RoomToggle, SearchBox } from './controls';
 import { useI18n } from './i18n';
 
@@ -532,6 +532,20 @@ export function RosterScreen({
           categories={roster.categories}
           onChange={(category) => updateCat(selected.id, { category })}
         />
+        <div className="meta">
+          📊 {t.statsTitle}
+          {statSum(selected) > 0 && ` (Σ ${statSum(selected)})`}
+        </div>
+        <div className="rs-stats">
+          {STAT_KEYS.map((k) => (
+            <span key={k} className="rs-stat" title={t.statNames[k]}>
+              <span className="rs-statname">{k.toUpperCase()}</span>
+              <span className={selected.stats[k] == null ? 'meta' : ''}>
+                {selected.stats[k] ?? '–'}
+              </span>
+            </span>
+          ))}
+        </div>
         {score && score.parts.length > 0 ? (
           <>
             <div className="meta">{t.rsBreakdown}</div>

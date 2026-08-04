@@ -107,6 +107,7 @@ const en = {
   } satisfies Record<StatKey, string>,
   statSetAll: (v: number) => `Set all stats to ${v}`,
   statClearAll: 'Clear all stats',
+  statsTitle: 'Stats',
   // mutations (mutation names come from the game and are not translated)
   mutationsTitle: 'Mutations',
   mutationSlots: {
@@ -452,6 +453,7 @@ const ru: Dict = {
   },
   statSetAll: (v) => `Заполнить все статы значением ${v}`,
   statClearAll: 'Сбросить все статы',
+  statsTitle: 'Статы',
   mutationsTitle: 'Мутации',
   mutationSlots: {
     head: 'Голова',
@@ -780,6 +782,7 @@ const de: Dict = {
   },
   statSetAll: (v) => `Alle Stats auf ${v} setzen`,
   statClearAll: 'Alle Stats zurücksetzen',
+  statsTitle: 'Stats',
   mutationsTitle: 'Mutationen',
   mutationSlots: {
     head: 'Kopf',
@@ -1109,6 +1112,7 @@ const fr: Dict = {
   },
   statSetAll: (v) => `Mettre toutes les stats à ${v}`,
   statClearAll: 'Effacer toutes les stats',
+  statsTitle: 'Stats',
   mutationsTitle: 'Mutations',
   mutationSlots: {
     head: 'Tête',
@@ -1439,6 +1443,7 @@ const es: Dict = {
   },
   statSetAll: (v) => `Fijar todas las stats en ${v}`,
   statClearAll: 'Borrar todas las stats',
+  statsTitle: 'Stats',
   mutationsTitle: 'Mutaciones',
   mutationSlots: {
     head: 'Cabeza',
@@ -1768,6 +1773,7 @@ const pt: Dict = {
   },
   statSetAll: (v) => `Definir todas as stats como ${v}`,
   statClearAll: 'Limpar todas as stats',
+  statsTitle: 'Stats',
   mutationsTitle: 'Mutações',
   mutationSlots: {
     head: 'Cabeça',
@@ -2095,6 +2101,7 @@ const zh: Dict = {
   },
   statSetAll: (v) => `将所有属性设为 ${v}`,
   statClearAll: '清除所有属性',
+  statsTitle: '属性',
   mutationsTitle: '变异',
   mutationSlots: {
     head: '头',
@@ -2413,6 +2420,7 @@ const ja: Dict = {
   },
   statSetAll: (v) => `すべてのステータスを ${v} にする`,
   statClearAll: 'すべてのステータスをクリア',
+  statsTitle: 'ステータス',
   mutationsTitle: 'ミューテーション',
   mutationSlots: {
     head: '頭',
@@ -2739,6 +2747,7 @@ const ko: Dict = {
   },
   statSetAll: (v) => `모든 스탯을 ${v}(으)로 설정`,
   statClearAll: '모든 스탯 지우기',
+  statsTitle: '스탯',
   mutationsTitle: '돌연변이',
   mutationSlots: {
     head: '머리',

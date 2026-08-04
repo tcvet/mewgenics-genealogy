@@ -2258,6 +2258,33 @@ button.rs-catbtn.picked {
   font-weight: 700;
 }
 
+/* read-only base-stat strip in the breakdown panel */
+.rs-stats {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.rs-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 0;
+  border-radius: 6px;
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rs-statname {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
 .rs-warn {
   padding: 6px 8px;
   border-radius: 8px;
