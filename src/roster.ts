@@ -30,6 +30,7 @@ export type CriterionKey =
   | 'sevens'
   | 'statSum'
   | 'roomCOI'
+  | 'categoryCOI'
   | 'children';
 
 export const CRITERION_KEYS: CriterionKey[] = [
@@ -40,8 +41,13 @@ export const CRITERION_KEYS: CriterionKey[] = [
   'sevens',
   'statSum',
   'roomCOI',
+  'categoryCOI',
   'children',
 ];
+
+/** The COI-percent criteria — the table shows their raw percent next to scaled points. */
+export const isCOICriterion = (key: CriterionKey): boolean =>
+  key === 'roomCOI' || key === 'categoryCOI';
 
 /** A sane starting scorecard; every weight is meant to be tuned in the table header. */
 export const DEFAULT_WEIGHT: Record<CriterionKey, number> = {
@@ -52,6 +58,7 @@ export const DEFAULT_WEIGHT: Record<CriterionKey, number> = {
   sevens: 5,
   statSum: 0.5,
   roomCOI: -0.5,
+  categoryCOI: -0.5,
   children: -2,
 };
 
@@ -209,6 +216,9 @@ export interface ScoreCtx {
   abilityCarriers: Map<string, Cat[]>;
   /** cat id → average COI with the room's compatible partners (0..1); null — no partners */
   roomCOI: Map<string, number | null>;
+  /** like `roomCOI`, but the partners narrowed to the cat's own category — the
+   * number does not swing when another category (say, fresh blood) grows */
+  categoryCOI: Map<string, number | null>;
   /** cat id → how many children it has (house-wide, gone ones included) */
   childCount: Map<string, number>;
 }
@@ -271,6 +281,8 @@ export function scoreCat(cat: Cat, criteria: Criterion[], ctx: ScoreCtx): CatSco
       // as a percentage, so the weight reads like "points per COI percent"
       case 'roomCOI':
         return (ctx.roomCOI.get(cat.id) ?? 0) * 100;
+      case 'categoryCOI':
+        return (ctx.categoryCOI.get(cat.id) ?? 0) * 100;
       case 'children':
         return ctx.childCount.get(cat.id) ?? 0;
     }

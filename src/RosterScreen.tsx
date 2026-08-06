@@ -7,6 +7,7 @@ import {
   CRITERION_KEYS,
   DEFAULT_WEIGHT,
   defaultCriteria,
+  isCOICriterion,
   makeCategory,
   quotaFill,
   quotaTotal,
@@ -126,18 +127,6 @@ export function RosterScreen({
     return out;
   }, [cats, room, candidateId]);
 
-  const ctx: ScoreCtx = useMemo(
-    () => ({
-      wishlist: policy.wishlist,
-      carriers: wishCarriers(pool, policy.wishlist),
-      wishAbilities: policy.wishAbilities,
-      abilityCarriers: wishAbilityCarriers(pool, policy.wishAbilities),
-      roomCOI,
-      childCount: new Map(cats.map((c) => [c.id, children.get(c.id)?.length ?? 0])),
-    }),
-    [policy.wishlist, policy.wishAbilities, pool, roomCOI, cats, children],
-  );
-
   const sections: Section[] = useMemo(
     () =>
       roster.categories
@@ -150,6 +139,35 @@ export function RosterScreen({
     // roleOf closes over candidateId/candCategory
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [roster.categories, policy.categories, pool, candidateId, candCategory],
+  );
+
+  // the room COI narrowed further, to the partners of the cat's own role — a
+  // fresh-blood block growing or shrinking no longer moves a carrier's number
+  const categoryCOI = useMemo(() => {
+    const out = new Map<string, number | null>();
+    for (const s of sections) {
+      if (s.rows.length === 0) continue;
+      const members = new Set(s.rows.map((c) => c.id));
+      const avgs = avgMateCOIs(cats, { pool: (c) => members.has(c.id) });
+      for (const id of members) {
+        const avg = avgs.get(id);
+        out.set(id, avg ? avg.avg : null);
+      }
+    }
+    return out;
+  }, [sections, cats]);
+
+  const ctx: ScoreCtx = useMemo(
+    () => ({
+      wishlist: policy.wishlist,
+      carriers: wishCarriers(pool, policy.wishlist),
+      wishAbilities: policy.wishAbilities,
+      abilityCarriers: wishAbilityCarriers(pool, policy.wishAbilities),
+      roomCOI,
+      categoryCOI,
+      childCount: new Map(cats.map((c) => [c.id, children.get(c.id)?.length ?? 0])),
+    }),
+    [policy.wishlist, policy.wishAbilities, pool, roomCOI, categoryCOI, cats, children],
   );
 
   const scores = useMemo(() => {
@@ -357,9 +375,10 @@ export function RosterScreen({
     const cols = s.policy.criteria;
     const worst = s.rows.length > 1 ? s.rows[s.rows.length - 1] : null;
     const unused = CRITERION_KEYS.filter((k) => !cols.some((c) => c.key === k));
-    // a scaled room COI reads as opaque points; show the raw percent alongside
-    const coiWeight = cols.find((c) => c.key === 'roomCOI')?.weight;
-    const rawCOI = coiWeight !== undefined && Math.abs(coiWeight) !== 1;
+    // a scaled COI column reads as opaque points; show the raw percent alongside
+    const rawCOI = new Set(
+      cols.filter((c) => isCOICriterion(c.key) && Math.abs(c.weight) !== 1).map((c) => c.key),
+    );
     const grid = {
       gridTemplateColumns: `minmax(150px, 1fr) repeat(${cols.length + 1}, 5.2rem)`,
     };
@@ -445,7 +464,7 @@ export function RosterScreen({
                 {score?.parts.map((p) => (
                   <span key={p.key} className={`rs-num${p.points < 0 ? ' neg' : ''}`}>
                     {p.points === 0 ? '·' : signed(p.points)}
-                    {p.key === 'roomCOI' && rawCOI && p.points !== 0 && (
+                    {rawCOI.has(p.key) && p.points !== 0 && (
                       <span className="rs-raw" title={t.rsCOIRawTip}>
                         {fmt(p.value)}%
                       </span>
@@ -555,7 +574,7 @@ export function RosterScreen({
                   <span>{t.rsCrits[p.key]}</span>
                   <span className="meta">
                     {fmt(p.value)}
-                    {p.key === 'roomCOI' && '%'}
+                    {isCOICriterion(p.key) && '%'}
                   </span>
                   <span className={p.points < 0 ? 'neg' : ''}>{signed(p.points)}</span>
                 </div>

@@ -329,6 +329,7 @@ const en = {
     sevens: 'Sevens',
     statSum: 'Σ stats',
     roomCOI: 'Room COI',
+    categoryCOI: 'Role COI',
     children: 'Children',
   } satisfies Record<CriterionKey, string>,
   rsCritTips: {
@@ -340,6 +341,8 @@ const en = {
     statSum: 'Total of the base stats.',
     roomCOI:
       'Average offspring COI with the compatible partners in this room, in percent — how related the cat is to the room. Give it a negative weight.',
+    categoryCOI:
+      'The same average, but only over the partners of the cat’s own role — unmoved by how many cats the other categories hold. Give it a negative weight.',
     children:
       'Children the cat already has. Give it a negative weight where fresh blood is the point.',
   } satisfies Record<CriterionKey, string>,
@@ -348,7 +351,7 @@ const en = {
   rsAllColumns: 'Every criterion is already a column',
   rsRemoveColumn: 'Remove this column',
   rsWeightTip: 'Points per unit — change it and the ranking follows',
-  rsCOIRawTip: 'The room COI itself, before the weight',
+  rsCOIRawTip: 'The COI itself, before the weight',
   rsTotal: 'Total',
   rsWorst: 'Weakest of the role — the first to be replaced',
   rsOverQuota: (n: number) => `${n} over`,
@@ -660,6 +663,7 @@ const ru: Dict = {
     sevens: 'Семёрки',
     statSum: 'Σ статов',
     roomCOI: 'COI комнаты',
+    categoryCOI: 'COI категории',
     children: 'Дети',
   },
   rsCritTips: {
@@ -671,6 +675,8 @@ const ru: Dict = {
     statSum: 'Сумма базовых статов.',
     roomCOI:
       'Средний COI потомства со всеми подходящими партнёрами этой комнаты, в процентах — насколько кот породнился с комнатой. Вес задавайте отрицательный.',
+    categoryCOI:
+      'Тот же средний COI, но только с партнёрами своей категории — не зависит от того, сколько котов в остальных категориях. Вес задавайте отрицательный.',
     children:
       'Сколько детей у кота уже есть. Для категории «свежая кровь» вес задавайте отрицательный.',
   },
@@ -679,7 +685,7 @@ const ru: Dict = {
   rsAllColumns: 'Все критерии уже выведены колонками',
   rsRemoveColumn: 'Убрать колонку',
   rsWeightTip: 'Очков за единицу — измените, и порядок пересчитается',
-  rsCOIRawTip: 'Сам COI комнаты, до умножения на вес',
+  rsCOIRawTip: 'Сам COI, до умножения на вес',
   rsTotal: 'Итог',
   rsWorst: 'Худший в категории — его и менять',
   rsOverQuota: (n) => `+${n} сверх`,
@@ -990,6 +996,7 @@ const de: Dict = {
     sevens: 'Siebenen',
     statSum: 'Σ Werte',
     roomCOI: 'Raum-COI',
+    categoryCOI: 'Rollen-COI',
     children: 'Kinder',
   },
   rsCritTips: {
@@ -1001,6 +1008,8 @@ const de: Dict = {
     statSum: 'Summe der Grundwerte.',
     roomCOI:
       'Durchschnittlicher Nachwuchs-COI mit allen passenden Partnern dieses Raums, in Prozent — wie verwandt die Katze mit dem Raum ist. Gewicht negativ setzen.',
+    categoryCOI:
+      'Derselbe Durchschnitt, aber nur mit den Partnern der eigenen Rolle — unabhängig davon, wie viele Katzen die anderen Kategorien halten. Gewicht negativ setzen.',
     children:
       'Wie viele Kinder die Katze schon hat. Wo frisches Blut zählt, das Gewicht negativ setzen.',
   },
@@ -1009,7 +1018,7 @@ const de: Dict = {
   rsAllColumns: 'Jedes Kriterium ist bereits eine Spalte',
   rsRemoveColumn: 'Spalte entfernen',
   rsWeightTip: 'Punkte je Einheit — ändern, und die Reihenfolge folgt',
-  rsCOIRawTip: 'Der Raum-COI selbst, vor dem Gewicht',
+  rsCOIRawTip: 'Der COI selbst, vor dem Gewicht',
   rsTotal: 'Summe',
   rsWorst: 'Schwächste der Rolle — wird zuerst ersetzt',
   rsOverQuota: (n) => `${n} zu viel`,
@@ -1321,6 +1330,7 @@ const fr: Dict = {
     sevens: 'Sept',
     statSum: 'Σ stats',
     roomCOI: 'COI de la pièce',
+    categoryCOI: 'COI du rôle',
     children: 'Enfants',
   },
   rsCritTips: {
@@ -1332,6 +1342,8 @@ const fr: Dict = {
     statSum: 'Somme des stats de base.',
     roomCOI:
       'COI moyen de la portée avec tous les partenaires compatibles de cette pièce, en pourcentage — à quel point le chat est apparenté à la pièce. Mettez un poids négatif.',
+    categoryCOI:
+      'La même moyenne, mais seulement avec les partenaires du rôle du chat — insensible au nombre de chats des autres catégories. Mettez un poids négatif.',
     children:
       'Enfants que le chat a déjà. Là où le sang neuf compte, mettez un poids négatif.',
   },
@@ -1340,7 +1352,7 @@ const fr: Dict = {
   rsAllColumns: 'Chaque critère est déjà une colonne',
   rsRemoveColumn: 'Retirer cette colonne',
   rsWeightTip: 'Points par unité — modifiez, le classement suit',
-  rsCOIRawTip: 'Le COI de pièce lui-même, avant le poids',
+  rsCOIRawTip: 'Le COI lui-même, avant le poids',
   rsTotal: 'Total',
   rsWorst: 'Le plus faible du rôle — le premier à remplacer',
   rsOverQuota: (n) => `${n} en trop`,
@@ -1651,6 +1663,7 @@ const es: Dict = {
     sevens: 'Sietes',
     statSum: 'Σ stats',
     roomCOI: 'COI de la sala',
+    categoryCOI: 'COI del rol',
     children: 'Hijos',
   },
   rsCritTips: {
@@ -1662,6 +1675,8 @@ const es: Dict = {
     statSum: 'Suma de las stats base.',
     roomCOI:
       'COI medio de la camada con todas las parejas compatibles de esta habitación, en porcentaje: cuánto se ha emparentado el gato con la sala. Usa un peso negativo.',
+    categoryCOI:
+      'La misma media, pero solo con las parejas del propio rol del gato: no depende de cuántos gatos haya en las demás categorías. Usa un peso negativo.',
     children:
       'Hijos que el gato ya tiene. Donde importa la sangre nueva, usa un peso negativo.',
   },
@@ -1670,7 +1685,7 @@ const es: Dict = {
   rsAllColumns: 'Todos los criterios ya son columnas',
   rsRemoveColumn: 'Quitar esta columna',
   rsWeightTip: 'Puntos por unidad: cámbialo y el orden se recalcula',
-  rsCOIRawTip: 'El propio COI de habitación, antes del peso',
+  rsCOIRawTip: 'El propio COI, antes del peso',
   rsTotal: 'Total',
   rsWorst: 'El más flojo del rol: el primero en salir',
   rsOverQuota: (n) => `${n} de más`,
@@ -1980,6 +1995,7 @@ const pt: Dict = {
     sevens: 'Setes',
     statSum: 'Σ stats',
     roomCOI: 'COI do cômodo',
+    categoryCOI: 'COI do papel',
     children: 'Filhos',
   },
   rsCritTips: {
@@ -1991,6 +2007,8 @@ const pt: Dict = {
     statSum: 'Soma dos atributos base.',
     roomCOI:
       'COI médio da ninhada com todos os parceiros compatíveis deste cômodo, em porcentagem — o quanto o gato já é aparentado com o cômodo. Use peso negativo.',
+    categoryCOI:
+      'A mesma média, mas só com os parceiros do próprio papel do gato — não depende de quantos gatos as outras categorias têm. Use peso negativo.',
     children:
       'Filhos que o gato já tem. Onde o que importa é sangue novo, use peso negativo.',
   },
@@ -1999,7 +2017,7 @@ const pt: Dict = {
   rsAllColumns: 'Todos os critérios já são colunas',
   rsRemoveColumn: 'Remover esta coluna',
   rsWeightTip: 'Pontos por unidade — mude e a ordem acompanha',
-  rsCOIRawTip: 'O próprio COI do cômodo, antes do peso',
+  rsCOIRawTip: 'O próprio COI, antes do peso',
   rsTotal: 'Total',
   rsWorst: 'O mais fraco do papel — o primeiro a sair',
   rsOverQuota: (n) => `${n} a mais`,
@@ -2302,6 +2320,7 @@ const zh: Dict = {
     sevens: '七点数',
     statSum: 'Σ 属性',
     roomCOI: '房间 COI',
+    categoryCOI: '类别 COI',
     children: '子女',
   },
   rsCritTips: {
@@ -2312,6 +2331,7 @@ const zh: Dict = {
     sevens: '有多少基础属性达到 7。',
     statSum: '基础属性之和。',
     roomCOI: '与本房间所有可配对伙伴的后代平均 COI（百分比）——该猫与房间的亲缘程度。权重请设为负数。',
+    categoryCOI: '同样的平均值，但只算同类别的可配对伙伴——不受其他类别猫数量的影响。权重请设为负数。',
     children: '该猫已有的子女数。以补充新血为目的的类别，权重请设为负数。',
   },
   rsAddColumn: '添加评分列',
@@ -2319,7 +2339,7 @@ const zh: Dict = {
   rsAllColumns: '所有条件都已是列',
   rsRemoveColumn: '移除此列',
   rsWeightTip: '每单位的分数——修改后排序随之变化',
-  rsCOIRawTip: '房间 COI 本身（乘权重之前）',
+  rsCOIRawTip: 'COI 本身（乘权重之前）',
   rsTotal: '合计',
   rsWorst: '本类别中最弱——最先被替换',
   rsOverQuota: (n) => `超出 ${n}`,
@@ -2628,6 +2648,7 @@ const ja: Dict = {
     sevens: '7 の数',
     statSum: 'Σ ステータス',
     roomCOI: '部屋の COI',
+    categoryCOI: '役割の COI',
     children: '子',
   },
   rsCritTips: {
@@ -2639,6 +2660,8 @@ const ja: Dict = {
     statSum: '基礎ステータスの合計。',
     roomCOI:
       'この部屋の交配可能な相手すべてとの子の平均 COI（％）——その猫が部屋とどれだけ血縁かを示します。重みは負の値に。',
+    categoryCOI:
+      '同じ平均ですが、相手を同じ役割の猫に限ります——他のカテゴリの頭数に左右されません。重みは負の値に。',
     children: 'すでにいる子の数。新しい血を入れたい役割では重みを負の値に。',
   },
   rsAddColumn: '採点列を追加',
@@ -2646,7 +2669,7 @@ const ja: Dict = {
   rsAllColumns: 'すべての基準がすでに列になっています',
   rsRemoveColumn: 'この列を外す',
   rsWeightTip: '1 単位あたりの点数——変えると並び順も変わります',
-  rsCOIRawTip: '重みを掛ける前の部屋COIそのもの',
+  rsCOIRawTip: '重みを掛ける前のCOIそのもの',
   rsTotal: '合計',
   rsWorst: 'この役割で最下位——最初に入れ替える猫',
   rsOverQuota: (n) => `${n} 超過`,
@@ -2953,6 +2976,7 @@ const ko: Dict = {
     sevens: '7의 수',
     statSum: 'Σ 능력치',
     roomCOI: '방 COI',
+    categoryCOI: '역할 COI',
     children: '자식',
   },
   rsCritTips: {
@@ -2964,6 +2988,8 @@ const ko: Dict = {
     statSum: '기본 능력치의 합.',
     roomCOI:
       '이 방의 교배 가능한 모든 짝과의 새끼 평균 COI(％) — 고양이가 방과 얼마나 가까운지. 가중치는 음수로.',
+    categoryCOI:
+      '같은 평균이지만 같은 역할의 짝만 계산합니다 — 다른 분류의 고양이 수에 영향받지 않습니다. 가중치는 음수로.',
     children: '이미 있는 자식 수. 새 피가 목적인 역할에서는 가중치를 음수로.',
   },
   rsAddColumn: '점수 열 추가',
@@ -2971,7 +2997,7 @@ const ko: Dict = {
   rsAllColumns: '모든 기준이 이미 열입니다',
   rsRemoveColumn: '이 열 제거',
   rsWeightTip: '단위당 점수 — 바꾸면 순위도 따라갑니다',
-  rsCOIRawTip: '가중치를 곱하기 전의 방 COI 값',
+  rsCOIRawTip: '가중치를 곱하기 전의 COI 값',
   rsTotal: '합계',
   rsWorst: '이 역할에서 가장 약함 — 먼저 교체할 고양이',
   rsOverQuota: (n) => `${n} 초과`,

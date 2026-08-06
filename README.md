@@ -131,8 +131,11 @@ name drops it:
 - **Room COI** — the average offspring COI with the compatible partners *in
   this room*, in percent (ancestors still come from the whole tree). Give it
   a negative weight: it measures how related the cat already is to the room.
-  When the weight is anything other than ±1, the raw percentage stays
-  visible, dimmed next to the points.
+- **Role COI** — the same average narrowed to the partners of the cat's own
+  role, so the number does not swing when another category (say, the
+  fresh-blood block) grows or shrinks. Whenever the weight of a COI column
+  is anything other than ±1, the raw percentage stays visible, dimmed next
+  to the points.
 - **Children** — how many the cat already has; negative weight where fresh
   blood is the point.
 
