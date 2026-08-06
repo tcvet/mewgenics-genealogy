@@ -408,7 +408,12 @@ export function CatPanel(props: {
           </>
         )}
       </div>
-      <StatsMatrix stats={cat.stats} onChange={(stats) => props.onUpdate({ stats })} />
+      <StatsMatrix
+        stats={cat.stats}
+        onChange={(stats) => props.onUpdate({ stats })}
+        mods={cat.statMods}
+        onMods={(statMods) => props.onUpdate({ statMods })}
+      />
       <MutationEditor
         mutations={cat.mutations}
         mother={props.mother}

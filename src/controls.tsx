@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   CLASS_COLOR,
   CLASSES,
@@ -32,18 +32,53 @@ export function abilityTip(t: Dict, id: string): string | undefined {
   return a.desc ? `${head}\n${a.desc}` : head;
 }
 
+/** Integer field for a stat's event modifier; tolerates half-typed input ("-"). */
+function ModInput({
+  value,
+  title,
+  onChange,
+}: {
+  value: number;
+  title?: string;
+  onChange: (n: number) => void;
+}) {
+  const [text, setText] = useState(String(value));
+  useEffect(() => setText(String(value)), [value]);
+  return (
+    <input
+      type="number"
+      step={1}
+      title={title}
+      className={`stat-mod${value > 0 ? ' up' : value < 0 ? ' down' : ''}`}
+      value={text}
+      onChange={(e) => {
+        setText(e.target.value);
+        const n = Math.round(parseFloat(e.target.value));
+        if (isFinite(n)) onChange(n);
+      }}
+    />
+  );
+}
+
 /** Clickable stat grid (a row per stat, columns – and 3–7); shared by the
- * cat editor and the kitten form. */
+ * cat editor and the kitten form. With `mods`/`onMods` given, a last column
+ * edits the event deltas on top of the base stats (cat editor only — a
+ * newborn kitten has none). */
 export function StatsMatrix({
   stats,
   onChange,
+  mods,
+  onMods,
 }: {
   stats: Cat['stats'];
   onChange: (stats: Cat['stats']) => void;
+  mods?: Cat['statMods'];
+  onMods?: (mods: Cat['statMods']) => void;
 }) {
   const { t } = useI18n();
+  const withMods = mods !== undefined && onMods !== undefined;
   return (
-    <div className="stats-matrix">
+    <div className={`stats-matrix${withMods ? ' with-mods' : ''}`}>
       {/* clickable header: a digit fills every stat with that value, "–" clears all */}
       <span />
       <button type="button" className="stat-cell head" title={t.statClearAll} onClick={() => onChange({})}>
@@ -62,6 +97,11 @@ export function StatsMatrix({
           {v}
         </button>
       ))}
+      {withMods && (
+        <button type="button" className="stat-cell head" title={t.statModClearAll} onClick={() => onMods({})}>
+          ±
+        </button>
+      )}
       {STAT_GROUPS.map((group, gi) => (
         <Fragment key={gi}>
           {gi > 0 && <span className="stats-divider" />}
@@ -91,6 +131,18 @@ export function StatsMatrix({
                   {v}
                 </button>
               ))}
+              {withMods && (
+                <ModInput
+                  value={mods[k] ?? 0}
+                  title={t.statModTip}
+                  onChange={(n) => {
+                    const next = { ...mods };
+                    if (n === 0) delete next[k];
+                    else next[k] = n;
+                    onMods(next);
+                  }}
+                />
+              )}
             </Fragment>
           ))}
         </Fragment>

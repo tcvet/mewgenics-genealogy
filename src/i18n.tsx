@@ -107,6 +107,9 @@ const en = {
   } satisfies Record<StatKey, string>,
   statSetAll: (v: number) => `Set all stats to ${v}`,
   statClearAll: 'Clear all stats',
+  statModClearAll: 'Clear all stat changes',
+  statModTip: 'Stat change from events (real stat = base + change)',
+  statRealTip: 'Real stat (base + change)',
   statsTitle: 'Stats',
   // mutations (mutation names come from the game and are not translated)
   mutationsTitle: 'Mutations',
@@ -456,6 +459,9 @@ const ru: Dict = {
   },
   statSetAll: (v) => `Заполнить все статы значением ${v}`,
   statClearAll: 'Сбросить все статы',
+  statModClearAll: 'Сбросить все изменения статов',
+  statModTip: 'Изменение стата от событий (реальный стат = базовый + изменение)',
+  statRealTip: 'Реальный стат (базовый + изменение)',
   statsTitle: 'Статы',
   mutationsTitle: 'Мутации',
   mutationSlots: {
@@ -788,6 +794,9 @@ const de: Dict = {
   },
   statSetAll: (v) => `Alle Stats auf ${v} setzen`,
   statClearAll: 'Alle Stats zurücksetzen',
+  statModClearAll: 'Alle Stat-Änderungen zurücksetzen',
+  statModTip: 'Stat-Änderung durch Ereignisse (realer Wert = Basis + Änderung)',
+  statRealTip: 'Realer Wert (Basis + Änderung)',
   statsTitle: 'Stats',
   mutationsTitle: 'Mutationen',
   mutationSlots: {
@@ -1121,6 +1130,9 @@ const fr: Dict = {
   },
   statSetAll: (v) => `Mettre toutes les stats à ${v}`,
   statClearAll: 'Effacer toutes les stats',
+  statModClearAll: 'Effacer tous les changements de stats',
+  statModTip: 'Changement de stat dû aux événements (stat réelle = base + changement)',
+  statRealTip: 'Stat réelle (base + changement)',
   statsTitle: 'Stats',
   mutationsTitle: 'Mutations',
   mutationSlots: {
@@ -1455,6 +1467,9 @@ const es: Dict = {
   },
   statSetAll: (v) => `Fijar todas las stats en ${v}`,
   statClearAll: 'Borrar todas las stats',
+  statModClearAll: 'Borrar todos los cambios de stats',
+  statModTip: 'Cambio de stat por eventos (stat real = base + cambio)',
+  statRealTip: 'Stat real (base + cambio)',
   statsTitle: 'Stats',
   mutationsTitle: 'Mutaciones',
   mutationSlots: {
@@ -1788,6 +1803,9 @@ const pt: Dict = {
   },
   statSetAll: (v) => `Definir todas as stats como ${v}`,
   statClearAll: 'Limpar todas as stats',
+  statModClearAll: 'Limpar todas as mudanças de stats',
+  statModTip: 'Mudança de stat por eventos (stat real = base + mudança)',
+  statRealTip: 'Stat real (base + mudança)',
   statsTitle: 'Stats',
   mutationsTitle: 'Mutações',
   mutationSlots: {
@@ -2119,6 +2137,9 @@ const zh: Dict = {
   },
   statSetAll: (v) => `将所有属性设为 ${v}`,
   statClearAll: '清除所有属性',
+  statModClearAll: '清除所有属性变化',
+  statModTip: '事件带来的属性变化（实际属性 = 基础 + 变化）',
+  statRealTip: '实际属性（基础 + 变化）',
   statsTitle: '属性',
   mutationsTitle: '变异',
   mutationSlots: {
@@ -2440,6 +2461,9 @@ const ja: Dict = {
   },
   statSetAll: (v) => `すべてのステータスを ${v} にする`,
   statClearAll: 'すべてのステータスをクリア',
+  statModClearAll: 'すべてのステータス変化をクリア',
+  statModTip: 'イベントによるステータス変化（実際の値 = 基礎 + 変化）',
+  statRealTip: '実際のステータス（基礎 + 変化）',
   statsTitle: 'ステータス',
   mutationsTitle: 'ミューテーション',
   mutationSlots: {
@@ -2770,6 +2794,9 @@ const ko: Dict = {
   },
   statSetAll: (v) => `모든 스탯을 ${v}(으)로 설정`,
   statClearAll: '모든 스탯 지우기',
+  statModClearAll: '모든 스탯 변화 지우기',
+  statModTip: '이벤트로 인한 스탯 변화 (실제 스탯 = 기본 + 변화)',
+  statRealTip: '실제 스탯 (기본 + 변화)',
   statsTitle: '스탯',
   mutationsTitle: '돌연변이',
   mutationSlots: {

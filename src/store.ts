@@ -27,6 +27,21 @@ const normOrientation = (o: unknown): Orientation => (o === 'bi' || o === 'homo'
 /** Total of the recorded base stats (unset stats count as 0). */
 export const statSum = (c: Cat) => STAT_KEYS.reduce((sum, k) => sum + (c.stats[k] ?? 0), 0);
 
+/** Total of the real stats: base + event modifiers (unset stats count as 0). */
+export const realStatSum = (c: Cat) =>
+  STAT_KEYS.reduce((sum, k) => sum + (c.stats[k] ?? 0) + (c.statMods[k] ?? 0), 0);
+
+/** Normalize the event-modifier dict: known stats, whole numbers, zeros dropped. */
+function normStatMods(mods: unknown): Cat['statMods'] {
+  const out: Cat['statMods'] = {};
+  if (typeof mods !== 'object' || mods === null) return out;
+  for (const k of STAT_KEYS) {
+    const v = (mods as Record<string, unknown>)[k];
+    if (typeof v === 'number' && Number.isFinite(v) && Math.round(v) !== 0) out[k] = Math.round(v);
+  }
+  return out;
+}
+
 /** Normalize a cat from an older save or an import (missing fields get defaults). */
 function normCat(c: Partial<Cat>): Cat {
   return {
@@ -43,6 +58,7 @@ function normCat(c: Partial<Cat>): Cat {
     category: typeof c.category === 'string' ? c.category : null,
     notes: c.notes ?? '',
     stats: c.stats ?? {},
+    statMods: normStatMods(c.statMods),
     mutations: normMutations(c.mutations),
     abilities: normAbilities(c.abilities),
   };
@@ -75,6 +91,7 @@ export function makeCat(
     category,
     notes: '',
     stats,
+    statMods: {},
     mutations,
     abilities,
   };
@@ -106,6 +123,7 @@ function seedCats(): Cat[] {
       category: null,
       notes: '',
       stats: {},
+      statMods: {},
       mutations,
       abilities,
     };

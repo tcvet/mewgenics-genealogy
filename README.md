@@ -142,9 +142,10 @@ name drops it:
 The weakest cat of each role is flagged in red, rows past the quota are
 marked, and the quota strip on top shows every role's fill (and the missing
 ♀/♂ for the split ones). Clicking a cat opens **“why this score”** — every
-criterion with its raw value and its points — plus the warnings that no
-number should override: ⚠ the room's only carrier of a mutation, 💞 leaving
-would widow a bonded partner.
+criterion with its raw value and its points — plus the cat's stats (the
+real base + event-change value alongside the base one where they differ)
+and the warnings that no number should override: ⚠ the room's only carrier
+of a mutation, 💞 leaving would widow a bonded partner.
 
 **“＋ Candidate from outside the room”** is the whole point: pick a cat from
 another room, give it a role, and it appears in the table where it would land
@@ -244,7 +245,11 @@ leave the current rules alone.
   It is also a filter in the browser.
 - **Base stats** (STR/DEX/CON and INT/SPD/CHA/LCK, grouped as in the game)
   are set in a click matrix: pick 3–7 in a stat's row or “–” for unset;
-  clicking a value in the header row fills every stat with it at once.
+  clicking a value in the header row fills every stat with it at once. The
+  last column records the stat **changes from events** (fights and the like)
+  as the −1/+4 deltas the game shows: the real stat is base + change. Only
+  the base stats are inherited and scored by the Roster screen; the real
+  values show up next to the base ones in its breakdown panel.
 - **Mutations** — the collapsible 🧬 section holds one mutation per body part
   (the game's 10 groups: head, eyes, brows, ears, mouth, body, arms, legs,
   tail, fur — breeding is always symmetric in the game, so left/right pairs

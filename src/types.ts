@@ -162,6 +162,10 @@ export interface Cat {
   notes: string;
   /** base stats; a missing key means "not set" */
   stats: Partial<Record<StatKey, number>>;
+  /** stat changes from events (fights etc.), stored as a delta from the base
+   * stat (the game shows them as −1/+4); a missing key means 0. Only the base
+   * stats are inherited and scored — this is bookkeeping of the real values */
+  statMods: Partial<Record<StatKey, number>>;
   /** mutation per body-part slot (game ids, see `mutations.ts`); a missing key means "no mutation" */
   mutations: Partial<Record<MutationSlot, string>>;
   /** the skills worth tracking on this cat (catalog ids, see `abilities.ts`);

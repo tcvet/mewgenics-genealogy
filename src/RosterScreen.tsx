@@ -27,7 +27,7 @@ import {
   type WishAbility,
   type WishMutation,
 } from './roster';
-import { activeBondPartners, normName, statSum, type CatsStore } from './store';
+import { activeBondPartners, normName, realStatSum, statSum, type CatsStore } from './store';
 import { abilityClassLabel, abilityTip, CategorySelect, RoomToggle, SearchBox } from './controls';
 import { useI18n } from './i18n';
 
@@ -553,17 +553,31 @@ export function RosterScreen({
         />
         <div className="meta">
           📊 {t.statsTitle}
-          {statSum(selected) > 0 && ` (Σ ${statSum(selected)})`}
+          {statSum(selected) > 0 &&
+            ` (Σ ${statSum(selected)}${
+              realStatSum(selected) !== statSum(selected) ? ` → ${realStatSum(selected)}` : ''
+            })`}
         </div>
         <div className="rs-stats">
-          {STAT_KEYS.map((k) => (
-            <span key={k} className="rs-stat" title={t.statNames[k]}>
-              <span className="rs-statname">{k.toUpperCase()}</span>
-              <span className={selected.stats[k] == null ? 'meta' : ''}>
-                {selected.stats[k] ?? '–'}
+          {STAT_KEYS.map((k) => {
+            const mod = selected.statMods[k] ?? 0;
+            return (
+              <span key={k} className="rs-stat" title={t.statNames[k]}>
+                <span className="rs-statname">{k.toUpperCase()}</span>
+                <span className={selected.stats[k] == null ? 'meta' : ''}>
+                  {selected.stats[k] ?? '–'}
+                </span>
+                {mod !== 0 && (
+                  <span
+                    className={`rs-statreal ${mod > 0 ? 'up' : 'down'}`}
+                    title={t.statRealTip}
+                  >
+                    →{(selected.stats[k] ?? 0) + mod}
+                  </span>
+                )}
               </span>
-            </span>
-          ))}
+            );
+          })}
         </div>
         {score && score.parts.length > 0 ? (
           <>
