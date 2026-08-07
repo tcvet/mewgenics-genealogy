@@ -207,7 +207,12 @@ export function LitterPanel({
           </div>
         </>
       )}
-      <StatsMatrix stats={draft.stats} onChange={(stats) => patch({ stats })} />
+      <StatsMatrix
+        stats={draft.stats}
+        onChange={(stats) => patch({ stats })}
+        mods={draft.statMods}
+        onMods={(statMods) => patch({ statMods })}
+      />
       <RoomToggle value={draft.room} onChange={(room) => patch({ room })} />
       {categories.length > 0 && (
         <CategorySelect

@@ -76,6 +76,7 @@ export function makeCat(
   stats: Cat['stats'] = {},
   category: string | null = null,
   abilities: string[] = [],
+  statMods: Cat['statMods'] = {},
 ): Cat {
   return {
     id: crypto.randomUUID(),
@@ -91,7 +92,7 @@ export function makeCat(
     category,
     notes: '',
     stats,
-    statMods: {},
+    statMods,
     mutations,
     abilities,
   };
@@ -249,6 +250,8 @@ export type KittenDraft = {
   mutations: Cat['mutations'];
   abilities: string[];
   stats: Cat['stats'];
+  /** event deltas on top of the base stats — for recording a kitten after the fact */
+  statMods: Cat['statMods'];
   /** roster category, pickable right in the litter form (null — unsorted) */
   category: string | null;
   /** the room the kitten goes to (null — not set) */
@@ -261,6 +264,7 @@ export const emptyKitten = (): KittenDraft => ({
   mutations: {},
   abilities: [],
   stats: {},
+  statMods: {},
   category: null,
   room: null,
 });
@@ -336,6 +340,7 @@ export function useCatsStore() {
         k.stats,
         k.category,
         k.abilities,
+        k.statMods,
       ),
     ]);
   };

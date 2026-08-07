@@ -62,8 +62,7 @@ function ModInput({
 
 /** Clickable stat grid (a row per stat, columns – and 3–7); shared by the
  * cat editor and the kitten form. With `mods`/`onMods` given, a last column
- * edits the event deltas on top of the base stats (cat editor only — a
- * newborn kitten has none). */
+ * edits the event deltas on top of the base stats. */
 export function StatsMatrix({
   stats,
   onChange,
