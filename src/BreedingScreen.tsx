@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { canMate, SEX_GLYPH, type Cat } from './types';
 import { mateCOIs, pairCOI } from './genealogy';
 import { activeBondPartners, assignParents, statSum, type CatsStore } from './store';
@@ -26,6 +26,8 @@ export function BreedingScreen({
   const { cats, byId, bonds, nameTakenBy, addFounder, createKitten, bondCats, dissolveBond } =
     store;
   const [q, setQ] = useState('');
+  const [mateQ, setMateQ] = useState('');
+  const mateSearchRef = useRef<HTMLInputElement>(null);
   const [sourceId, setSourceId] = useState<string | null>(null);
   const [partnerId, setPartnerId] = useState<string | null>(null);
   const [addingFounder, setAddingFounder] = useState(false);
@@ -44,6 +46,7 @@ export function BreedingScreen({
     if (!externalSource) return;
     setSourceId(externalSource);
     setPartnerId(defaultPartnerId(byId.get(externalSource)));
+    setMateQ('');
     setAddingFounder(false);
     // a gone cat pushed in from the browser must be visible in the list
     if (byId.get(externalSource)?.gone) setShowGone(true);
@@ -77,7 +80,14 @@ export function BreedingScreen({
     const next = id === sourceId ? null : id;
     setSourceId(next);
     setPartnerId(next ? defaultPartnerId(byId.get(next)) : null);
+    setMateQ('');
   };
+
+  // typing-only flow: picking the first parent (click or Enter in the search
+  // box) drops the cursor into the partner search that has just appeared
+  useEffect(() => {
+    if (sourceId) mateSearchRef.current?.focus();
+  }, [sourceId]);
 
   const toggleGone = () => {
     if (showGone) {
@@ -109,6 +119,12 @@ export function BreedingScreen({
             placeholder={t.searchPlaceholder}
             value={q}
             onChange={(e) => setQ(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key !== 'Enter' || listed.length === 0) return;
+              // already the source — just hop to the partner search
+              if (listed[0].id === sourceId) mateSearchRef.current?.focus();
+              else pickSource(listed[0].id);
+            }}
           />
           <button
             type="button"
@@ -173,6 +189,9 @@ export function BreedingScreen({
                 pickedIds={partnerId ? [partnerId] : []}
                 onPick={(id) => setPartnerId(id === partnerId ? null : id)}
                 defaultSort="name"
+                search={mateQ}
+                onSearch={setMateQ}
+                searchRef={mateSearchRef}
               />
             </div>
             <div className="meta br-legend">{t.mateLegend}</div>

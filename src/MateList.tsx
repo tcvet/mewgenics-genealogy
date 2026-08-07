@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type Ref } from 'react';
 import { SEX_GLYPH, type Cat } from './types';
 import { coiTier, formatCOI } from './genealogy';
 import { activeBondPartners, statSum } from './store';
@@ -42,15 +42,24 @@ export function MateList({
   pickedIds,
   onPick,
   defaultSort = 'coi',
+  search,
+  onSearch,
+  searchRef,
 }: {
   mates: MateEntry[];
   pickedIds: string[];
   onPick: (id: string) => void;
   defaultSort?: MateSort;
+  /** controlled filter query; the search box is rendered only when onSearch is given */
+  search?: string;
+  onSearch?: (q: string) => void;
+  /** lets the parent drop the cursor into the search box (typing-only flow) */
+  searchRef?: Ref<HTMLInputElement>;
 }) {
   const { t } = useI18n();
   const [sort, setSort] = useState<MateSort>(defaultSort);
   const [showTaken, setShowTaken] = useState(false);
+  const query = (search ?? '').trim().toLowerCase();
   const sorted = useMemo(() => {
     const byName = (a: { cat: Cat }, b: { cat: Cat }) => a.cat.name.localeCompare(b.cat.name);
     const list = [...mates];
@@ -64,11 +73,13 @@ export function MateList({
     const own = sorted.filter((m) => m.bond?.own);
     const free = sorted.filter((m) => !m.bond);
     const taken = sorted.filter((m) => m.bond && !m.bond.own);
+    // an explicit search looks through the taken cats too — the ban is soft anyway
+    const pool = showTaken || query ? [...own, ...free, ...taken] : [...own, ...free];
     return {
-      shown: showTaken ? [...own, ...free, ...taken] : [...own, ...free],
+      shown: query ? pool.filter((m) => m.cat.name.toLowerCase().includes(query)) : pool,
       takenCount: taken.length,
     };
-  }, [sorted, showTaken]);
+  }, [sorted, showTaken, query]);
   const sorts: { key: MateSort; label: string }[] = [
     { key: 'coi', label: 'COI' },
     { key: 'name', label: t.mateSortName },
@@ -77,6 +88,21 @@ export function MateList({
   return (
     <>
       <div className="row">
+        {onSearch && (
+          <input
+            ref={searchRef}
+            type="text"
+            placeholder={t.searchPlaceholder}
+            value={search ?? ''}
+            onChange={(e) => onSearch(e.target.value)}
+            onKeyDown={(e) => {
+              // Enter picks the top candidate (no-op if it is already picked,
+              // so a stray Enter does not toggle the partner off)
+              if (e.key === 'Enter' && shown.length > 0 && !pickedIds.includes(shown[0].cat.id))
+                onPick(shown[0].cat.id);
+            }}
+          />
+        )}
         {sorts.map((s) => (
           <button
             key={s.key}
