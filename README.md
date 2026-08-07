@@ -138,6 +138,14 @@ name drops it:
   to the points.
 - **Children** — how many the cat already has; negative weight where fresh
   blood is the point.
+- **Stat columns** — “Stat column…” in the same picker opens a small inline
+  form: pick one stat, base or **± real** (base + event changes), and how it
+  scores — the value itself, points per point below/above a threshold, or
+  flat points for merely being past it (“flat if below” — a penalty that does
+  not care *how far* below). The threshold sits in the column header next to
+  the weight, so both tune live; several stat columns can coexist, even over
+  the same stat (a soft threshold and a harsh one). An unset stat always
+  contributes 0 — no data is not the same as a zero stat.
 
 The weakest cat of each role is flagged in red, rows past the quota are
 marked, and the quota strip on top shows every role's fill (and the missing

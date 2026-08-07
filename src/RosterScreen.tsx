@@ -1,20 +1,31 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MUTATION_SLOTS, ROOMS, SEX_GLYPH, STAT_KEYS, type Cat, type RoomId } from './types';
+import {
+  MUTATION_SLOTS,
+  ROOMS,
+  SEX_GLYPH,
+  STAT_KEYS,
+  type Cat,
+  type RoomId,
+  type StatKey,
+} from './types';
 import { avgMateCOIs } from './genealogy';
 import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
 import { abilityLabel, getAbility, houseAbilities, type HouseAbility } from './abilities';
 import {
   CRITERION_KEYS,
+  critId,
   DEFAULT_WEIGHT,
   defaultCriteria,
   isCOICriterion,
   makeCategory,
+  makeStatCriterion,
   quotaFill,
   quotaTotal,
   roomPolicy,
   roomSlots,
   scoreCat,
   SEED_PRESETS,
+  STAT_CRIT_MODES,
   wishAbilityCarriers,
   wishCarriers,
   wishKey,
@@ -24,6 +35,8 @@ import {
   type CriterionKey,
   type RoomPolicy,
   type ScoreCtx,
+  type StatCriterion,
+  type StatCritMode,
   type WishAbility,
   type WishMutation,
 } from './roster';
@@ -37,6 +50,29 @@ const fmt = (n: number) => {
 };
 
 const signed = (n: number) => (n > 0 ? `+${fmt(n)}` : fmt(n));
+
+const statModeGlyph = (m: StatCritMode) =>
+  m === 'value' ? '' : m.startsWith('below') ? '<' : '>';
+
+/** Compact column label: "±SPD" (± — the real value, base + event mods). */
+const statColLabel = (c: StatCriterion) => `${c.real ? '±' : ''}${c.stat.toUpperCase()}`;
+
+/** The label with the threshold spelled out — for the breakdown panel. */
+const statColFull = (c: StatCriterion) =>
+  c.mode === 'value'
+    ? statColLabel(c)
+    : `${statColLabel(c)} ${statModeGlyph(c.mode)}${c.threshold}`;
+
+/** What a fresh stat column starts as: the flat penalty the feature exists for. */
+const draftDefaults = {
+  stat: 'spd' as StatKey,
+  real: true,
+  mode: 'belowFlat' as StatCritMode,
+  threshold: 5,
+  weight: -10,
+};
+
+type StatDraft = typeof draftDefaults & { categoryId: string };
 
 /** Number field that tolerates half-typed input ("-", "0.") instead of snapping to 0. */
 function NumInput({
@@ -101,6 +137,8 @@ export function RosterScreen({
   const [candCategory, setCandCategory] = useState<string | null>(null);
   const [rulesOpen, setRulesOpen] = useState(false);
   const [picking, setPicking] = useState(false);
+  // the "new stat column" inline form — one at a time, in that category's header
+  const [statDraft, setStatDraft] = useState<StatDraft | null>(null);
 
   const policy = roomPolicy(roster, room);
   const candidate = candidateId ? (byId.get(candidateId) ?? null) : null;
@@ -371,16 +409,27 @@ export function RosterScreen({
     </span>
   );
 
+  /** Full description of a stat column — the header/breakdown tooltip. */
+  const statColTip = (c: StatCriterion) =>
+    `${t.statNames[c.stat]} — ${t.rsStatModes[c.mode]}${
+      c.mode !== 'value' ? ` ${c.threshold}` : ''
+    }${c.real ? ` · ${t.statRealTip}` : ''}`;
+
   const section = (s: Section) => {
     const cols = s.policy.criteria;
     const worst = s.rows.length > 1 ? s.rows[s.rows.length - 1] : null;
     const unused = CRITERION_KEYS.filter((k) => !cols.some((c) => c.key === k));
     // a scaled COI column reads as opaque points; show the raw percent alongside
     const rawCOI = new Set(
-      cols.filter((c) => isCOICriterion(c.key) && Math.abs(c.weight) !== 1).map((c) => c.key),
+      cols.filter((c) => isCOICriterion(c) && Math.abs(c.weight) !== 1).map(critId),
     );
     const grid = {
-      gridTemplateColumns: `minmax(150px, 1fr) repeat(${cols.length + 1}, 5.2rem)`,
+      // a stat column is wider: its header holds a threshold next to the weight
+      gridTemplateColumns: [
+        'minmax(150px, 1fr)',
+        ...cols.map((c) => (c.key === 'stat' ? '7rem' : '5.2rem')),
+        '5.2rem',
+      ].join(' '),
     };
     return (
       <div className="rs-section" key={s.def.id}>
@@ -390,59 +439,158 @@ export function RosterScreen({
           <span className="meta">
             {s.rows.length}/{quotaTotal(s.policy.quota)}
           </span>
-          {/* the picker never disappears once every criterion is used — a control
-              that vanishes reads as a glitch */}
-          <select
-            className="rs-addcol"
-            disabled={unused.length === 0}
-            title={unused.length === 0 ? t.rsAllColumns : t.rsAddColumn}
-            value=""
-            onChange={(e) => {
-              const key = e.target.value as CriterionKey;
-              // the placeholder must never turn into a criterion of its own
-              if (!CRITERION_KEYS.includes(key)) return;
-              patchCategory(s.def.id, {
-                criteria: [...cols, { key, weight: DEFAULT_WEIGHT[key] }],
-              });
-            }}
-          >
-            <option value="">＋ {t.rsColumn}</option>
-            {unused.map((k) => (
-              <option key={k} value={k}>
-                {t.rsCrits[k]}
-              </option>
-            ))}
-          </select>
+          {statDraft?.categoryId === s.def.id ? (
+            <span className="rs-statform">
+              <select
+                className="class-select"
+                value={statDraft.stat}
+                onChange={(e) => setStatDraft({ ...statDraft, stat: e.target.value as StatKey })}
+              >
+                {STAT_KEYS.map((k) => (
+                  <option key={k} value={k}>
+                    {k.toUpperCase()} · {t.statNames[k]}
+                  </option>
+                ))}
+              </select>
+              <label className="rs-check" title={t.statRealTip}>
+                <input
+                  type="checkbox"
+                  checked={statDraft.real}
+                  onChange={(e) => setStatDraft({ ...statDraft, real: e.target.checked })}
+                />
+                {t.rsStatReal}
+              </label>
+              <select
+                className="class-select"
+                value={statDraft.mode}
+                onChange={(e) =>
+                  setStatDraft({ ...statDraft, mode: e.target.value as StatCritMode })
+                }
+              >
+                {STAT_CRIT_MODES.map((m) => (
+                  <option key={m} value={m}>
+                    {t.rsStatModes[m]}
+                  </option>
+                ))}
+              </select>
+              {statDraft.mode !== 'value' && (
+                <NumInput
+                  className="rs-weight"
+                  title={t.rsStatThreshold}
+                  value={statDraft.threshold}
+                  onChange={(threshold) => setStatDraft({ ...statDraft, threshold })}
+                />
+              )}
+              <NumInput
+                className="rs-weight"
+                step={0.5}
+                title={t.rsWeightTip}
+                value={statDraft.weight}
+                onChange={(weight) => setStatDraft({ ...statDraft, weight })}
+              />
+              <button
+                type="button"
+                className="small accent"
+                title={t.rsAddColumn}
+                onClick={() => {
+                  const { categoryId, ...init } = statDraft;
+                  patchCategory(categoryId, { criteria: [...cols, makeStatCriterion(init)] });
+                  setStatDraft(null);
+                }}
+              >
+                ✓
+              </button>
+              <button type="button" className="small" onClick={() => setStatDraft(null)}>
+                ✕
+              </button>
+            </span>
+          ) : (
+            // never disabled, never gone: stat columns can always be added — a
+            // control that vanishes reads as a glitch
+            <select
+              className="rs-addcol"
+              title={t.rsAddColumn}
+              value=""
+              onChange={(e) => {
+                if (e.target.value === '__stat') {
+                  setStatDraft({ ...draftDefaults, categoryId: s.def.id });
+                  return;
+                }
+                const key = e.target.value as CriterionKey;
+                // the placeholder must never turn into a criterion of its own
+                if (!CRITERION_KEYS.includes(key)) return;
+                patchCategory(s.def.id, {
+                  criteria: [...cols, { key, weight: DEFAULT_WEIGHT[key] }],
+                });
+              }}
+            >
+              <option value="">＋ {t.rsColumn}</option>
+              {unused.map((k) => (
+                <option key={k} value={k}>
+                  {t.rsCrits[k]}
+                </option>
+              ))}
+              <option value="__stat">{t.rsStatColumn}</option>
+            </select>
+          )}
         </div>
         <div className="rs-table">
           <div className="rs-hrow" style={grid}>
             <span />
             {cols.map((c) => (
-              <span key={c.key} className="rs-col" title={t.rsCritTips[c.key]}>
+              <span
+                key={critId(c)}
+                className="rs-col"
+                title={c.key === 'stat' ? statColTip(c) : t.rsCritTips[c.key]}
+              >
                 <span className="rs-collabel">
-                  {t.rsCrits[c.key]}
+                  {c.key === 'stat' ? statColLabel(c) : t.rsCrits[c.key]}
                   <button
                     type="button"
                     className="rs-drop"
                     title={t.rsRemoveColumn}
                     onClick={() =>
-                      patchCategory(s.def.id, { criteria: cols.filter((x) => x.key !== c.key) })
+                      patchCategory(s.def.id, { criteria: cols.filter((x) => x !== c) })
                     }
                   >
                     ✕
                   </button>
                 </span>
-                <NumInput
-                  className="rs-weight"
-                  step={0.5}
-                  title={t.rsWeightTip}
-                  value={c.weight}
-                  onChange={(weight) =>
-                    patchCategory(s.def.id, {
-                      criteria: cols.map((x) => (x.key === c.key ? { ...x, weight } : x)),
-                    })
-                  }
-                />
+                <span className="rs-statctl">
+                  {c.key === 'stat' && c.mode !== 'value' && (
+                    <>
+                      <span className="rs-modeglyph">{statModeGlyph(c.mode)}</span>
+                      <NumInput
+                        className="rs-weight rs-mini"
+                        title={t.rsStatThreshold}
+                        value={c.threshold}
+                        onChange={(threshold) =>
+                          patchCategory(s.def.id, {
+                            criteria: cols.map((x) => (x === c ? { ...c, threshold } : x)),
+                          })
+                        }
+                      />
+                      {(c.mode === 'belowFlat' || c.mode === 'aboveFlat') && (
+                        <span className="rs-modeglyph" title={t.rsStatModes[c.mode]}>
+                          =
+                        </span>
+                      )}
+                    </>
+                  )}
+                  <NumInput
+                    className={`rs-weight${
+                      c.key === 'stat' && c.mode !== 'value' ? ' rs-mini' : ''
+                    }`}
+                    step={0.5}
+                    title={t.rsWeightTip}
+                    value={c.weight}
+                    onChange={(weight) =>
+                      patchCategory(s.def.id, {
+                        criteria: cols.map((x) => (x === c ? { ...x, weight } : x)),
+                      })
+                    }
+                  />
+                </span>
               </span>
             ))}
             <span className="rs-col rs-total">{t.rsTotal}</span>
@@ -462,9 +610,9 @@ export function RosterScreen({
               >
                 {catCell(c)}
                 {score?.parts.map((p) => (
-                  <span key={p.key} className={`rs-num${p.points < 0 ? ' neg' : ''}`}>
+                  <span key={critId(p.crit)} className={`rs-num${p.points < 0 ? ' neg' : ''}`}>
                     {p.points === 0 ? '·' : signed(p.points)}
-                    {rawCOI.has(p.key) && p.points !== 0 && (
+                    {rawCOI.has(critId(p.crit)) && p.points !== 0 && (
                       <span className="rs-raw" title={t.rsCOIRawTip}>
                         {fmt(p.value)}%
                       </span>
@@ -584,11 +732,15 @@ export function RosterScreen({
             <div className="meta">{t.rsBreakdown}</div>
             <div className="rs-parts">
               {score.parts.map((p) => (
-                <div key={p.key} className="rs-part" title={t.rsCritTips[p.key]}>
-                  <span>{t.rsCrits[p.key]}</span>
+                <div
+                  key={critId(p.crit)}
+                  className="rs-part"
+                  title={p.crit.key === 'stat' ? statColTip(p.crit) : t.rsCritTips[p.crit.key]}
+                >
+                  <span>{p.crit.key === 'stat' ? statColFull(p.crit) : t.rsCrits[p.crit.key]}</span>
                   <span className="meta">
                     {fmt(p.value)}
-                    {isCOICriterion(p.key) && '%'}
+                    {isCOICriterion(p.crit) && '%'}
                   </span>
                   <span className={p.points < 0 ? 'neg' : ''}>{signed(p.points)}</span>
                 </div>

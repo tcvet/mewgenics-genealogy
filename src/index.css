@@ -2123,6 +2123,45 @@ select.rs-addcol:disabled {
   white-space: nowrap;
 }
 
+/* the header controls of one column: for a stat column the threshold sits
+   next to the weight, with the </>/= glyphs between them */
+.rs-statctl {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rs-modeglyph {
+  font-weight: 700;
+}
+
+input.rs-weight.rs-mini {
+  width: 2.6rem;
+  padding: 3px;
+}
+
+/* at this width the number spinners would sit on top of the digits */
+input.rs-mini::-webkit-inner-spin-button,
+input.rs-mini::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* the inline "new stat column" form, replacing the picker in the section header */
+.rs-statform {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 12px;
+}
+
+.rs-statform select {
+  width: auto;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
 .rs-hrow .rs-total {
   font-weight: 700;
   color: var(--text);

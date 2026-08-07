@@ -5,6 +5,7 @@ import {
   type Cat,
   type MutationSlot,
   type RoomId,
+  type StatKey,
 } from './types';
 
 /**
@@ -46,8 +47,8 @@ export const CRITERION_KEYS: CriterionKey[] = [
 ];
 
 /** The COI-percent criteria — the table shows their raw percent next to scaled points. */
-export const isCOICriterion = (key: CriterionKey): boolean =>
-  key === 'roomCOI' || key === 'categoryCOI';
+export const isCOICriterion = (c: Criterion): boolean =>
+  c.key === 'roomCOI' || c.key === 'categoryCOI';
 
 /** A sane starting scorecard; every weight is meant to be tuned in the table header. */
 export const DEFAULT_WEIGHT: Record<CriterionKey, number> = {
@@ -62,10 +63,72 @@ export const DEFAULT_WEIGHT: Record<CriterionKey, number> = {
   children: -2,
 };
 
-export interface Criterion {
+export interface BuiltinCriterion {
   key: CriterionKey;
   /** points per unit of the criterion's value (negative — a penalty) */
   weight: number;
+}
+
+/** How a stat column turns the stat into the scored value (× weight = points). */
+export type StatCritMode = 'value' | 'below' | 'belowFlat' | 'above' | 'aboveFlat';
+
+export const STAT_CRIT_MODES: StatCritMode[] = [
+  'value',
+  'below',
+  'belowFlat',
+  'above',
+  'aboveFlat',
+];
+
+/**
+ * A parameterized column over one stat: the stat itself ('value'), points per
+ * point of shortfall/excess against a threshold ('below'/'above'), or flat
+ * points for merely being past it ('belowFlat'/'aboveFlat' — value is 0 or 1,
+ * so the points are exactly the weight). Several stat columns may coexist,
+ * even over the same stat (a soft threshold and a harsh one).
+ */
+export interface StatCriterion {
+  key: 'stat';
+  /** identity of the column — the react key and the removal handle */
+  id: string;
+  stat: StatKey;
+  /** true — base + event mods (the real value), false — the base stat alone */
+  real: boolean;
+  mode: StatCritMode;
+  /** ignored in 'value' mode */
+  threshold: number;
+  weight: number;
+}
+
+export type Criterion = BuiltinCriterion | StatCriterion;
+
+/** Stable identity of a column: builtins by key, stat columns by their own id. */
+export const critId = (c: Criterion): string => (c.key === 'stat' ? c.id : c.key);
+
+export const makeStatCriterion = (init: Omit<StatCriterion, 'key' | 'id'>): StatCriterion => ({
+  key: 'stat',
+  id: crypto.randomUUID(),
+  ...init,
+});
+
+/** The measured value of a stat column for one cat (before the weight). */
+export function statCritValue(cat: Cat, c: StatCriterion): number {
+  const base = cat.stats[c.stat];
+  // an unset stat is unknown, not zero — it neither earns nor costs points
+  if (base == null) return 0;
+  const v = c.real ? base + (cat.statMods[c.stat] ?? 0) : base;
+  switch (c.mode) {
+    case 'value':
+      return v;
+    case 'below':
+      return Math.max(0, c.threshold - v);
+    case 'belowFlat':
+      return v < c.threshold ? 1 : 0;
+    case 'above':
+      return Math.max(0, v - c.threshold);
+    case 'aboveFlat':
+      return v > c.threshold ? 1 : 0;
+  }
 }
 
 /** A mutation the room exists to keep, and what carrying it is worth. */
@@ -224,7 +287,7 @@ export interface ScoreCtx {
 }
 
 export interface ScorePart {
-  key: CriterionKey;
+  crit: Criterion;
   /** the measured value (mutation points, sevens, Σ stats, COI %, children…) */
   value: number;
   /** value × weight — what lands in the total */
@@ -288,8 +351,8 @@ export function scoreCat(cat: Cat, criteria: Criterion[], ctx: ScoreCtx): CatSco
     }
   };
   const parts = criteria.map((c) => {
-    const v = value(c.key);
-    return { key: c.key, value: v, points: v * c.weight };
+    const v = c.key === 'stat' ? statCritValue(cat, c) : value(c.key);
+    return { crit: c, value: v, points: v * c.weight };
   });
   return {
     total: parts.reduce((sum, p) => sum + p.points, 0),
@@ -341,13 +404,31 @@ const num = (v: unknown, fallback: number) => (typeof v === 'number' && isFinite
 
 function normCriteria(raw: unknown): Criterion[] {
   if (!Array.isArray(raw)) return [];
-  const seen = new Set<CriterionKey>();
+  // one shared set: builtin keys and stat-column uuids can never collide
+  const seen = new Set<string>();
   const out: Criterion[] = [];
   for (const c of raw) {
     const key = (c as Criterion)?.key;
+    if (key === 'stat') {
+      const sc = c as StatCriterion;
+      if (!STAT_KEYS.includes(sc.stat)) continue;
+      const id = typeof sc.id === 'string' ? sc.id : crypto.randomUUID();
+      if (seen.has(id)) continue;
+      seen.add(id);
+      out.push({
+        key: 'stat',
+        id,
+        stat: sc.stat,
+        real: sc.real !== false,
+        mode: STAT_CRIT_MODES.includes(sc.mode) ? sc.mode : 'belowFlat',
+        threshold: num(sc.threshold, 5),
+        weight: num(sc.weight, -10),
+      });
+      continue;
+    }
     if (!CRITERION_KEYS.includes(key) || seen.has(key)) continue;
     seen.add(key);
-    out.push({ key, weight: num((c as Criterion).weight, DEFAULT_WEIGHT[key]) });
+    out.push({ key, weight: num((c as BuiltinCriterion).weight, DEFAULT_WEIGHT[key]) });
   }
   return out;
 }
