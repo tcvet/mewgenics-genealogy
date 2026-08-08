@@ -123,11 +123,14 @@ name drops it:
 
 - **Mutations** — the wanted mutations the cat carries, each worth the points
   set for it in the room's wishlist.
-- **Only carrier** — how many of those nobody else in the room carries. Worth
-  a large bonus: a pure score would happily evict the last carrier of a rare
-  mutation over a few stat points.
-- **Skills** and **Only skill** — the same pair of criteria over the room's
-  wanted-skill list.
+- **Rarity** — wanted mutations with fewer carriers in the room than a
+  threshold, set right in the column header next to the weight. Each earns
+  its wishlist points per missing carrier — linear, so the scarcer a
+  mutation, the dearer each of its carriers; a threshold of 2 is the classic
+  "only carrier" bonus. Keep it weighty: a pure stat score would happily
+  evict the last carrier of a rare mutation over a few stat points.
+- **Skills** and **Skill rarity** — the same pair of criteria over the
+  room's wanted-skill list.
 - **Sevens** and **Σ stats** — base-stat quality.
 - **Room COI** — the average offspring COI with the compatible partners *in
   this room*, in percent (ancestors still come from the whole tree). Give it
@@ -158,8 +161,8 @@ of a mutation, 💞 leaving would widow a bonded partner.
 
 **“＋ Candidate from outside the room”** is the whole point: pick a cat from
 another room, give it a role, and it appears in the table where it would land
-— scored as if it already lived there, so a mutation it duplicates stops
-counting as unique for the current holder. Then either move it in, or
+— scored as if it already lived there, so a mutation it duplicates loses
+rarity for the current holder. Then either move it in, or
 “⇄ Replace *X*”, which moves it in and marks the weakest of that role as
 having left home. Nothing happens automatically; the screen only ranks and
 suggests.

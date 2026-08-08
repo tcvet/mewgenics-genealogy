@@ -25,9 +25,9 @@ import {
 /** The scoring criteria; each is one column of the roster table. */
 export type CriterionKey =
   | 'wish'
-  | 'unique'
+  | 'rare'
   | 'wishAbility'
-  | 'uniqueAbility'
+  | 'rareAbility'
   | 'sevens'
   | 'statSum'
   | 'roomCOI'
@@ -36,9 +36,9 @@ export type CriterionKey =
 
 export const CRITERION_KEYS: CriterionKey[] = [
   'wish',
-  'unique',
+  'rare',
   'wishAbility',
-  'uniqueAbility',
+  'rareAbility',
   'sevens',
   'statSum',
   'roomCOI',
@@ -53,9 +53,9 @@ export const isCOICriterion = (c: Criterion): boolean =>
 /** A sane starting scorecard; every weight is meant to be tuned in the table header. */
 export const DEFAULT_WEIGHT: Record<CriterionKey, number> = {
   wish: 1,
-  unique: 20,
+  rare: 2,
   wishAbility: 1,
-  uniqueAbility: 20,
+  rareAbility: 2,
   sevens: 5,
   statSum: 0.5,
   roomCOI: -0.5,
@@ -63,11 +63,31 @@ export const DEFAULT_WEIGHT: Record<CriterionKey, number> = {
   children: -2,
 };
 
+/** Below this many carriers in the room a wanted mutation counts as rare. */
+export const DEFAULT_RARE_MIN = 2;
+
 export interface BuiltinCriterion {
-  key: CriterionKey;
+  key: Exclude<CriterionKey, RareCriterion['key']>;
   /** points per unit of the criterion's value (negative — a penalty) */
   weight: number;
 }
+
+/**
+ * The rarity columns — one over the wanted mutations, one over the wanted
+ * skills: every wanted entry with fewer than `min` carriers in the room earns
+ * its wishlist weight per missing carrier — linear, so the scarcer, the
+ * dearer each of its carriers. `min` 2 is the retired "only carrier"/"only
+ * skill" column: only a sole carrier scores.
+ */
+export interface RareCriterion {
+  key: 'rare' | 'rareAbility';
+  /** carriers at which a wanted mutation or skill stops counting as rare */
+  min: number;
+  weight: number;
+}
+
+export const isRareCriterion = (c: Criterion): c is RareCriterion =>
+  c.key === 'rare' || c.key === 'rareAbility';
 
 /** How a stat column turns the stat into the scored value (× weight = points). */
 export type StatCritMode = 'value' | 'below' | 'belowFlat' | 'above' | 'aboveFlat';
@@ -100,7 +120,7 @@ export interface StatCriterion {
   weight: number;
 }
 
-export type Criterion = BuiltinCriterion | StatCriterion;
+export type Criterion = BuiltinCriterion | StatCriterion | RareCriterion;
 
 /** Stable identity of a column: builtins by key, stat columns by their own id. */
 export const critId = (c: Criterion): string => (c.key === 'stat' ? c.id : c.key);
@@ -203,7 +223,11 @@ export const roomPolicy = (config: RosterConfig, room: RoomId): RoomPolicy =>
   config.rooms[room] ?? defaultRoomPolicy();
 
 export const defaultCriteria = (keys: CriterionKey[]): Criterion[] =>
-  keys.map((key) => ({ key, weight: DEFAULT_WEIGHT[key] }));
+  keys.map((key) =>
+    key === 'rare' || key === 'rareAbility'
+      ? { key, min: DEFAULT_RARE_MIN, weight: DEFAULT_WEIGHT[key] }
+      : { key, weight: DEFAULT_WEIGHT[key] },
+  );
 
 export function makeCategory(name: string, index: number): CategoryDef {
   return {
@@ -229,7 +253,7 @@ export const SEED_PRESETS: {
   {
     key: 'carriers',
     quota: 14,
-    criteria: ['wish', 'unique', 'sevens', 'statSum', 'roomCOI'],
+    criteria: ['wish', 'rare', 'sevens', 'statSum', 'roomCOI'],
   },
   {
     key: 'outsiders',
@@ -327,16 +351,25 @@ export function scoreCat(cat: Cat, criteria: Criterion[], ctx: ScoreCtx): CatSco
     const carriers = ctx.abilityCarriers.get(w.id) ?? [];
     return carriers.length === 1 && carriers[0].id === cat.id;
   });
-  const value = (key: CriterionKey): number => {
-    switch (key) {
+  const value = (c: BuiltinCriterion | RareCriterion): number => {
+    switch (c.key) {
       case 'wish':
         return hits.reduce((sum, w) => sum + w.weight, 0);
-      case 'unique':
-        return sole.length;
+      case 'rare':
+        // (min − carriers) × the mutation's wishlist weight, per rare mutation
+        // carried — losing one of two carriers doubles what the last one holds
+        return hits.reduce((sum, w) => {
+          const carriers = ctx.carriers.get(wishKey(w))?.length ?? 0;
+          return sum + Math.max(0, c.min - carriers) * w.weight;
+        }, 0);
       case 'wishAbility':
         return abilityHits.reduce((sum, w) => sum + w.weight, 0);
-      case 'uniqueAbility':
-        return abilitySole.length;
+      case 'rareAbility':
+        // the mutation rarity above, verbatim, over the wanted skills
+        return abilityHits.reduce((sum, w) => {
+          const carriers = ctx.abilityCarriers.get(w.id)?.length ?? 0;
+          return sum + Math.max(0, c.min - carriers) * w.weight;
+        }, 0);
       case 'sevens':
         return sevens(cat);
       case 'statSum':
@@ -351,7 +384,7 @@ export function scoreCat(cat: Cat, criteria: Criterion[], ctx: ScoreCtx): CatSco
     }
   };
   const parts = criteria.map((c) => {
-    const v = c.key === 'stat' ? statCritValue(cat, c) : value(c.key);
+    const v = c.key === 'stat' ? statCritValue(cat, c) : value(c);
     return { crit: c, value: v, points: v * c.weight };
   });
   return {
@@ -408,7 +441,7 @@ function normCriteria(raw: unknown): Criterion[] {
   const seen = new Set<string>();
   const out: Criterion[] = [];
   for (const c of raw) {
-    const key = (c as Criterion)?.key;
+    const key = (c as { key?: unknown })?.key;
     if (key === 'stat') {
       const sc = c as StatCriterion;
       if (!STAT_KEYS.includes(sc.stat)) continue;
@@ -426,9 +459,31 @@ function normCriteria(raw: unknown): Criterion[] {
       });
       continue;
     }
-    if (!CRITERION_KEYS.includes(key) || seen.has(key)) continue;
-    seen.add(key);
-    out.push({ key, weight: num((c as BuiltinCriterion).weight, DEFAULT_WEIGHT[key]) });
+    if (key === 'rare' || key === 'rareAbility' || key === 'unique' || key === 'uniqueAbility') {
+      const rk: RareCriterion['key'] =
+        key === 'rare' || key === 'unique' ? 'rare' : 'rareAbility';
+      if (seen.has(rk)) continue;
+      seen.add(rk);
+      const rc = c as Partial<RareCriterion>;
+      out.push(
+        key === 'rare' || key === 'rareAbility'
+          ? {
+              key: rk,
+              min: Math.max(1, Math.round(num(rc.min, DEFAULT_RARE_MIN))),
+              weight: num(rc.weight, DEFAULT_WEIGHT[rk]),
+            }
+          : // the retired "only carrier"/"only skill" column is rarity with min
+            // 2, except its points were per sole entry, not per wishlist-weight
+            // unit — with the default wishlist weight of 10 the old weight
+            // shrinks tenfold
+            { key: rk, min: 2, weight: num(rc.weight, 20) / 10 },
+      );
+      continue;
+    }
+    const bk = key as BuiltinCriterion['key'];
+    if (!CRITERION_KEYS.includes(bk) || seen.has(bk)) continue;
+    seen.add(bk);
+    out.push({ key: bk, weight: num((c as BuiltinCriterion).weight, DEFAULT_WEIGHT[bk]) });
   }
   return out;
 }

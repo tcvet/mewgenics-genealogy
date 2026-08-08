@@ -14,9 +14,9 @@ import { abilityLabel, getAbility, houseAbilities, type HouseAbility } from './a
 import {
   CRITERION_KEYS,
   critId,
-  DEFAULT_WEIGHT,
   defaultCriteria,
   isCOICriterion,
+  isRareCriterion,
   makeCategory,
   makeStatCriterion,
   quotaFill,
@@ -425,10 +425,11 @@ export function RosterScreen({
       cols.filter((c) => isCOICriterion(c) && Math.abs(c.weight) !== 1).map(critId),
     );
     const grid = {
-      // a stat column is wider: its header holds a threshold next to the weight
+      // stat and rarity columns are wider: their header holds a threshold next
+      // to the weight
       gridTemplateColumns: [
         'minmax(150px, 1fr)',
-        ...cols.map((c) => (c.key === 'stat' ? '7rem' : '5.2rem')),
+        ...cols.map((c) => (c.key === 'stat' || isRareCriterion(c) ? '7rem' : '5.2rem')),
         '5.2rem',
       ].join(' '),
     };
@@ -521,7 +522,7 @@ export function RosterScreen({
                 // the placeholder must never turn into a criterion of its own
                 if (!CRITERION_KEYS.includes(key)) return;
                 patchCategory(s.def.id, {
-                  criteria: [...cols, { key, weight: DEFAULT_WEIGHT[key] }],
+                  criteria: [...cols, ...defaultCriteria([key])],
                 });
               }}
             >
@@ -578,9 +579,28 @@ export function RosterScreen({
                       )}
                     </>
                   )}
+                  {isRareCriterion(c) && (
+                    <>
+                      <span className="rs-modeglyph" title={t.rsRareMin}>
+                        {'<'}
+                      </span>
+                      <NumInput
+                        className="rs-weight rs-mini"
+                        title={t.rsRareMin}
+                        value={c.min}
+                        onChange={(min) =>
+                          patchCategory(s.def.id, {
+                            criteria: cols.map((x) => (x === c ? { ...c, min } : x)),
+                          })
+                        }
+                      />
+                    </>
+                  )}
                   <NumInput
                     className={`rs-weight${
-                      c.key === 'stat' && c.mode !== 'value' ? ' rs-mini' : ''
+                      (c.key === 'stat' && c.mode !== 'value') || isRareCriterion(c)
+                        ? ' rs-mini'
+                        : ''
                     }`}
                     step={0.5}
                     title={t.rsWeightTip}
@@ -738,7 +758,13 @@ export function RosterScreen({
                   className="rs-part"
                   title={p.crit.key === 'stat' ? statColTip(p.crit) : t.rsCritTips[p.crit.key]}
                 >
-                  <span>{p.crit.key === 'stat' ? statColFull(p.crit) : t.rsCrits[p.crit.key]}</span>
+                  <span>
+                    {p.crit.key === 'stat'
+                      ? statColFull(p.crit)
+                      : isRareCriterion(p.crit)
+                        ? `${t.rsCrits[p.crit.key]} <${p.crit.min}`
+                        : t.rsCrits[p.crit.key]}
+                  </span>
                   <span className="meta">
                     {fmt(p.value)}
                     {isCOICriterion(p.crit) && '%'}
