@@ -9,7 +9,7 @@ import {
   type StatKey,
 } from './types';
 import { avgMateCOIs } from './genealogy';
-import { getNamed, houseMutations, mutationLabel, type HouseMutation } from './mutations';
+import { houseMutations, mutationLabel, type HouseMutation } from './mutations';
 import { abilityLabel, getAbility, houseAbilities, type HouseAbility } from './abilities';
 import {
   CRITERION_KEYS,
@@ -329,10 +329,11 @@ export function RosterScreen({
   const setWish = (next: WishMutation[]) => patchRoom({ wishlist: next });
   const setWishAbilities = (next: WishAbility[]) => patchRoom({ wishAbilities: next });
 
-  // what the wishlist picker offers: named mutations the house actually carries
+  // what the wishlist picker offers: mutations the house actually carries
+  // (named and common alike — a common is wishable once some cat has it)
   const wishOptions = useMemo(() => {
     const taken = new Set(policy.wishlist.map(wishKey));
-    return houseMutations(cats).filter((r) => getNamed(r.id) && !taken.has(wishKey(r)));
+    return houseMutations(cats).filter((r) => !taken.has(wishKey(r)));
   }, [cats, policy.wishlist]);
 
   // same for skills: only what is recorded on the cats of the house
@@ -1121,8 +1122,8 @@ export function RosterScreen({
 }
 
 /**
- * One picker over the named mutations the house actually carries (grouped by
- * slot, with the house-wide carrier count) — not the game's whole catalog.
+ * One picker over the mutations the house actually carries, named and common
+ * (grouped by slot, with the house-wide carrier count) — not the whole catalog.
  */
 function WishAdder({
   options,

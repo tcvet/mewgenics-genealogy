@@ -106,7 +106,8 @@ kitten forms, or right on this screen) — the app never guesses a cat's role.
 The list of categories is house-wide, so a cat keeps its role when it moves
 rooms; the quotas, the scoring columns and the wanted-mutation and
 wanted-skill lists belong to the room. The wanted-mutation picker offers only
-the named mutations the house actually carries, the wanted-skill picker only
+the mutations the house actually carries (named and common alike), the
+wanted-skill picker only
 the skills recorded on the cats of the house (both with carrier counts), and
 each wanted row shows how
 many cats *in this room* carry it — zero lights up red. “✨ Set up the
